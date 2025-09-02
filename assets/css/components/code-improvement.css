@@ -70,27 +70,6 @@ body .markdown-body pre code {
     position: relative;
 }
 
-/* 复制按钮样式 */
-.markdown-body .highlight::after {
-    content: "复制";
-    position: absolute;
-    top: 8px;
-    right: 8px;
-    background: rgba(255, 255, 255, 0.1);
-    color: #d4d4d4;
-    padding: 4px 8px;
-    border-radius: 4px;
-    font-size: 12px;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    cursor: pointer;
-    opacity: 0.7;
-    transition: opacity 0.2s;
-}
-
-.markdown-body .highlight:hover::after {
-    opacity: 1;
-}
-
 /* 语言标签 - 不显示，保持简洁 */
 .markdown-body .highlight::before {
     display: none;

@@ -86,14 +86,11 @@
     
     function showCopyFeedback(codeBlock, message) {
         // 临时改变复制按钮文本
-        const originalAfter = window.getComputedStyle(codeBlock, '::after').content;
-        
-        // 创建动态样式来改变伪元素内容
         const styleId = 'copy-feedback-' + Date.now();
         const style = document.createElement('style');
         style.id = styleId;
         style.innerHTML = `
-            .markdown-body .highlight::after {
+            .highlight::after {
                 content: "${message}" !important;
                 background: rgba(46, 160, 67, 0.9) !important;
                 color: white !important;

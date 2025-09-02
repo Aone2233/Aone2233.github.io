@@ -8,7 +8,12 @@
 修改了 `assets/css/globals/common.css`：
 - 第541-551行：代码块背景改为深色主题
 - 第507-528行：行内代码和代码块元素样式
-- 第688-728行：pre元素和语法高亮颜色
+- 第688-754行：pre元素、语法高亮颜色和复制按钮样式
+
+### 2. 问题修复
+- ✅ 删除重复的复制按钮（之前有两层重叠）
+- ✅ 统一复制按钮样式到main CSS文件
+- ✅ 更新JavaScript复制功能
 
 ### 2. 添加的新文件
 - `assets/css/components/code-improvement.css` - 增强样式
