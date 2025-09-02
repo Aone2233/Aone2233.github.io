@@ -8,16 +8,17 @@
         const codeBlocks = document.querySelectorAll('.markdown-body .highlight');
         
         codeBlocks.forEach(function(block) {
-            // 创建复制按钮 (使用CSS伪元素，这里添加点击事件)
+            // 为整个代码块添加点击事件，检测复制按钮区域
             block.addEventListener('click', function(e) {
-                // 检查是否点击了复制区域 (右上角)
+                // 检查是否点击了右上角复制按钮区域
                 const rect = block.getBoundingClientRect();
                 const clickX = e.clientX - rect.right;
                 const clickY = e.clientY - rect.top;
                 
-                // 复制按钮区域大小约为 60x30 像素
-                if (clickX >= -60 && clickX <= 0 && clickY >= 0 && clickY <= 30) {
+                // 复制按钮区域：右上角 80x40 像素区域
+                if (clickX >= -80 && clickX <= 0 && clickY >= 0 && clickY <= 40) {
                     e.preventDefault();
+                    e.stopPropagation();
                     copyCodeToClipboard(block);
                 }
             });
@@ -28,15 +29,11 @@
                 const hoverX = e.clientX - rect.right;
                 const hoverY = e.clientY - rect.top;
                 
-                if (hoverX >= -60 && hoverX <= 0 && hoverY >= 0 && hoverY <= 30) {
+                if (hoverX >= -80 && hoverX <= 0 && hoverY >= 0 && hoverY <= 40) {
                     block.style.cursor = 'pointer';
                 } else {
-                    block.style.cursor = 'text';
+                    block.style.cursor = 'default';
                 }
-            });
-            
-            block.addEventListener('mouseleave', function() {
-                block.style.cursor = 'text';
             });
         });
     });
@@ -85,15 +82,20 @@
     }
     
     function showCopyFeedback(codeBlock, message) {
+        // 为特定代码块添加唯一标识
+        const blockId = 'copy-block-' + Date.now();
+        codeBlock.setAttribute('data-copy-id', blockId);
+        
         // 临时改变复制按钮文本
         const styleId = 'copy-feedback-' + Date.now();
         const style = document.createElement('style');
         style.id = styleId;
         style.innerHTML = `
-            .highlight::after {
+            .highlight[data-copy-id="${blockId}"]::after {
                 content: "${message}" !important;
                 background: rgba(46, 160, 67, 0.9) !important;
                 color: white !important;
+                border-color: rgba(46, 160, 67, 0.9) !important;
             }
         `;
         document.head.appendChild(style);
@@ -104,6 +106,7 @@
             if (feedbackStyle) {
                 feedbackStyle.remove();
             }
+            codeBlock.removeAttribute('data-copy-id');
         }, 2000);
     }
     

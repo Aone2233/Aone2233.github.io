@@ -1,0 +1,75 @@
+---
+layout: default
+---
+
+<style>
+/* 调试样式 - 强制显示复制按钮 */
+.highlight::after {
+    content: "复制" !important;
+    position: absolute !important;
+    top: 8px !important;
+    right: 8px !important;
+    background: rgba(255, 0, 0, 0.8) !important; /* 红色背景用于调试 */
+    color: white !important;
+    padding: 6px 10px !important;
+    border-radius: 4px !important;
+    font-size: 14px !important;
+    border: 2px solid yellow !important; /* 黄色边框用于调试 */
+    cursor: pointer !important;
+    opacity: 1 !important;
+    font-family: Arial, sans-serif !important;
+    font-weight: bold !important;
+    z-index: 999 !important;
+    line-height: 1 !important;
+    display: block !important;
+    visibility: visible !important;
+}
+
+.highlight {
+    position: relative !important;
+    border: 2px dashed orange !important; /* 橙色虚线边框标识代码块 */
+}
+</style>
+
+<div class="markdown-body">
+    <h1>复制按钮调试测试</h1>
+    
+    <p>这个页面用于调试复制按钮显示问题。复制按钮应该显示为红色背景、黄色边框。</p>
+
+    <div class="highlight">
+        <pre><code class="language-bash"># 测试代码块
+curl -fsSL https://claude.ai/install.sh | bash
+echo "测试复制功能"
+</code></pre>
+    </div>
+
+    <div class="highlight">
+        <pre><code class="language-javascript">// JavaScript 测试
+console.log("Hello World");
+const test = "复制按钮测试";
+</code></pre>
+    </div>
+
+</div>
+
+<script>
+// 简单的调试脚本
+document.addEventListener('DOMContentLoaded', function() {
+    const highlights = document.querySelectorAll('.highlight');
+    console.log('找到代码块数量:', highlights.length);
+    
+    highlights.forEach((block, index) => {
+        console.log(`代码块 ${index + 1}:`, block);
+        
+        // 检查伪元素
+        const afterStyle = window.getComputedStyle(block, '::after');
+        console.log(`代码块 ${index + 1} 伪元素内容:`, afterStyle.content);
+        console.log(`代码块 ${index + 1} 伪元素显示:`, afterStyle.display);
+        console.log(`代码块 ${index + 1} 伪元素位置:`, afterStyle.position);
+        
+        block.addEventListener('click', function(e) {
+            console.log('点击代码块:', e.target);
+        });
+    });
+});
+</script>

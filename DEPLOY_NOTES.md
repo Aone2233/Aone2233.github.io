@@ -14,6 +14,10 @@
 - ✅ 删除重复的复制按钮（之前有两层重叠）
 - ✅ 统一复制按钮样式到main CSS文件
 - ✅ 更新JavaScript复制功能
+- 🔧 修复复制按钮不可见问题：
+  - 增强CSS选择器优先级（添加 !important）
+  - 明确设置 display: block 和 visibility: visible
+  - 提高z-index确保按钮在最上层
 
 ### 2. 添加的新文件
 - `assets/css/components/code-improvement.css` - 增强样式
