@@ -3,7 +3,8 @@
     "allow": [
       "WebSearch",
       "WebSearch",
-      "WebSearch"
+      "WebSearch",
+      "Bash(git add:*)"
     ],
     "deny": [],
     "ask": []

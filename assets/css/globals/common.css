@@ -727,37 +727,9 @@ pre {
     background-color: transparent !important; 
 }
 
-/* 复制按钮样式 */
+/* 代码块容器样式 */
 .highlight {
     position: relative !important;
-}
-
-.highlight::after {
-    content: "复制" !important;
-    position: absolute !important;
-    top: 8px !important;
-    right: 8px !important;
-    background: rgba(255, 255, 255, 0.15) !important;
-    color: #d4d4d4 !important;
-    padding: 6px 10px !important;
-    border-radius: 4px !important;
-    font-size: 12px !important;
-    border: 1px solid rgba(255, 255, 255, 0.3) !important;
-    cursor: pointer !important;
-    opacity: 0.8 !important;
-    transition: all 0.2s ease !important;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
-    font-weight: 500 !important;
-    z-index: 10 !important;
-    line-height: 1 !important;
-    display: block !important;
-    visibility: visible !important;
-}
-
-.highlight:hover::after {
-    opacity: 1 !important;
-    background: rgba(255, 255, 255, 0.25) !important;
-    border-color: rgba(255, 255, 255, 0.5) !important;
 }
 
 .tools-wrapper {

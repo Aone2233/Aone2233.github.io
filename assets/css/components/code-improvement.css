@@ -193,13 +193,6 @@ body .markdown-body pre code {
         border-radius: 6px;
         line-height: 1.4;
     }
-    
-    .markdown-body .highlight::after {
-        top: 6px;
-        right: 6px;
-        padding: 3px 6px;
-        font-size: 11px;
-    }
 }
 
 /* 代码行高亮效果 (可选) */
@@ -235,9 +228,5 @@ body .markdown-body pre code {
         color: #333 !important;
         border: 1px solid #ddd;
         box-shadow: none;
-    }
-    
-    .markdown-body .highlight::after {
-        display: none;
     }
 }

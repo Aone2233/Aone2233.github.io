@@ -18,6 +18,8 @@
   - 增强CSS选择器优先级（添加 !important）
   - 明确设置 display: block 和 visibility: visible
   - 提高z-index确保按钮在最上层
+  - 创建 `copy-button-force.css` 作为最终强制样式
+  - 使用 `html body * .highlight::after` 最高优先级选择器
 
 ### 2. 添加的新文件
 - `assets/css/components/code-improvement.css` - 增强样式

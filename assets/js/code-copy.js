@@ -1,4 +1,4 @@
-// 代码块复制功能
+// 代码块复制功能 - 使用真实DOM元素
 (function() {
     'use strict';
     
@@ -7,38 +7,67 @@
         // 为所有代码块添加复制功能
         const codeBlocks = document.querySelectorAll('.markdown-body .highlight');
         
-        codeBlocks.forEach(function(block) {
-            // 为整个代码块添加点击事件，检测复制按钮区域
-            block.addEventListener('click', function(e) {
-                // 检查是否点击了右上角复制按钮区域
-                const rect = block.getBoundingClientRect();
-                const clickX = e.clientX - rect.right;
-                const clickY = e.clientY - rect.top;
-                
-                // 复制按钮区域：右上角 80x40 像素区域
-                if (clickX >= -80 && clickX <= 0 && clickY >= 0 && clickY <= 40) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    copyCodeToClipboard(block);
-                }
+        codeBlocks.forEach(function(block, index) {
+            // 确保容器有相对定位
+            block.style.position = 'relative';
+            
+            // 检查是否已有复制按钮，避免重复创建
+            if (block.querySelector('.copy-button')) {
+                return;
+            }
+            
+            // 创建真实的复制按钮DOM元素
+            const copyButton = document.createElement('button');
+            copyButton.className = 'copy-button';
+            copyButton.textContent = '复制';
+            copyButton.style.cssText = `
+                position: absolute;
+                top: 8px;
+                right: 8px;
+                background: rgba(255, 255, 255, 0.25);
+                color: #ffffff;
+                border: 1px solid rgba(255, 255, 255, 0.5);
+                border-radius: 5px;
+                padding: 8px 12px;
+                font-size: 12px;
+                font-family: Arial, sans-serif;
+                font-weight: 600;
+                cursor: pointer;
+                z-index: 9999;
+                line-height: 1.2;
+                white-space: nowrap;
+                transition: all 0.2s ease;
+                opacity: 0.9;
+            `;
+            
+            // 悬停效果
+            copyButton.addEventListener('mouseenter', function() {
+                this.style.opacity = '1';
+                this.style.background = 'rgba(255, 255, 255, 0.35)';
+                this.style.borderColor = 'rgba(255, 255, 255, 0.7)';
+                this.style.transform = 'scale(1.02)';
             });
             
-            // 鼠标悬停时改变光标样式
-            block.addEventListener('mousemove', function(e) {
-                const rect = block.getBoundingClientRect();
-                const hoverX = e.clientX - rect.right;
-                const hoverY = e.clientY - rect.top;
-                
-                if (hoverX >= -80 && hoverX <= 0 && hoverY >= 0 && hoverY <= 40) {
-                    block.style.cursor = 'pointer';
-                } else {
-                    block.style.cursor = 'default';
-                }
+            copyButton.addEventListener('mouseleave', function() {
+                this.style.opacity = '0.9';
+                this.style.background = 'rgba(255, 255, 255, 0.25)';
+                this.style.borderColor = 'rgba(255, 255, 255, 0.5)';
+                this.style.transform = 'scale(1)';
             });
+            
+            // 点击复制事件
+            copyButton.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                copyCodeToClipboard(block, copyButton);
+            });
+            
+            // 添加到代码块
+            block.appendChild(copyButton);
         });
     });
     
-    function copyCodeToClipboard(codeBlock) {
+    function copyCodeToClipboard(codeBlock, copyButton) {
         const code = codeBlock.querySelector('pre code');
         if (!code) return;
         
@@ -51,16 +80,16 @@
         // 使用现代 API 复制到剪贴板
         if (navigator.clipboard && window.isSecureContext) {
             navigator.clipboard.writeText(text).then(function() {
-                showCopyFeedback(codeBlock, '已复制!');
+                showCopyFeedback(copyButton, '已复制!');
             }).catch(function() {
-                fallbackCopyToClipboard(text, codeBlock);
+                fallbackCopyToClipboard(text, copyButton);
             });
         } else {
-            fallbackCopyToClipboard(text, codeBlock);
+            fallbackCopyToClipboard(text, copyButton);
         }
     }
     
-    function fallbackCopyToClipboard(text, codeBlock) {
+    function fallbackCopyToClipboard(text, copyButton) {
         // 创建临时文本区域
         const textArea = document.createElement('textarea');
         textArea.value = text;
@@ -73,65 +102,30 @@
             textArea.focus();
             textArea.select();
             document.execCommand('copy');
-            showCopyFeedback(codeBlock, '已复制!');
+            showCopyFeedback(copyButton, '已复制!');
         } catch (err) {
-            showCopyFeedback(codeBlock, '复制失败');
+            showCopyFeedback(copyButton, '复制失败');
         }
         
         document.body.removeChild(textArea);
     }
     
-    function showCopyFeedback(codeBlock, message) {
-        // 为特定代码块添加唯一标识
-        const blockId = 'copy-block-' + Date.now();
-        codeBlock.setAttribute('data-copy-id', blockId);
+    function showCopyFeedback(copyButton, message) {
+        // 保存原始文本和样式
+        const originalText = copyButton.textContent;
+        const originalBackground = copyButton.style.background;
+        const originalBorderColor = copyButton.style.borderColor;
         
-        // 临时改变复制按钮文本
-        const styleId = 'copy-feedback-' + Date.now();
-        const style = document.createElement('style');
-        style.id = styleId;
-        style.innerHTML = `
-            .highlight[data-copy-id="${blockId}"]::after {
-                content: "${message}" !important;
-                background: rgba(46, 160, 67, 0.9) !important;
-                color: white !important;
-                border-color: rgba(46, 160, 67, 0.9) !important;
-            }
-        `;
-        document.head.appendChild(style);
+        // 显示反馈
+        copyButton.textContent = message;
+        copyButton.style.background = 'rgba(46, 160, 67, 0.9)';
+        copyButton.style.borderColor = 'rgba(46, 160, 67, 0.9)';
         
         // 2秒后恢复原始状态
         setTimeout(function() {
-            const feedbackStyle = document.getElementById(styleId);
-            if (feedbackStyle) {
-                feedbackStyle.remove();
-            }
-            codeBlock.removeAttribute('data-copy-id');
+            copyButton.textContent = originalText;
+            copyButton.style.background = originalBackground;
+            copyButton.style.borderColor = originalBorderColor;
         }, 2000);
     }
-    
-    // 添加键盘快捷键支持 (Ctrl+C 在代码块内)
-    document.addEventListener('keydown', function(e) {
-        if ((e.ctrlKey || e.metaKey) && e.key === 'c') {
-            const selection = window.getSelection();
-            if (selection.rangeCount > 0) {
-                const range = selection.getRangeAt(0);
-                const container = range.commonAncestorContainer;
-                
-                // 检查选择是否在代码块内
-                let codeBlock = container.nodeType === Node.TEXT_NODE ? 
-                    container.parentElement : container;
-                
-                while (codeBlock && !codeBlock.classList.contains('highlight')) {
-                    codeBlock = codeBlock.parentElement;
-                }
-                
-                if (codeBlock && selection.toString().trim() === '') {
-                    // 如果在代码块内但没有选择文本，复制整个代码块
-                    e.preventDefault();
-                    copyCodeToClipboard(codeBlock);
-                }
-            }
-        }
-    });
 })();
