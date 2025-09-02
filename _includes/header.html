@@ -13,13 +13,16 @@
     <link rel="stylesheet" href="{{ assets_base_url }}/assets/css/globals/common.css">
     <link rel="stylesheet" href="{{ assets_base_url }}/assets/css/globals/responsive.css">
     <link rel="stylesheet" href="{{ assets_base_url }}/assets/css/posts/index.css">
-    <link rel="stylesheet" href="{{ assets_base_url }}/assets/css/components/code-improvement.css">
     <link rel="stylesheet" href="{{ assets_base_url }}/assets/vendor/octicons/octicons/octicons.css">
     {% assign highlight_base_url = 'https://mazhuang.org/rouge-themes/dist' %}
     {% if site.cdn.jsdelivr.enabled %}
     {% assign highlight_base_url = 'https://fastly.jsdelivr.net/gh/mzlogin/rouge-themes@master/dist' %}
     {% endif %}
     <link rel="stylesheet" href="{{ highlight_base_url }}/{{ site.highlight_theme}}.css">
+    <!-- 自定义代码高亮样式 - 必须在Jekyll主题CSS之后加载 -->
+    <link rel="stylesheet" href="{{ assets_base_url }}/assets/css/components/code-improvement.css?v={{ site.time | date: '%s' }}">
+    <!-- 强制代码样式覆盖 - 确保深色主题生效 -->
+    <link rel="stylesheet" href="{{ assets_base_url }}/assets/css/components/code-override.css?v={{ site.time | date: '%s' }}">
     {% if site.components.share.enabled %}
     <link rel="stylesheet" href="{{ assets_base_url }}/assets/vendor/share.js/dist/css/share.min.css">
     {% endif %}

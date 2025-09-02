@@ -1,0 +1,35 @@
+---
+layout: default
+---
+
+<div class="markdown-body">
+    <h1>代码块样式测试</h1>
+    
+    <p>这是测试页面，用于检查代码块样式是否正确应用。</p>
+
+    <h2>Bash 代码块</h2>
+    <div class="highlight">
+        <pre><code class="language-bash"># 安装稳定版本 (默认)
+curl -fsSL https://claude.ai/install.sh | bash
+
+# 安装最新版本  
+curl -fsSL https://claude.ai/install.sh | bash -s latest
+
+# 安装指定版本
+curl -fsSL https://claude.ai/install.sh | bash -s 1.0.58
+</code></pre>
+    </div>
+
+    <h2>PowerShell 代码块</h2>
+    <div class="highlight">
+        <pre><code class="language-powershell"># 安装稳定版本 (默认)
+irm https://claude.ai/install.ps1 | iex
+
+# 验证安装
+claude doctor
+</code></pre>
+    </div>
+
+    <p>行内代码测试：<code>npm install -g @anthropic-ai/claude-code</code></p>
+
+</div>

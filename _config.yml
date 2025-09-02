@@ -52,8 +52,8 @@ compress_html:
   clippings: all
   comments: ["<!--", "-->"]
 # 代码高亮风格，支持的 theme 列表见 https://github.com/mzlogin/rouge-themes
-# 使用深色主题以配合自定义的VS Code风格
-highlight_theme: base16.monokai.dark
+# 暂时使用默认主题，通过自定义CSS完全覆盖样式
+highlight_theme: github
 
 # ---------------- #
 #      Author      #

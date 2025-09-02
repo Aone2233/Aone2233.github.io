@@ -1,29 +1,67 @@
 /* Claude Code 博客文章代码块样式优化 - 深色主题 */
+/* 使用高优先级选择器强制覆盖所有默认样式 */
 
-/* 改进代码块的整体外观 - 深色风格 */
-.markdown-body .highlight pre,
-.markdown-body pre {
+/* 强制覆盖代码块的整体外观 - 深色风格 */
+/* 最高优先级选择器 - 覆盖所有可能的代码块样式 */
+html body .markdown-body .highlight pre,
+html body .markdown-body .highlight,
+html body .markdown-body pre,
+html body div.highlight,
+html body div.highlight pre,
+html body .highlight,
+html body .highlight pre,
+html body pre {
     background-color: #1e1e1e !important;
-    border: 1px solid #333;
-    border-radius: 8px;
-    padding: 16px;
-    overflow-x: auto;
-    font-size: 14px;
-    line-height: 1.5;
-    font-family: 'JetBrains Mono', 'Fira Code', 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    background: #1e1e1e !important;
+    border: 1px solid #333 !important;
+    border-radius: 8px !important;
+    padding: 16px !important;
+    overflow: auto !important;
+    overflow-x: auto !important;
+    font-size: 14px !important;
+    line-height: 1.5 !important;
+    font-family: 'JetBrains Mono', 'Fira Code', 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace !important;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3) !important;
     color: #d4d4d4 !important;
 }
 
-/* 改进行内代码的样式 - 深色风格 */
-.markdown-body code:not(.hljs) {
-    background-color: rgba(45, 45, 45, 0.8) !important;
-    padding: 2px 6px;
-    border-radius: 4px;
-    font-size: 85%;
+/* 确保所有代码元素都使用深色主题 - 最高优先级 */
+body .markdown-body .highlight pre code,
+body .markdown-body pre code,
+body .highlight pre code,
+body pre code,
+html body .highlight pre code,
+html body pre code {
+    background-color: transparent !important;
+    background: transparent !important;
+    color: #d4d4d4 !important;
     border: none !important;
-    color: #f92672;
-    font-family: 'JetBrains Mono', 'Fira Code', monospace;
+    padding: 0 !important;
+    font-family: 'JetBrains Mono', 'Fira Code', 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace !important;
+}
+
+/* 改进行内代码的样式 - 深色风格 */
+body .markdown-body code:not(.hljs),
+body .markdown-body code,
+body .markdown-body tt {
+    background-color: rgba(45, 45, 45, 0.8) !important;
+    padding: 2px 6px !important;
+    border-radius: 4px !important;
+    font-size: 85% !important;
+    border: none !important;
+    color: #f92672 !important;
+    font-family: 'JetBrains Mono', 'Fira Code', monospace !important;
+}
+
+/* 特别处理代码块内的代码元素 - 确保透明背景 */
+body .markdown-body .highlight code,
+body .markdown-body .highlight pre code,
+body .markdown-body pre code {
+    background-color: transparent !important;
+    background: transparent !important;
+    border: none !important;
+    padding: 0 !important;
+    color: #d4d4d4 !important;
 }
 
 /* VS Code 风格的深色语法高亮 */
