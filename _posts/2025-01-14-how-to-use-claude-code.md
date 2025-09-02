@@ -60,7 +60,7 @@ sudo apt update
 curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
 sudo apt-get install -y nodejs
 
-# 通过 npm 全局安装 Claude Code (不要使用 sudo)
+# 通过 npm 全局安装 Claude Code (重要：不要使用 sudo)
 npm install -g @anthropic-ai/claude-code
 
 # 验证安装
@@ -150,7 +150,9 @@ curl -fsSL https://claude.ai/install.sh | bash
 
 ```powershell
 # 1. 安装 Chocolatey (如果未安装)
-Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
+Set-ExecutionPolicy Bypass -Scope Process -Force
+[System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072
+iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
 
 # 2. 安装 Node.js
 choco install nodejs
@@ -239,18 +241,13 @@ Claude Code 提供三种认证方式：
 首次启动时会自动引导您完成认证：
 
 ```bash
-# 启动 Claude Code，首次会提示登录
 cd your-project-directory
 claude
-
-# 如需重新登录或切换账户
-# 在 Claude Code 中使用 /login 命令
 ```
 
 ### 2. 验证安装
 
 ```bash
-# 检查安装状态和版本
 claude doctor
 ```
 
@@ -259,48 +256,29 @@ claude doctor
 ### 1. 启动 Claude Code
 
 ```bash
-# 在项目目录中启动交互式 REPL
-cd your-project-directory
-claude
-
-# 使用初始提示启动
-claude "explain this project"
-
-# 使用 SDK 模式执行单次查询
-claude -p "explain this function"
-
-# 继续最近的对话
-claude -c
-
-# 恢复指定会话
-claude -r "<session-id>" "Finish this PR"
+claude                              # 启动交互模式
+claude "explain this project"       # 带初始提示启动
+claude -p "explain this function"   # 单次查询
+claude -c                           # 继续最近对话
+claude -r "session-id" "Finish PR"  # 恢复指定会话
 ```
 
 ### 2. 核心功能和使用技巧
 
-**直接文件处理：**
+**文件处理：**
 ```bash
-# 管道输入处理
 cat logs.txt | claude -p "分析这些日志"
-
-# 拖拽文件引用 (按住 Shift 拖拽文件)
-# 支持从剪贴板粘贴图片 (Ctrl+V)
 ```
 
 **项目初始化：**
-- 使用 `/init` 命令创建 CLAUDE.md 配置文件
-- CLAUDE.md 是 Claude 理解项目的主要参考文件
+- 使用 `/init` 创建 CLAUDE.md 配置文件
+- 拖拽文件时按住 Shift 键引用
+- 支持 Ctrl+V 粘贴图片
 
-**模型选择：**
-- 使用 `/model` 命令在 Opus、Sonnet 等模型间切换
-
-**更新管理：**
+**常用操作：**
 ```bash
-# 手动更新到最新版本
-claude update
-
-# 禁用自动更新 (设置环境变量)
-export DISABLE_AUTOUPDATER=1
+claude update                    # 手动更新
+export DISABLE_AUTOUPDATER=1    # 禁用自动更新
 ```
 
 ### 3. 交互模式和斜杠命令
@@ -320,31 +298,24 @@ export DISABLE_AUTOUPDATER=1
 - `/compact` - 上下文管理
 - `/terminal-setup` - 配置终端功能（如 Shift+Enter 换行）
 
-**交互示例：**
-```bash
-# 启动后的对话示例
-You: 帮我创建一个 React 组件用于用户登录
+**对话示例：**
+```
+You: 帮我创建一个 React 登录组件
 Claude: 我来帮您创建一个 React 登录组件...
 
 You: 这个项目用了什么依赖？
 Claude: 让我查看您的 package.json 文件...
-
-You: 修复这个 TypeScript 错误
-Claude: 我将分析错误并帮您修复...
 ```
 
 ## 高级功能
 
 ### 1. 自定义斜杠命令
 
-您可以在 `.claude/commands` 目录下创建自定义命令：
+创建自定义命令：
 
 ```bash
-# 在项目目录或用户主目录创建
 mkdir -p .claude/commands
-
-# 创建自定义命令文件 (文件名即命令名)
-# 例如：.claude/commands/deploy.md
+# 创建 .claude/commands/deploy.md
 ```
 
 ### 2. 工作模式
@@ -359,14 +330,12 @@ mkdir -p .claude/commands
 
 **权限管理：**
 ```bash
-# 跳过权限检查 (类似 Cursor 的 yolo 模式)
 claude --dangerously-skip-permissions
 ```
 
-### 3. MCP (模型上下文协议) 服务器
+### 3. MCP 服务器配置
 
 ```bash
-# 配置 MCP 服务器以扩展功能
 claude mcp
 ```
 
@@ -374,55 +343,36 @@ claude mcp
 
 ### 常见问题
 
-1. **安装失败**
-   ```bash
-   # 清理 npm 缓存
-   npm cache clean --force
-   
-   # 重新安装
-   npm install -g @anthropic-ai/claude-code
-   
-   # 检查安装状态
-   claude doctor
-   ```
+**安装失败：**
+```bash
+npm cache clean --force
+npm install -g @anthropic-ai/claude-code
+claude doctor
+```
 
-2. **权限错误 (Linux/macOS)**
-   ```bash
-   # 重要：不要使用 sudo npm install -g
-   # 如果已经使用了 sudo，修复权限：
-   npm config set prefix '~/.npm-global'
-   echo 'export PATH=~/.npm-global/bin:$PATH' >> ~/.bashrc
-   source ~/.bashrc
-   
-   # 重新安装 (不使用 sudo)
-   npm install -g @anthropic-ai/claude-code
-   ```
+**权限错误 (Linux/macOS)：**
+```bash
+npm config set prefix '~/.npm-global'
+echo 'export PATH=~/.npm-global/bin:$PATH' >> ~/.bashrc
+source ~/.bashrc
+```
 
-3. **网络连接问题**
-   ```bash
-   # 使用国内镜像 (中国用户)
-   npm config set registry https://registry.npmmirror.com
-   
-   # 或者使用原生安装器
-   curl -fsSL https://claude.ai/install.sh | bash
-   ```
+**网络问题：**
+```bash
+npm config set registry https://registry.npmmirror.com
+# 或使用: curl -fsSL https://claude.ai/install.sh | bash
+```
 
-4. **认证问题**
-   - 确保在 console.anthropic.com 有活跃的付费账户
-   - 或者拥有 Claude Pro/Max 订阅
-   - 在 Claude Code 中使用 `/login` 重新认证
+**认证问题：**
+- 确保有 console.anthropic.com 付费账户或 Claude Pro/Max 订阅
+- 使用 `/login` 重新认证
 
-### 诊断和调试
+### 诊断命令
 
 ```bash
-# 检查安装和配置状态
-claude doctor
-
-# 查看版本信息
-claude --version
-
-# 测试连接和认证
-claude "Hello, are you working?"
+claude doctor                  # 检查状态
+claude --version              # 查看版本
+claude "Hello, are you working?" # 测试连接
 ```
 
 ## 最佳实践
