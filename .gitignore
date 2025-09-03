@@ -9,3 +9,17 @@ Gemfile.lock
 .jekyll-metadata
 .\$*.png.bkp
 .\$*.png.dtmp
+
+# Claude Code configuration
+.claude/
+
+# Obsidian configuration
+.obsidian/
+
+# Other AI/Editor configuration
+.cursor/
+.idea/
+*~
+*.swp
+*.swo
+*~
