@@ -11,22 +11,10 @@
             // 确保容器有相对定位
             block.style.position = 'relative';
             
-            // 移除任何现有的复制按钮（包括可能由外部脚本创建的）
-            const existingButtons = block.querySelectorAll('button');
-            existingButtons.forEach(function(button) {
-                if (button.textContent.includes('复制') || button.textContent.includes('copy') || button.className.includes('copy')) {
-                    button.remove();
-                }
-            });
-            
-            // 移除任何可能的CSS生成的复制按钮
-            const pseudoElements = block.querySelectorAll('*');
-            pseudoElements.forEach(function(element) {
-                const computedStyle = window.getComputedStyle(element);
-                if (computedStyle.position === 'fixed' && (element.textContent.includes('复制') || element.textContent.includes('copy'))) {
-                    element.remove();
-                }
-            });
+            // 检查是否已有复制按钮，避免重复创建
+            if (block.querySelector('.copy-button')) {
+                return;
+            }
             
             // 创建真实的复制按钮DOM元素
             const copyButton = document.createElement('button');

@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Copy Button Debug</title>
+    <style>
+        /* Include the same styles as the main site */
+        .markdown-body .highlight {
+            position: relative;
+            background-color: #1e1e1e;
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 16px;
+            margin: 16px 0;
+        }
+        .markdown-body .highlight pre {
+            margin: 0;
+            padding: 0;
+            background: transparent;
+            overflow: auto;
+        }
+        .markdown-body .highlight pre code {
+            background: transparent;
+            color: #d4d4d4;
+            font-family: monospace;
+        }
+    </style>
+</head>
+<body>
+    <div class="markdown-body">
+        <h1>Copy Button Debug Test</h1>
+        
+        <div class="highlight">
+            <pre><code class="language-javascript">// Test code block 1
+console.log("Hello World");
+const test = "复制按钮测试";
+function debugCopyButtons() {
+    return "This should help identify the issue";
+}</code></pre>
+        </div>
+        
+        <div class="highlight">
+            <pre><code class="language-python"># Test code block 2
+def test_function():
+    print("Python test")
+    return "Debug copy buttons"</code></pre>
+        </div>
+        
+        <div class="highlight">
+            <pre><code class="language-bash"># Test code block 3
+echo "Bash test"
+ls -la
+grep "copy" *.js</code></pre>
+        </div>
+    </div>
+    
+    <!-- Load the same scripts as the main site -->
+    <script src="assets/vendor/jquery/dist/jquery.min.js"></script>
+    <script src="assets/js/main.js"></script>
+    <script src="assets/js/code-copy.js"></script>
+    
+    <script>
+        // Debug script to examine DOM structure
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(function() {
+                console.log("=== DEBUG INFO ===");
+                
+                // Examine all highlight elements
+                const highlights = document.querySelectorAll('.highlight');
+                console.log("Found", highlights.length, "highlight elements");
+                
+                highlights.forEach(function(highlight, index) {
+                    console.log("\n=== Highlight", index + 1, "===");
+                    console.log("Highlight element:", highlight);
+                    
+                    // Check for buttons
+                    const buttons = highlight.querySelectorAll('button');
+                    console.log("Buttons found:", buttons.length);
+                    buttons.forEach(function(button, btnIndex) {
+                        console.log("  Button", btnIndex + 1, ":", {
+                            text: button.textContent,
+                            className: button.className,
+                            position: window.getComputedStyle(button).position,
+                            top: window.getComputedStyle(button).top,
+                            right: window.getComputedStyle(button).right,
+                            zIndex: window.getComputedStyle(button).zIndex
+                        });
+                    });
+                    
+                    // Check for any elements that might be copy buttons
+                    const allElements = highlight.querySelectorAll('*');
+                    const potentialCopyButtons = [];
+                    allElements.forEach(function(element) {
+                        const text = element.textContent || '';
+                        const className = element.className || '';
+                        if (text.includes('复制') || text.includes('copy') || 
+                            className.includes('copy') || className.includes('clipboard')) {
+                            potentialCopyButtons.push(element);
+                        }
+                    });
+                    
+                    console.log("Potential copy buttons:", potentialCopyButtons.length);
+                    potentialCopyButtons.forEach(function(element, elemIndex) {
+                        console.log("  Potential button", elemIndex + 1, ":", {
+                            tagName: element.tagName,
+                            text: element.textContent,
+                            className: element.className,
+                            position: window.getComputedStyle(element).position,
+                            computedStyle: window.getComputedStyle(element)
+                        });
+                    });
+                    
+                    // Check computed styles of the highlight itself
+                    const highlightStyle = window.getComputedStyle(highlight);
+                    console.log("Highlight styles:", {
+                        position: highlightStyle.position,
+                        zIndex: highlightStyle.zIndex,
+                        overflow: highlightStyle.overflow
+                    });
+                });
+                
+                // Check if there are any fixed position elements on the page
+                const fixedElements = document.querySelectorAll('*');
+                const fixedCopyButtons = [];
+                fixedElements.forEach(function(element) {
+                    const style = window.getComputedStyle(element);
+                    if (style.position === 'fixed') {
+                        const text = element.textContent || '';
+                        if (text.includes('复制') || text.includes('copy')) {
+                            fixedCopyButtons.push(element);
+                        }
+                    }
+                });
+                
+                console.log("\n=== Fixed position copy buttons ===");
+                console.log("Found", fixedCopyButtons.length, "fixed position copy buttons");
+                fixedCopyButtons.forEach(function(element, index) {
+                    console.log("Fixed button", index + 1, ":", {
+                        tagName: element.tagName,
+                        text: element.textContent,
+                        className: element.className,
+                        parent: element.parentNode
+                    });
+                });
+                
+            }, 1000); // Wait 1 second for scripts to execute
+        });
+    </script>
+</body>
+</html>

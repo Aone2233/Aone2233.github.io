@@ -1,44 +1,11 @@
 /* Claude Code 博客文章代码块样式优化 - 深色主题 */
 /* 使用高优先级选择器强制覆盖所有默认样式 */
 
-/* 强制覆盖代码块的整体外观 - 深色风格 */
-/* 最高优先级选择器 - 覆盖所有可能的代码块样式 */
-html body .markdown-body .highlight pre,
-html body .markdown-body .highlight,
-html body .markdown-body pre,
-html body div.highlight,
-html body div.highlight pre,
-html body .highlight,
-html body .highlight pre,
-html body pre {
-    background-color: #1e1e1e !important;
-    background: #1e1e1e !important;
-    border: 1px solid #333 !important;
-    border-radius: 8px !important;
-    padding: 16px !important;
-    overflow: auto !important;
-    overflow-x: auto !important;
-    font-size: 14px !important;
-    line-height: 1.5 !important;
-    font-family: 'JetBrains Mono', 'Fira Code', 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace !important;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3) !important;
-    color: #d4d4d4 !important;
-}
+/* 移除重复的代码块样式定义，避免双重渲染 */
+/* 这些样式已经在 common.css 中定义 */
 
-/* 确保所有代码元素都使用深色主题 - 最高优先级 */
-body .markdown-body .highlight pre code,
-body .markdown-body pre code,
-body .highlight pre code,
-body pre code,
-html body .highlight pre code,
-html body pre code {
-    background-color: transparent !important;
-    background: transparent !important;
-    color: #d4d4d4 !important;
-    border: none !important;
-    padding: 0 !important;
-    font-family: 'JetBrains Mono', 'Fira Code', 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace !important;
-}
+/* 移除重复的代码元素样式定义 */
+/* 这些样式已经在 common.css 中定义 */
 
 /* 改进行内代码的样式 - 深色风格 */
 body .markdown-body code:not(.hljs),
@@ -53,16 +20,8 @@ body .markdown-body tt {
     font-family: 'JetBrains Mono', 'Fira Code', monospace !important;
 }
 
-/* 特别处理代码块内的代码元素 - 确保透明背景 */
-body .markdown-body .highlight code,
-body .markdown-body .highlight pre code,
-body .markdown-body pre code {
-    background-color: transparent !important;
-    background: transparent !important;
-    border: none !important;
-    padding: 0 !important;
-    color: #d4d4d4 !important;
-}
+/* 移除重复的代码块内代码元素样式定义 */
+/* 这些样式已经在 common.css 中定义 */
 
 /* VS Code 风格的深色语法高亮 */
 .markdown-body .highlight,
@@ -160,54 +119,11 @@ body .markdown-body pre code {
     color: #569CD6 !important;  /* 蓝色命令 */
 }
 
-/* 滚动条样式 - 深色风格 */
-.markdown-body .highlight pre::-webkit-scrollbar,
-.markdown-body pre::-webkit-scrollbar {
-    height: 8px;
-    width: 8px;
-}
+/* 移除重复的滚动条样式定义 */
+/* 如果需要滚动条样式，请在 common.css 中添加 */
 
-.markdown-body .highlight pre::-webkit-scrollbar-track,
-.markdown-body pre::-webkit-scrollbar-track {
-    background: #2d2d2d;
-    border-radius: 4px;
-}
-
-.markdown-body .highlight pre::-webkit-scrollbar-thumb,
-.markdown-body pre::-webkit-scrollbar-thumb {
-    background: #555;
-    border-radius: 4px;
-}
-
-.markdown-body .highlight pre::-webkit-scrollbar-thumb:hover,
-.markdown-body pre::-webkit-scrollbar-thumb:hover {
-    background: #666;
-}
-
-/* 响应式设计 - 移动设备上的代码块 */
-@media (max-width: 768px) {
-    .markdown-body .highlight pre,
-    .markdown-body pre {
-        padding: 12px;
-        font-size: 13px;
-        border-radius: 6px;
-        line-height: 1.4;
-    }
-}
-
-/* 代码行高亮效果 (可选) */
-.markdown-body .highlight pre code {
-    display: block;
-    width: 100%;
-}
-
-/* 确保代码块内容不会溢出 */
-.markdown-body .highlight pre,
-.markdown-body pre {
-    max-width: 100%;
-    overflow-x: auto;
-    white-space: pre;
-}
+/* 移除重复的响应式和溢出样式定义 */
+/* 这些样式已经在 common.css 中定义 */
 
 /* 特殊字符的处理 */
 .markdown-body .highlight .err {
@@ -215,18 +131,5 @@ body .markdown-body pre code {
     background-color: transparent !important;
 }
 
-/* 确保代码块在文章中的间距 */
-.markdown-body .highlight {
-    margin: 16px 0;
-}
-
-/* 打印样式 - 如果需要打印友好 */
-@media print {
-    .markdown-body .highlight pre,
-    .markdown-body pre {
-        background-color: #f8f9fa !important;
-        color: #333 !important;
-        border: 1px solid #ddd;
-        box-shadow: none;
-    }
-}
+/* 移除重复的间距和打印样式定义 */
+/* 这些样式已经在 common.css 中定义 */
