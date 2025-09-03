@@ -120,7 +120,23 @@ pre.highlight button.copy-button,
     pointer-events: none !important;
 }
 
-/* 修复Rouge代码高亮器的.w span标签问题 */
+/* 修复Rouge代码高亮器的所有span标签问题 */
+.highlight code span,
+.markdown-body .highlight code span,
+pre code span,
+code span {
+    display: inline !important;
+    white-space: normal !important;
+    font-size: inherit !important;
+    line-height: inherit !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: none !important;
+    background: transparent !important;
+    vertical-align: baseline !important;
+}
+
+/* 特别处理.w span标签 */
 .highlight .w,
 .markdown-body .highlight .w,
 pre .w,
@@ -133,6 +149,7 @@ code .w {
     padding: 0 !important;
     border: none !important;
     background: transparent !important;
+    vertical-align: baseline !important;
 }
 
 /* 确保代码块中的空格和换行正确显示 */
@@ -157,4 +174,32 @@ pre code {
     word-break: normal !important;
     overflow-wrap: normal !important;
     display: inline !important;
+}
+
+/* 强制所有代码块内的内联元素保持在同一行 */
+.highlight pre *,
+.markdown-body .highlight pre *,
+.markdown-body pre *,
+pre * {
+    display: inline !important;
+    white-space: normal !important;
+    vertical-align: baseline !important;
+}
+
+/* 特殊处理：保持换行符的正确显示 */
+.highlight pre,
+.markdown-body .highlight pre,
+.markdown-body pre,
+pre {
+    white-space: pre !important;
+    word-wrap: normal !important;
+    word-break: normal !important;
+    overflow-wrap: normal !important;
+}
+
+/* 移除代码块中不必要的换行 */
+.highlight pre code:after,
+.markdown-body pre code:after,
+pre code:after {
+    content: none !important;
 }

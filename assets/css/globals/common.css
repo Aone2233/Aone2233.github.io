@@ -707,7 +707,23 @@ pre {
     line-height: 1.5 !important;
 }
 
-/* 修复Rouge代码高亮器的.w span标签问题 */
+/* 修复Rouge代码高亮器的所有span标签问题 */
+.highlight code span,
+.markdown-body .highlight code span,
+pre code span,
+code span {
+    display: inline !important;
+    white-space: normal !important;
+    font-size: inherit !important;
+    line-height: inherit !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: none !important;
+    background: transparent !important;
+    vertical-align: baseline !important;
+}
+
+/* 特别处理.w span标签 */
 .highlight .w,
 .markdown-body .highlight .w,
 pre .w,
@@ -720,6 +736,7 @@ code .w {
     padding: 0 !important;
     border: none !important;
     background: transparent !important;
+    vertical-align: baseline !important;
 }
 
 /* 确保代码块中的空格和换行正确显示 */
