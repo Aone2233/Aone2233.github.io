@@ -1,4 +1,4 @@
-// 代码块复制功能 - 使用真实DOM元素
+// 代码块复制功能 - 彻底修复换行问题
 (function() {
     'use strict';
     
@@ -69,11 +69,11 @@
     });
     
     function copyCodeToClipboard(codeBlock, copyButton) {
-        const code = codeBlock.querySelector('pre code');
-        if (!code) return;
+        const codeElement = codeBlock.querySelector('pre code');
+        if (!codeElement) return;
         
-        // 获取纯文本内容
-        let text = code.textContent || code.innerText;
+        // 获取处理后的纯文本内容，保持原有换行格式
+        let text = extractCodeWithProperLineBreaks(codeElement);
         
         // 移除行号（如果有的话）
         text = text.replace(/^\s*\d+\s+/gm, '');
@@ -88,6 +88,50 @@
         } else {
             fallbackCopyToClipboard(text, copyButton);
         }
+    }
+    
+    function extractCodeWithProperLineBreaks(codeElement) {
+        // 获取HTML内容
+        const html = codeElement.innerHTML;
+        
+        // 重建文本格式，与显示保持一致
+        let text = rebuildTextFromHTML(html);
+        
+        // 清理格式
+        text = text.replace(/\s+/g, ' ');  // 多个空格变为一个
+        text = text.replace(/\n\s*\n/g, '\n');  // 多个换行变为一个
+        text = text.replace(/^\s+|\s+$/g, '');  // 去除首尾空格
+        
+        return text;
+    }
+    
+    function rebuildTextFromHTML(html) {
+        // 1. 移除所有.w span标签，替换为适当的空格
+        let text = html.replace(/<span class="w">[^<]*?<\/span>/g, ' ');
+        
+        // 2. 处理注释行，确保它们独占一行
+        text = text.replace(/<span class="c">([^<]*?)<\/span>/g, function(match, content) {
+            // 如果是PowerShell注释（以#开头），确保换行
+            if (content.trim().startsWith('#')) {
+                return '\n' + content + '\n';
+            }
+            return content;
+        });
+        
+        // 3. 移除所有其他HTML标签
+        text = text.replace(/<[^>]*>/g, '');
+        
+        // 4. 处理HTML实体
+        text = text.replace(/&nbsp;/g, ' ');
+        text = text.replace(/&lt;/g, '<');
+        text = text.replace(/&gt;/g, '>');
+        text = text.replace(/&amp;/g, '&');
+        
+        // 5. 清理多余的空格和换行
+        text = text.replace(/\n\s*\n\s*\n/g, '\n\n');  // 最多两个连续换行
+        text = text.replace(/^\s+|\s+$/g, '');  // 去除首尾空格
+        
+        return text;
     }
     
     function fallbackCopyToClipboard(text, copyButton) {

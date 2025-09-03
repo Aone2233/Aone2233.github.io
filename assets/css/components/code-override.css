@@ -234,15 +234,15 @@ pre code:before {
 /* 隐藏导致换行问题的空白字符span标签 */
 .highlight .w,
 .markdown-body .w {
-    display: none !important;
-    visibility: hidden !important;
-    opacity: 0 !important;
-    height: 0 !important;
-    width: 0 !important;
+    display: inline !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    font-size: inherit !important;
+    line-height: inherit !important;
     margin: 0 !important;
     padding: 0 !important;
-    font-size: 0 !important;
-    line-height: 0 !important;
+    border: none !important;
+    background: transparent !important;
 }
 
 /* 确保代码块中的内容正确显示 */
