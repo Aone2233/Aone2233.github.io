@@ -19,6 +19,7 @@
             // 创建真实的复制按钮DOM元素
             const copyButton = document.createElement('button');
             copyButton.className = 'copy-button';
+            copyButton.setAttribute('data-code-block-id', 'code-block-' + index);
             copyButton.textContent = '复制';
             copyButton.style.cssText = `
                 position: absolute;
@@ -111,6 +112,9 @@
     }
     
     function showCopyFeedback(copyButton, message) {
+        // 只操作当前点击的按钮
+        if (!copyButton) return;
+        
         // 保存原始文本和样式
         const originalText = copyButton.textContent;
         const originalBackground = copyButton.style.background;
@@ -123,9 +127,12 @@
         
         // 2秒后恢复原始状态
         setTimeout(function() {
-            copyButton.textContent = originalText;
-            copyButton.style.background = originalBackground;
-            copyButton.style.borderColor = originalBorderColor;
+            // 确保按钮还存在再操作
+            if (copyButton && copyButton.parentNode) {
+                copyButton.textContent = originalText;
+                copyButton.style.background = originalBackground;
+                copyButton.style.borderColor = originalBorderColor;
+            }
         }, 2000);
     }
 })();
