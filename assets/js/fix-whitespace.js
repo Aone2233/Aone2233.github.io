@@ -9,30 +9,44 @@
         console.log('找到代码块数量:', codeBlocks.length);
         
         codeBlocks.forEach(function(codeBlock, index) {
-            console.log('处理代码块', index, ':', codeBlock);
+            console.log('处理代码块', index);
             
-            // 获取原始HTML内容
+            // 克隆节点以避免修改原始DOM
+            const clonedBlock = codeBlock.cloneNode(true);
+            
+            // 处理所有子节点
+            const processNode = function(node) {
+                if (node.nodeType === 1) { // 元素节点
+                    const tagName = node.tagName.toLowerCase();
+                    
+                    if (tagName === 'span' && node.className === 'w') {
+                        // 将.w span标签替换为文本节点
+                        const textNode = document.createTextNode(node.textContent || '');
+                        node.parentNode.replaceChild(textNode, node);
+                    } else if (tagName === 'span' && node.className === 'c') {
+                        // 注释span标签，在其后添加换行
+                        const br = document.createElement('br');
+                        node.parentNode.insertBefore(br, node.nextSibling);
+                    } else {
+                        // 递归处理子节点
+                        Array.from(node.childNodes).forEach(processNode);
+                    }
+                }
+            };
+            
+            // 处理克隆的节点
+            Array.from(clonedBlock.childNodes).forEach(processNode);
+            
+            // 获取处理后的HTML
+            const newHTML = clonedBlock.innerHTML;
             const originalHTML = codeBlock.innerHTML;
+            
             console.log('原始HTML:', originalHTML.substring(0, 200));
-            
-            // 替换策略：将.w span标签中的换行符移除，但保留其他格式
-            let fixedHTML = originalHTML;
-            
-            // 1. 将.w span标签中的换行符替换为空格
-            fixedHTML = fixedHTML.replace(/<span class="w">([^<]*?)<\/span>/g, function(match, content) {
-                // 只处理换行符，保留其他空白字符
-                const cleanedContent = content.replace(/\n+/g, ' ');
-                return cleanedContent;
-            });
-            
-            // 2. 处理span标签之间的多余空白
-            fixedHTML = fixedHTML.replace(/<\/span>\s+<span/g, '</span><span');
-            
-            console.log('修复后HTML:', fixedHTML.substring(0, 200));
+            console.log('处理后HTML:', newHTML.substring(0, 200));
             
             // 只有当内容有变化时才更新
-            if (fixedHTML !== originalHTML) {
-                codeBlock.innerHTML = fixedHTML;
+            if (newHTML !== originalHTML) {
+                codeBlock.innerHTML = newHTML;
                 console.log('代码块', index, '已更新');
             }
         });
