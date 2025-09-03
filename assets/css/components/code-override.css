@@ -230,3 +230,27 @@ pre code:before {
     content: none !important;
     display: none !important;
 }
+
+/* 隐藏导致换行问题的空白字符span标签 */
+.highlight .w,
+.markdown-body .w {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    height: 0 !important;
+    width: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    font-size: 0 !important;
+    line-height: 0 !important;
+}
+
+/* 确保代码块中的内容正确显示 */
+.highlight pre,
+.markdown-body pre {
+    white-space: pre !important;
+    word-wrap: normal !important;
+    word-break: normal !important;
+    overflow-wrap: normal !important;
+    font-family: 'JetBrains Mono', 'Fira Code', 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace !important;
+}
