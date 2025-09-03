@@ -119,3 +119,42 @@ pre.highlight button.copy-button,
     opacity: 0 !important;
     pointer-events: none !important;
 }
+
+/* 修复Rouge代码高亮器的.w span标签问题 */
+.highlight .w,
+.markdown-body .highlight .w,
+pre .w,
+code .w {
+    display: inline !important;
+    white-space: normal !important;
+    font-size: inherit !important;
+    line-height: inherit !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: none !important;
+    background: transparent !important;
+}
+
+/* 确保代码块中的空格和换行正确显示 */
+.highlight pre,
+.markdown-body .highlight pre,
+.markdown-body pre {
+    white-space: pre !important;
+    word-spacing: normal !important;
+    letter-spacing: normal !important;
+    word-break: normal !important;
+    overflow-wrap: normal !important;
+    word-wrap: normal !important;
+    font-family: 'JetBrains Mono', 'Fira Code', 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace !important;
+}
+
+/* 确保代码元素不换行 */
+.highlight pre code,
+.markdown-body pre code,
+pre code {
+    white-space: pre !important;
+    word-wrap: normal !important;
+    word-break: normal !important;
+    overflow-wrap: normal !important;
+    display: inline !important;
+}
