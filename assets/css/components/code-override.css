@@ -176,17 +176,7 @@ pre code {
     display: inline !important;
 }
 
-/* 强制所有代码块内的内联元素保持在同一行 */
-.highlight pre *,
-.markdown-body .highlight pre *,
-.markdown-body pre *,
-pre * {
-    display: inline !important;
-    white-space: normal !important;
-    vertical-align: baseline !important;
-}
-
-/* 特殊处理：保持换行符的正确显示 */
+/* 特殊处理：保持换行符的正确显示，但移除Rouge插入的额外换行 */
 .highlight pre,
 .markdown-body .highlight pre,
 .markdown-body pre,
@@ -195,11 +185,48 @@ pre {
     word-wrap: normal !important;
     word-break: normal !important;
     overflow-wrap: normal !important;
+    font-family: 'JetBrains Mono', 'Fira Code', 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace !important;
 }
 
-/* 移除代码块中不必要的换行 */
+/* 移除.w span标签中的换行符 */
+.highlight .w,
+.markdown-body .highlight .w,
+pre .w,
+code .w {
+    display: inline !important;
+    white-space: normal !important;
+    font-size: inherit !important;
+    line-height: inherit !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: none !important;
+    background: transparent !important;
+    vertical-align: baseline !important;
+}
+
+/* 确保其他span标签不引入额外换行 */
+.highlight code span:not(.w),
+.markdown-body .highlight code span:not(.w),
+pre code span:not(.w),
+code span:not(.w) {
+    display: inline !important;
+    white-space: normal !important;
+    font-size: inherit !important;
+    line-height: inherit !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: none !important;
+    background: transparent !important;
+    vertical-align: baseline !important;
+}
+
+/* 移除代码块中不必要的伪元素换行 */
 .highlight pre code:after,
 .markdown-body pre code:after,
-pre code:after {
+pre code:after,
+.highlight pre code:before,
+.markdown-body pre code:before,
+pre code:before {
     content: none !important;
+    display: none !important;
 }

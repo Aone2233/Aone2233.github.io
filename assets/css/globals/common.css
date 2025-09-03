@@ -752,15 +752,47 @@ code .w {
     font-family: 'JetBrains Mono', 'Fira Code', 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace !important;
 }
 
-/* 确保代码元素不换行 */
-.highlight pre code,
-.markdown-body pre code,
-pre code {
-    white-space: pre !important;
-    word-wrap: normal !important;
-    word-break: normal !important;
-    overflow-wrap: normal !important;
+/* 移除.w span标签中的换行符 */
+.highlight .w,
+.markdown-body .highlight .w,
+pre .w,
+code .w {
     display: inline !important;
+    white-space: normal !important;
+    font-size: inherit !important;
+    line-height: inherit !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: none !important;
+    background: transparent !important;
+    vertical-align: baseline !important;
+}
+
+/* 确保其他span标签不引入额外换行 */
+.highlight code span:not(.w),
+.markdown-body .highlight code span:not(.w),
+pre code span:not(.w),
+code span:not(.w) {
+    display: inline !important;
+    white-space: normal !important;
+    font-size: inherit !important;
+    line-height: inherit !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: none !important;
+    background: transparent !important;
+    vertical-align: baseline !important;
+}
+
+/* 移除代码块中不必要的伪元素换行 */
+.highlight pre code:after,
+.markdown-body pre code:after,
+pre code:after,
+.highlight pre code:before,
+.markdown-body pre code:before,
+pre code:before {
+    content: none !important;
+    display: none !important;
 }
 
 /* VS Code Dark+ 语法高亮颜色 */
