@@ -563,7 +563,19 @@
 
 .markdown-body .highlight pre {
     margin-bottom: 0;
-    word-break: normal
+    word-break: normal;
+}
+
+/* 隐藏内层pre.highlight的代码块样式，避免双重渲染 */
+/* 当pre元素本身有highlight类时，隐藏其代码块样式 */
+pre.highlight {
+    background-color: transparent !important;
+    background: transparent !important;
+    border: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
 }
 
 .markdown-body pre {
