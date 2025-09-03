@@ -72,3 +72,50 @@
 .highlight {
     position: relative;
 }
+
+/* 强制隐藏内层pre.highlight元素 - 最高优先级 */
+* pre.highlight,
+* pre.highlight *,
+html body pre.highlight,
+html body pre.highlight *,
+.markdown-body pre.highlight,
+.markdown-body pre.highlight *,
+div.highlight pre.highlight,
+.highlight pre.highlight {
+    background-color: transparent !important;
+    background: transparent !important;
+    border: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    outline: none !important;
+    display: block !important;
+    width: auto !important;
+    height: auto !important;
+    max-width: none !important;
+    min-width: 0 !important;
+    float: none !important;
+    clear: none !important;
+    position: static !important;
+    top: auto !important;
+    left: auto !important;
+    right: auto !important;
+    bottom: auto !important;
+    z-index: auto !important;
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+    animation: none !important;
+}
+
+/* 移除内层pre.highlight中的复制按钮 */
+pre.highlight .copy-button,
+pre.highlight button.copy-button,
+.highlight pre.highlight .copy-button,
+.highlight pre.highlight button.copy-button {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+}
