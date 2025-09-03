@@ -7,47 +7,86 @@
         const codeBlocks = document.querySelectorAll('.highlight pre, .markdown-body pre');
         
         codeBlocks.forEach(function(codeBlock) {
-            // 修复.w span标签：移除包含换行符的.w span，保留包含空格的.w span
-            const wSpans = codeBlock.querySelectorAll('.w');
-            wSpans.forEach(function(wSpan) {
-                const textContent = wSpan.textContent || wSpan.innerText || '';
-                
-                // 如果.w span包含换行符，移除整个span
-                if (textContent.includes('\n') || textContent.includes('\r')) {
-                    wSpan.parentNode.removeChild(wSpan);
+            // 获取所有子节点
+            const childNodes = Array.from(codeBlock.childNodes);
+            
+            // 重新构建内容
+            let newContent = '';
+            let currentLineContent = '';
+            
+            childNodes.forEach(function(node) {
+                if (node.nodeType === 1) { // 元素节点
+                    const tagName = node.tagName.toLowerCase();
+                    
+                    if (tagName === 'span') {
+                        const className = node.className || '';
+                        const textContent = node.textContent || node.innerText || '';
+                        
+                        if (className === 'w') {
+                            // 处理空白字符span
+                            if (textContent.includes('\n')) {
+                                // 如果包含换行符，结束当前行并开始新行
+                                if (currentLineContent.trim()) {
+                                    newContent += currentLineContent + '<br>';
+                                    currentLineContent = '';
+                                }
+                            } else if (textContent.trim() === '') {
+                                // 纯空格，添加到当前行
+                                currentLineContent += ' ';
+                            } else {
+                                // 其他空白字符，添加到当前行
+                                currentLineContent += textContent;
+                            }
+                        } else if (className === 'c' && textContent.trim().startsWith('#')) {
+                            // 注释span，结束当前行并开始新行
+                            if (currentLineContent.trim()) {
+                                newContent += currentLineContent + '<br>';
+                                currentLineContent = '';
+                            }
+                            currentLineContent += node.outerHTML + '<br>';
+                            newContent += currentLineContent;
+                            currentLineContent = '';
+                        } else {
+                            // 其他语法高亮span，添加到当前行
+                            currentLineContent += node.outerHTML;
+                        }
+                    } else if (tagName === 'code') {
+                        // code标签，处理其内容
+                        currentLineContent += node.innerHTML;
+                    }
+                } else if (node.nodeType === 3) { // 文本节点
+                    const textContent = node.textContent || '';
+                    
+                    if (textContent.includes('\n')) {
+                        // 包含换行符的文本
+                        const lines = textContent.split('\n');
+                        lines.forEach(function(line, index) {
+                            if (index > 0) {
+                                // 换行，结束当前行
+                                if (currentLineContent.trim()) {
+                                    newContent += currentLineContent + '<br>';
+                                    currentLineContent = '';
+                                }
+                            }
+                            if (line.trim()) {
+                                currentLineContent += line;
+                            }
+                        });
+                    } else if (textContent.trim()) {
+                        // 普通文本，添加到当前行
+                        currentLineContent += textContent;
+                    }
                 }
-                // 如果.w span只包含空格，替换为单个空格
-                else if (textContent.trim() === '') {
-                    const space = document.createTextNode(' ');
-                    wSpan.parentNode.replaceChild(space, wSpan);
-                }
-                // 其他情况保持不变
             });
             
-            // 修复span标签之间的换行符：移除span标签之间的空白换行
-            const spans = codeBlock.querySelectorAll('span');
-            spans.forEach(function(span) {
-                // 移除span标签之前的空白文本节点（主要是换行符）
-                let prevSibling = span.previousSibling;
-                while (prevSibling && prevSibling.nodeType === 3 && prevSibling.textContent.trim() === '') {
-                    const toRemove = prevSibling;
-                    prevSibling = prevSibling.previousSibling;
-                    toRemove.parentNode.removeChild(toRemove);
-                }
-            });
+            // 添加最后一行
+            if (currentLineContent.trim()) {
+                newContent += currentLineContent;
+            }
             
-            // 清理代码块内容，移除多余的空行但保留有意义的换行
-            let htmlContent = codeBlock.innerHTML;
-            
-            // 移除空行中的注释和代码之间的多余换行
-            htmlContent = htmlContent.replace(/<\/span>\s*<span class="c">/g, '</span><br><span class="c">');
-            
-            // 确保注释后有换行
-            htmlContent = htmlContent.replace(/(<\/span><span class="c">[^<]*<\/span>)(?!\s*<br>)/g, '$1<br>');
-            
-            // 应用修改
-            if (htmlContent !== codeBlock.innerHTML) {
-                codeBlock.innerHTML = htmlContent;
+            // 替换代码块内容
+            if (newContent !== codeBlock.innerHTML) {
+                codeBlock.innerHTML = newContent;
             }
         });
     });
