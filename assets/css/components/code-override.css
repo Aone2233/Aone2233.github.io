@@ -3,13 +3,11 @@
    使用极高优先级确保样式生效
 */
 
-/* 重置所有可能的代码块样式 */
+/* 重置所有可能的代码块样式，但排除内层pre.highlight避免双重渲染 */
 * .markdown-body .highlight,
-* .markdown-body .highlight pre,
 * .markdown-body pre,
 * .highlight,
-* .highlight pre,
-* pre {
+* pre:not(.highlight) {
     background-color: #1e1e1e !important;
     background: #1e1e1e !important;
     border: 1px solid #333 !important;
@@ -19,14 +17,30 @@
     font-size: 14px !important;
     line-height: 1.5 !important;
     font-family: 'JetBrains Mono', 'Fira Code', 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace !important;
-        color: #d4d4d4 !important;
+    color: #d4d4d4 !important;
 }
 
-/* 强制覆盖代码元素 */
+/* 特殊处理：只给外层div.highlight中的pre应用样式，但排除本身有highlight类的pre */
+* .markdown-body .highlight pre:not(.highlight),
+* .highlight pre:not(.highlight) {
+    background-color: #1e1e1e !important;
+    background: #1e1e1e !important;
+    border: 1px solid #333 !important;
+    border-radius: 8px !important;
+    padding: 16px !important;
+    overflow: auto !important;
+    font-size: 14px !important;
+    line-height: 1.5 !important;
+    font-family: 'JetBrains Mono', 'Fira Code', 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace !important;
+    color: #d4d4d4 !important;
+}
+
+/* 强制覆盖代码元素，包括内层pre.highlight中的代码 */
 * .markdown-body .highlight pre code,
 * .markdown-body pre code,
 * .highlight pre code,
-* pre code {
+* pre code,
+* pre.highlight code {
     background-color: transparent !important;
     background: transparent !important;
     color: #d4d4d4 !important;
