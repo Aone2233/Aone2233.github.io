@@ -23,3 +23,5 @@ Gemfile.lock
 *.swp
 *.swo
 *~
+
+.worktrees/
