@@ -630,3 +630,5 @@ API Key 相当于你的使用权限，如果泄露出去，别人可能会直接
 5. 客户端和服务端的接口格式是不是一致  
 
 只要这几项没问题，大多数情况下都能顺利接入。
+
+补充一下： CPA全名为CLI Proxy API，是一个为 CLI 提供 OpenAI/Gemini/Claude/Codex 兼容 API 接口的代理服务器。[GitHub链接](https://github.com/router-for-me/CLIProxyAPI)
