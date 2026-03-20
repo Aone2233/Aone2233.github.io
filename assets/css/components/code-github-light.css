@@ -1,81 +1,87 @@
-/* GitHub light code styling for all Markdown content */
+﻿/* GitHub light code styling for all Markdown content */
 
-.markdown-body code,
-.markdown-body tt {
+body .markdown-body code:not(.hljs),
+body .markdown-body code,
+body .markdown-body tt {
   background-color: #f6f8fa !important;
   color: #24292e !important;
-  border: 1px solid #e1e4e8;
-  border-radius: 3px;
+  border: 1px solid #e1e4e8 !important;
+  border-radius: 3px !important;
+  padding: 0.2em 0.4em !important;
 }
 
-.markdown-body pre,
-.markdown-body .highlight {
+body .markdown-body pre,
+body .markdown-body .highlight {
   background-color: #f6f8fa !important;
   color: #24292e !important;
-  border: 1px solid #e1e4e8;
-  border-radius: 6px;
+  border: 1px solid #e1e4e8 !important;
+  border-radius: 6px !important;
 }
 
-.markdown-body pre code,
-.markdown-body .highlight pre,
-.markdown-body .highlight code {
+body .markdown-body pre code,
+body .markdown-body pre tt,
+body .markdown-body .highlight pre,
+body .markdown-body .highlight code {
   background: transparent !important;
   color: inherit !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  padding: 0 !important;
 }
 
 /* Ensure Rouge github theme token colors show as intended */
-.markdown-body .highlight .c,
-.markdown-body .highlight .c1,
-.markdown-body .highlight .cm,
-.markdown-body .highlight .cp {
+body .markdown-body .highlight .c,
+body .markdown-body .highlight .c1,
+body .markdown-body .highlight .cm,
+body .markdown-body .highlight .cp {
   color: #6a737d !important;
 }
 
-.markdown-body .highlight .k,
-.markdown-body .highlight .kd,
-.markdown-body .highlight .kn,
-.markdown-body .highlight .kp,
-.markdown-body .highlight .kr,
-.markdown-body .highlight .kt,
-.markdown-body .highlight .o,
-.markdown-body .highlight .ow {
+body .markdown-body .highlight .k,
+body .markdown-body .highlight .kd,
+body .markdown-body .highlight .kn,
+body .markdown-body .highlight .kp,
+body .markdown-body .highlight .kr,
+body .markdown-body .highlight .kt,
+body .markdown-body .highlight .o,
+body .markdown-body .highlight .ow {
   color: #d73a49 !important;
 }
 
-.markdown-body .highlight .s,
-.markdown-body .highlight .s1,
-.markdown-body .highlight .s2,
-.markdown-body .highlight .sb,
-.markdown-body .highlight .sc,
-.markdown-body .highlight .sd,
-.markdown-body .highlight .se,
-.markdown-body .highlight .sh,
-.markdown-body .highlight .si,
-.markdown-body .highlight .sx,
-.markdown-body .highlight .sr,
-.markdown-body .highlight .ss,
-.markdown-body .highlight .dl {
+body .markdown-body .highlight .s,
+body .markdown-body .highlight .s1,
+body .markdown-body .highlight .s2,
+body .markdown-body .highlight .sb,
+body .markdown-body .highlight .sc,
+body .markdown-body .highlight .sd,
+body .markdown-body .highlight .se,
+body .markdown-body .highlight .sh,
+body .markdown-body .highlight .si,
+body .markdown-body .highlight .sx,
+body .markdown-body .highlight .sr,
+body .markdown-body .highlight .ss,
+body .markdown-body .highlight .dl {
   color: #032f62 !important;
 }
 
-.markdown-body .highlight .na,
-.markdown-body .highlight .nb,
-.markdown-body .highlight .nc,
-.markdown-body .highlight .no,
-.markdown-body .highlight .nf,
-.markdown-body .highlight .nn,
-.markdown-body .highlight .nt,
-.markdown-body .highlight .nv,
-.markdown-body .highlight .vc,
-.markdown-body .highlight .vg,
-.markdown-body .highlight .vi {
+body .markdown-body .highlight .na,
+body .markdown-body .highlight .nb,
+body .markdown-body .highlight .nc,
+body .markdown-body .highlight .no,
+body .markdown-body .highlight .nf,
+body .markdown-body .highlight .nn,
+body .markdown-body .highlight .nt,
+body .markdown-body .highlight .nv,
+body .markdown-body .highlight .vc,
+body .markdown-body .highlight .vg,
+body .markdown-body .highlight .vi {
   color: #6f42c1 !important;
 }
 
-.markdown-body .highlight .m,
-.markdown-body .highlight .mb,
-.markdown-body .highlight .mf,
-.markdown-body .highlight .mi,
-.markdown-body .highlight .mo {
+body .markdown-body .highlight .m,
+body .markdown-body .highlight .mb,
+body .markdown-body .highlight .mf,
+body .markdown-body .highlight .mi,
+body .markdown-body .highlight .mo {
   color: #005cc5 !important;
 }
