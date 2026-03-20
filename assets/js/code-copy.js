@@ -25,9 +25,9 @@
                 position: absolute;
                 top: 8px;
                 right: 8px;
-                background: rgba(255, 255, 255, 0.25);
+                background: rgba(32, 33, 36, 0.68);
                 color: #ffffff;
-                border: 1px solid rgba(255, 255, 255, 0.5);
+                border: 1px solid rgba(255, 255, 255, 0.22);
                 border-radius: 5px;
                 padding: 8px 12px;
                 font-size: 12px;
@@ -44,15 +44,15 @@
             // 悬停效果
             copyButton.addEventListener('mouseenter', function() {
                 this.style.opacity = '1';
-                this.style.background = 'rgba(255, 255, 255, 0.35)';
-                this.style.borderColor = 'rgba(255, 255, 255, 0.7)';
+                this.style.background = 'rgba(17, 17, 17, 0.78)';
+                this.style.borderColor = 'rgba(255, 255, 255, 0.34)';
                 this.style.transform = 'scale(1.02)';
             });
             
             copyButton.addEventListener('mouseleave', function() {
                 this.style.opacity = '0.9';
-                this.style.background = 'rgba(255, 255, 255, 0.25)';
-                this.style.borderColor = 'rgba(255, 255, 255, 0.5)';
+                this.style.background = 'rgba(32, 33, 36, 0.68)';
+                this.style.borderColor = 'rgba(255, 255, 255, 0.22)';
                 this.style.transform = 'scale(1)';
             });
             
