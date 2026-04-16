@@ -4,7 +4,23 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="color-scheme" content="light dark">
+    <meta name="theme-color" content="#2563eb">
+    <meta name="referrer" content="strict-origin-when-cross-origin">
+    <script>
+      (function () {
+        try {
+          var key = 'site-theme';
+          var stored = localStorage.getItem(key);
+          var systemDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+          var theme = stored || (systemDark ? 'dark' : 'light');
+          document.documentElement.setAttribute('data-theme', theme);
+        } catch (e) {}
+      })();
+    </script>
     <title>{% if page.title %}{{ page.title }} &mdash; {% endif %}{{ site.title }}</title>
+    <link rel="dns-prefetch" href="//fastly.jsdelivr.net">
+    <link rel="preconnect" href="https://fastly.jsdelivr.net" crossorigin>
     <link rel="stylesheet" href="{{ assets_base_url }}/assets/vendor/primer-css/css/primer.css">
     <link rel="stylesheet" href="{{ assets_base_url }}/assets/css/components/collection.css">
     <link rel="stylesheet" href="{{ assets_base_url }}/assets/css/components/repo-card.css">
@@ -13,6 +29,7 @@
     <link rel="stylesheet" href="{{ assets_base_url }}/assets/css/globals/common.css">
     <link rel="stylesheet" href="{{ assets_base_url }}/assets/css/globals/responsive.css">
     <link rel="stylesheet" href="{{ assets_base_url }}/assets/css/posts/index.css">
+    <link rel="stylesheet" href="{{ assets_base_url }}/assets/css/components/premium-ui.css?v={{ site.time | date: '%s' }}">
     <link rel="stylesheet" href="{{ assets_base_url }}/assets/vendor/octicons/octicons/octicons.css">
     {% assign highlight_base_url = 'https://mazhuang.org/rouge-themes/dist' %}
     {% if site.cdn.jsdelivr.enabled %}
@@ -75,8 +92,11 @@
     {% endif %}
     <meta property="og:url" content="{{ site.url }}{{ page.url | remove_first:'index.html' }}">
     <meta property="og:site_name" content="{{ site.title }}">
-    <meta property="og:type" content="article">
+    <meta property="og:type" content="{% if page.date %}article{% else %}website{% endif %}">
     <meta property="og:locale" content="zh_CN" />
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{% if page.title %}{{ page.title }}{% else %}{{ site.title }}{% endif %}">
+    <meta name="twitter:description" content="{% if page.description %}{{ page.description | strip_html | strip_newlines }}{% else %}{{ site.description }}{% endif %}">
     {% if page.date %}
     <meta property="article:published_time" content="{{ page.date | date: '%Y-%m-%d' }}">
     {% endif %}
@@ -114,6 +134,10 @@
                 <a href="{{ site.url }}{{ nav.href }}" class="{% if nav.mobile-hidden %}mobile-hidden {% endif %}{% if page.menu == nav.label %}selected {% endif %}site-header-nav-item" target="{{ nav.target | default: _self }}" title="{{ nav.label }}">{{ nav.label }}</a>
                 {% endfor %}
                 <a class="mobile-hidden" href="{{ site.url }}{{ site.subscribe_rss }}"><span class="octicon octicon-rss" style="color:orange;"></span></a>
+                <button id="theme-toggle" class="theme-toggle site-header-nav-item" type="button" title="切换明暗主题" aria-label="切换明暗主题">
+                  <span class="theme-toggle-icon" aria-hidden="true">🌙</span>
+                  <span class="theme-toggle-text">深色</span>
+                </button>
             </nav>
         </div>
     </header>

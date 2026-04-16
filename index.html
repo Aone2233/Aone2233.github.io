@@ -91,6 +91,27 @@ comments: false
     </div>
 </section>
 <!-- /.banner -->
+{% assign latest_post = site.posts.first %}
+<section class="container home-metrics">
+  <div class="metrics-grid">
+    <a class="metric-item" href="{{ site.url }}/archives/" title="查看全部归档">
+      <span class="metric-k">{{ site.posts | size }}</span>
+      <span class="metric-v">文章总数</span>
+    </a>
+    <a class="metric-item" href="{{ site.url }}/wiki/" title="查看知识库">
+      <span class="metric-k">{{ site.wiki | size }}</span>
+      <span class="metric-v">Wiki 条目</span>
+    </a>
+    <a class="metric-item" href="{{ site.url }}/categories/" title="查看全部分类">
+      <span class="metric-k">{{ site.categories | size }}</span>
+      <span class="metric-v">主题分类</span>
+    </a>
+    <a class="metric-item" href="{{ site.url }}/" title="最近更新时间">
+      <span class="metric-k">{% if latest_post %}{{ latest_post.date | date: "%m-%d" }}{% else %}--{% endif %}</span>
+      <span class="metric-v">最近更新</span>
+    </a>
+  </div>
+</section>
 <section class="container content">
     <div class="columns">
         <div class="column two-thirds" >

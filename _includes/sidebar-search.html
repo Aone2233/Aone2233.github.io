@@ -1,10 +1,11 @@
-
-<h3>Search</h3>
-<div id="site_search">
-    <input style="width:96%" type="text" id="search_box" placeholder="Search">
-</div>
-
-<ul id="search_results" style="font-size:14px;list-style-type:none;padding-top:10px;padding-left:10px;"></ul>
+<section class="widget-card widget-search">
+  <h3>站内搜索</h3>
+  <div id="site_search">
+      <label for="search_box" class="sr-only">站内搜索</label>
+      <input class="widget-search-input" type="text" id="search_box" placeholder="搜索文章 / 关键词">
+  </div>
+  <ul id="search_results" class="search-results"></ul>
+</section>
 
 <script src="{{ assets_base_url }}/assets/js/simple-jekyll-search.min.js"></script>
 
@@ -18,7 +19,7 @@ SimpleJekyllSearch({
     json: '{{ site.url }}/assets/search_data.json?v={{ "now" | date: "%s"}}',
   {% endif %}
     searchResultTemplate: '<li><a href="{url}" title="{title}">{title}</a></li>',
-    noResultsText: 'No results found',
+    noResultsText: '未找到相关内容',
     limit: {{ site.simple_jekyll_search.limit }},
     fuzzy: false,
     exclude: ['Welcome']

@@ -1,5 +1,6 @@
 {% if site.components.side_bar_repo.enabled and site.github.public_repositories != false %}
-<h3 class="popular-repo-title mobile-hidden">My Popular Repositories</h3>
+<section class="widget-card mobile-hidden">
+<h3 class="popular-repo-title">热门开源仓库</h3>
 {% assign repos = site.github.public_repositories | sort: "stargazers_count" | reverse %}
 {% for repo in repos | limit: site.components.side_bar_repo.limit %}
 <a href="{{ repo.html_url }}" target="_blank" class="card text-center mobile-hidden">
@@ -31,4 +32,5 @@
     </div>
 </a>
 {% endfor %}
+</section>
 {% endif %}
