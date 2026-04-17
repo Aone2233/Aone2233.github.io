@@ -1,0 +1,29 @@
+# Fallback open-source repo list (used when GitHub Metadata is unavailable)
+- name: Gemini_3_tp
+  html_url: https://github.com/Aone2233/Gemini_3_tp
+  description: "test_project of Gemini3"
+  stargazers_count: 0
+  forks_count: 0
+  updated_at: "2025-12-05"
+  updated_label: "Dec 5, 2025"
+- name: gitskills
+  html_url: https://github.com/Aone2233/gitskills
+  description: "learn git from 廖雪峰"
+  stargazers_count: 0
+  forks_count: 0
+  updated_at: "2023-03-06"
+  updated_label: "Mar 6, 2023"
+- name: learngit
+  html_url: https://github.com/Aone2233/learngit
+  description: ""
+  stargazers_count: 0
+  forks_count: 0
+  updated_at: "2023-03-05"
+  updated_label: "Mar 5, 2023"
+- name: MATLAB-V
+  html_url: https://github.com/Aone2233/MATLAB-V
+  description: ""
+  stargazers_count: 0
+  forks_count: 0
+  updated_at: "2024-07-14"
+  updated_label: "Jul 14, 2024"

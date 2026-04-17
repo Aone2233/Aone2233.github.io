@@ -120,7 +120,7 @@
     </script>
     {% endif %}
 </head>
-<body class="{{ page.class }}" data-mz="{{ page.class }}">
+<body class="{{ page.class }}" data-mz="{{ page.class }}" data-menu="{{ page.menu }}" data-layout="{{ page.layout }}">
     <header class="site-header">
         <div class="container">
             <h1><a href="{{ site.url }}/" title="{{ site.title }}"><span class="octicon octicon-mark-github"></span> {{ site.title }}</a></h1>
@@ -134,9 +134,13 @@
                 <a href="{{ site.url }}{{ nav.href }}" class="{% if nav.mobile-hidden %}mobile-hidden {% endif %}{% if page.menu == nav.label %}selected {% endif %}site-header-nav-item" target="{{ nav.target | default: _self }}" title="{{ nav.label }}">{{ nav.label }}</a>
                 {% endfor %}
                 <a class="mobile-hidden" href="{{ site.url }}{{ site.subscribe_rss }}"><span class="octicon octicon-rss" style="color:orange;"></span></a>
-                <button id="theme-toggle" class="theme-toggle site-header-nav-item" type="button" title="切换明暗主题" aria-label="切换明暗主题">
-                  <span class="theme-toggle-icon" aria-hidden="true">🌙</span>
-                  <span class="theme-toggle-text">深色</span>
+                <button id="theme-toggle" class="theme-toggle site-header-nav-item" type="button" title="切换到深色" aria-label="切换到深色">
+                  <span class="theme-toggle-track" aria-hidden="true">
+                    <span class="theme-toggle-glyph theme-toggle-glyph-sun">☀︎</span>
+                    <span class="theme-toggle-glyph theme-toggle-glyph-moon">☾</span>
+                  </span>
+                  <span class="theme-toggle-icon sr-only" aria-hidden="true">🌙</span>
+                  <span class="theme-toggle-text sr-only">深色</span>
                 </button>
             </nav>
         </div>

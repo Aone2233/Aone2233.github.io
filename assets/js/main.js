@@ -9,6 +9,11 @@ function toggleMenu() {
 
 (function () {
   var THEME_KEY = "site-theme";
+  var lastAppliedTheme = null;
+  var giscusThemeMap = {
+    light: "light",
+    dark: "dark_dimmed"
+  };
 
   function resolvePreferredTheme() {
     try {
@@ -16,6 +21,91 @@ function toggleMenu() {
       if (saved === "light" || saved === "dark") return saved;
     } catch (e) {}
     return (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) ? "dark" : "light";
+  }
+
+  function syncThirdPartyTheme(theme) {
+    var target = theme === "dark" ? "dark" : "light";
+    var giscusTheme = giscusThemeMap[target];
+
+    var giscusScript = document.querySelector('script[src*="giscus.app/client.js"]');
+    if (giscusScript) {
+      giscusScript.setAttribute("data-theme", giscusTheme);
+    }
+
+    var giscusFrame = document.querySelector("iframe.giscus-frame");
+    if (giscusFrame && giscusFrame.contentWindow) {
+      var postTheme = function () {
+        giscusFrame.contentWindow.postMessage(
+          {
+            giscus: {
+              setConfig: {
+                theme: giscusTheme
+              }
+            }
+          },
+          "https://giscus.app"
+        );
+      };
+      postTheme();
+      setTimeout(postTheme, 120);
+      setTimeout(postTheme, 600);
+    }
+
+    var utterancesFrame = document.querySelector("iframe.utterances-frame");
+    if (utterancesFrame && utterancesFrame.contentWindow) {
+      utterancesFrame.contentWindow.postMessage(
+        {
+          type: "set-theme",
+          theme: target === "dark" ? "github-dark" : "github-light"
+        },
+        "https://utteranc.es"
+      );
+    }
+  }
+
+  function forceRebuildGiscus(theme) {
+    var target = theme === "dark" ? "dark" : "light";
+    var giscusTheme = giscusThemeMap[target];
+    var giscusScript = document.querySelector('script[src*="giscus.app/client.js"]');
+    if (!giscusScript || !giscusScript.parentElement) return;
+
+    var parent = giscusScript.parentElement;
+    var hasLoadedFrame = parent.querySelector("iframe.giscus-frame");
+    if (!hasLoadedFrame) return;
+
+    var fresh = document.createElement("script");
+    fresh.src = "https://giscus.app/client.js";
+    fresh.async = true;
+    fresh.crossOrigin = "anonymous";
+
+    Array.prototype.forEach.call(giscusScript.attributes, function (attr) {
+      if (attr.name === "src" || attr.name === "async" || attr.name === "crossorigin") return;
+      fresh.setAttribute(attr.name, attr.value);
+    });
+    fresh.setAttribute("data-theme", giscusTheme);
+
+    parent.innerHTML = "";
+    parent.appendChild(fresh);
+  }
+
+  function forceRebuildGiscusWhenReady(theme, retries) {
+    if (document.querySelector("iframe.giscus-frame")) {
+      forceRebuildGiscus(theme);
+      return;
+    }
+    if (!retries || retries <= 0) return;
+    setTimeout(function () {
+      forceRebuildGiscusWhenReady(theme, retries - 1);
+    }, 600);
+  }
+
+  function observeCommentWidgets() {
+    if (!("MutationObserver" in window) || !document.body) return;
+    var observer = new MutationObserver(function () {
+      var current = document.documentElement.getAttribute("data-theme") === "dark" ? "dark" : "light";
+      syncThirdPartyTheme(current);
+    });
+    observer.observe(document.body, { childList: true, subtree: true });
   }
 
   function applyTheme(theme) {
@@ -27,8 +117,32 @@ function toggleMenu() {
 
     var icon = document.querySelector(".theme-toggle-icon");
     var text = document.querySelector(".theme-toggle-text");
+    var toggleBtn = document.getElementById("theme-toggle");
     if (icon) icon.textContent = target === "dark" ? "☀️" : "🌙";
     if (text) text.textContent = target === "dark" ? "浅色" : "深色";
+    if (toggleBtn) {
+      var label = target === "dark" ? "切换到浅色" : "切换到深色";
+      toggleBtn.setAttribute("title", label);
+      toggleBtn.setAttribute("aria-label", label);
+    }
+
+    setTimeout(function () {
+      syncThirdPartyTheme(target);
+    }, 60);
+    setTimeout(function () {
+      syncThirdPartyTheme(target);
+    }, 400);
+    setTimeout(function () {
+      syncThirdPartyTheme(target);
+    }, 900);
+
+    var shouldRebuildGiscus = target === "dark" || (lastAppliedTheme !== null && lastAppliedTheme !== target);
+    if (shouldRebuildGiscus) {
+      setTimeout(function () {
+        forceRebuildGiscusWhenReady(target, target === "dark" ? 4 : 2);
+      }, 900);
+    }
+    lastAppliedTheme = target;
   }
 
   function bindThemeToggle() {
@@ -46,7 +160,11 @@ function toggleMenu() {
   }
 
   applyTheme(resolvePreferredTheme());
-  document.addEventListener("DOMContentLoaded", bindThemeToggle);
+  document.addEventListener("DOMContentLoaded", function () {
+    bindThemeToggle();
+    observeCommentWidgets();
+    syncThirdPartyTheme(resolvePreferredTheme());
+  });
 })();
 
 jQuery(function() {

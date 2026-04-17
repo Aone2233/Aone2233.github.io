@@ -1,7 +1,13 @@
-{% if site.components.side_bar_repo.enabled and site.github.public_repositories != false %}
+{% if site.components.side_bar_repo.enabled %}
+{% assign github_repos = site.github.public_repositories %}
+{% if github_repos and github_repos.size > 0 %}
+{% assign repos = github_repos | sort: "stargazers_count" | reverse %}
+{% else %}
+{% assign repos = site.data.open_source_repos | sort: "stargazers_count" | reverse %}
+{% endif %}
+{% if repos and repos.size > 0 %}
 <section class="widget-card mobile-hidden">
 <h3 class="popular-repo-title">热门开源仓库</h3>
-{% assign repos = site.github.public_repositories | sort: "stargazers_count" | reverse %}
 {% for repo in repos | limit: site.components.side_bar_repo.limit %}
 <a href="{{ repo.html_url }}" target="_blank" class="card text-center mobile-hidden">
     <div class="thumbnail">
@@ -23,9 +29,14 @@
                 <span class="meta-info" title="{{ repo.forks_count }} forks">
                     <span class="octicon octicon-git-branch"></span> {{ repo.forks_count }}
                 </span>
-                <span class="meta-info" title="Last updated：{{ repo.updated_at }}">
+                {% assign repo_updated_label = repo.updated_label | default: repo.updated_at %}
+                <span class="meta-info" title="Last updated：{{ repo_updated_label }}">
                     <span class="octicon octicon-clock"></span>
+                    {% if repo.updated_at and repo.updated_at != '' %}
                     <time datetime="{{ repo.updated_at }}">{{ repo.updated_at | date: '%Y-%m-%d' }}</time>
+                    {% else %}
+                    <time>{{ repo_updated_label }}</time>
+                    {% endif %}
                 </span>
             </div>
         </div>
@@ -33,4 +44,5 @@
 </a>
 {% endfor %}
 </section>
+{% endif %}
 {% endif %}

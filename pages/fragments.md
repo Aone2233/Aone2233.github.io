@@ -26,15 +26,20 @@ permalink: /fragments/
 
 {% assign taglist = tagliststr | split: ',' | sort_natural %}
 
-<a href="{{ site.url }}/fragments/" style="color:#888;display:inline-block;margin:0 8px;">全部</a>{% for tag in taglist %}<a href="{{ site.url }}/fragments/?tag={{ tag }}" style="color:#888;display:inline-block;margin:0 8px;">{{ tag }}</a>{% endfor %}
+<div class="fragment-filters">
+<a href="{{ site.url }}/fragments/" class="fragment-filter-link">全部</a>{% for tag in taglist %}<a href="{{ site.url }}/fragments/?tag={{ tag }}" class="fragment-filter-link">{{ tag }}</a>{% endfor %}
+</div>
 
-<ul class="listing">
+<ul class="listing fragment-listing">
 {% for item in site.fragments %}
 {% if item.title != "Fragment Template" %}
 <li class="listing-item" tags="{% for tag in item.tags %}{{ tag }} {% endfor %}">
   <a href="{{ site.url }}{{ item.url }}">{{ item.title }}</a>
+  {% if item.date %}
+  <span class="fragment-date">{{ item.date | date:"%Y-%m-%d" }}</span>
+  {% endif %}
   {% for tag in item.tags %}
-  <a style="font-size:12px;color:gray;font-style:italic;display:inline-block;margin:0 0 0 4px;padding:0 4px;background-color:lightgray;" href="{{ site.url }}/fragments/?tag={{ tag }}" title="{{ tag }}">{{ tag }}</a>
+  <a class="fragment-tag" href="{{ site.url }}/fragments/?tag={{ tag }}" title="{{ tag }}">{{ tag }}</a>
   {% endfor %}
 </li>
 {% endif %}
