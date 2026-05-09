@@ -86,7 +86,7 @@ body .markdown-body .highlight .mo {
   color: #005cc5 !important;
 }
 
-/* Keep long code blocks readable: preserve Rouge whitespace and wrap long lines. */
+/* Keep long code blocks readable while preserving Rouge whitespace. */
 body .markdown-body .highlight,
 body .markdown-body .highlighter-rouge,
 body .markdown-body pre {
@@ -102,11 +102,11 @@ body .markdown-body pre {
   box-sizing: border-box !important;
   margin: 1em 0 !important;
   padding: 16px 72px 16px 16px !important;
-  overflow-x: hidden !important;
+  overflow-x: auto !important;
   overflow-y: auto !important;
   white-space: pre-wrap !important;
   word-break: normal !important;
-  overflow-wrap: anywhere !important;
+  overflow-wrap: break-word !important;
   line-height: 1.55 !important;
   tab-size: 2 !important;
 }
@@ -116,9 +116,9 @@ body .markdown-body pre code {
   display: block !important;
   min-width: 0 !important;
   max-width: 100% !important;
-  white-space: pre-wrap !important;
+  white-space: inherit !important;
   word-break: normal !important;
-  overflow-wrap: anywhere !important;
+  overflow-wrap: inherit !important;
   line-height: inherit !important;
 }
 
@@ -127,17 +127,17 @@ body .markdown-body pre code span,
 body .markdown-body .highlight .w,
 body .markdown-body pre .w {
   display: inline !important;
-  white-space: pre-wrap !important;
+  white-space: inherit !important;
   word-break: normal !important;
-  overflow-wrap: anywhere !important;
+  overflow-wrap: inherit !important;
 }
 
 html body .markdown-body div.highlighter-rouge div.highlight pre.highlight code span,
 html body .markdown-body div.highlighter-rouge div.highlight pre.highlight code .w {
   display: inline !important;
-  white-space: pre-wrap !important;
+  white-space: inherit !important;
   word-break: normal !important;
-  overflow-wrap: anywhere !important;
+  overflow-wrap: inherit !important;
 }
 
 body .markdown-body .highlight > .copy-button {
