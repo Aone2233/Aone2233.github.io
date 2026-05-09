@@ -17,15 +17,15 @@ comment: true
 > 推荐路线：本地 TeX Live + VS Code + LaTeX Workshop + ThuThesis 发布版模板，再用 OpenCode 配合 OpenCode Go 或 DeepSeek API 辅助写作、排错和改稿。  
 > 本文核查时间：2026-05-09。
 
-## 先回答一个常见问题
+## 先看一个标准项目结构
 
-是的，当前这份毕设论文就是按 LaTeX 写作流程组织的。项目里可以看到典型的 ThuThesis 结构：
+用 ThuThesis 写论文时，不建议把所有内容都塞进一个 `.tex` 文件。更稳妥的做法是把主文件、章节、图片和参考文献分开管理。一个典型的 ThuThesis 项目可以这样组织：
 
 ```text
-Gra_Paper/Thesis_LaTeX/
+my-thesis/
+├── main.tex
 ├── thuthesis.cls
 ├── thusetup-bachelor.tex
-├── 综合论文训练-刘力友-A1.tex
 ├── data/
 │   ├── chap01-bachelor.tex
 │   ├── chap02-bachelor.tex
@@ -36,7 +36,7 @@ Gra_Paper/Thesis_LaTeX/
 └── .vscode/settings.json
 ```
 
-这种结构的核心思想是：主文件只负责组织论文，章节放在 `data/`，图片放在 `figures/`，参考文献放在 `ref/refs.bib`，编译由 `xelatex`、`bibtex` 或 `latexmk` 统一处理。
+这种结构的核心思想是：`main.tex` 只负责组织论文，章节放在 `data/`，图片放在 `figures/`，参考文献放在 `ref/refs.bib`，编译由 `xelatex`、`bibtex` 或 `latexmk` 统一处理。
 
 ![LaTeX + AI 工作流总览](/images/posts/workflow-overview.svg)
 
@@ -179,7 +179,7 @@ ThuThesis 官方建议新手优先下载发布版，而不是直接用 GitHub `m
 1. 打开 ThuThesis GitHub Releases。
 2. 下载最新发布版压缩包。
 3. 解压到自己的论文项目目录。
-4. 把 `thuthesis-example.tex` 复制或重命名为有意义的主文件名，例如 `main.tex` 或 `综合论文训练-姓名.tex`。
+4. 把 `thuthesis-example.tex` 复制或重命名为有意义的主文件名，例如 `main.tex` 或 `thesis.tex`。
 5. 不要一开始就删示例章节，先保证模板能编译出 PDF。
 
 推荐目录：
@@ -270,10 +270,10 @@ my-thesis/
 latexmk -xelatex main.tex
 ```
 
-如果主文件是中文名：
+如果主文件不是 `main.tex`，把命令里的文件名换成自己的主文件名：
 
 ```powershell
-latexmk -xelatex "综合论文训练-姓名.tex"
+latexmk -xelatex thesis.tex
 ```
 
 `latexmk` 会自动判断是否需要多跑几轮 `xelatex` 和 `bibtex`。这是日常写作最推荐的方式。
