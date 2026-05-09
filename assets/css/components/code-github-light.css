@@ -116,7 +116,7 @@ body .markdown-body pre code {
   display: block !important;
   min-width: 0 !important;
   max-width: 100% !important;
-  white-space: inherit !important;
+  white-space: pre-wrap !important;
   word-break: normal !important;
   overflow-wrap: anywhere !important;
   line-height: inherit !important;
@@ -127,7 +127,15 @@ body .markdown-body pre code span,
 body .markdown-body .highlight .w,
 body .markdown-body pre .w {
   display: inline !important;
-  white-space: inherit !important;
+  white-space: pre-wrap !important;
+  word-break: normal !important;
+  overflow-wrap: anywhere !important;
+}
+
+html body .markdown-body div.highlighter-rouge div.highlight pre.highlight code span,
+html body .markdown-body div.highlighter-rouge div.highlight pre.highlight code .w {
+  display: inline !important;
+  white-space: pre-wrap !important;
   word-break: normal !important;
   overflow-wrap: anywhere !important;
 }
