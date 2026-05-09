@@ -105,6 +105,7 @@
 $(document).ready(function(){
   $('.post-directory').toc();
 
+  var fixedTocTop = 92;
   var fixmeTop = $('#post-directory-module').offset().top;
   var tocSections = $('.clickable-header');
   var tocSectionOffsets = [];
@@ -144,7 +145,7 @@ $(document).ready(function(){
 
   var updateTocHeight = function() {
       var height = document.documentElement.clientHeight;
-      height = height || 'auto';
+      height = height ? Math.max(240, height - fixedTocTop - 20) : 'auto';
       $('.post-directory').css('max-height', height);
   }
 
@@ -152,7 +153,7 @@ $(document).ready(function(){
     var currentScroll = $(window).scrollTop();
     if (currentScroll >= fixmeTop) {
       $('#post-directory-module').css({
-        top: '0',
+        top: fixedTocTop + 'px',
         position: 'fixed',
         width: 'inherit'
       });

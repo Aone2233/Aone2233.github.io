@@ -85,3 +85,57 @@ body .markdown-body .highlight .mi,
 body .markdown-body .highlight .mo {
   color: #005cc5 !important;
 }
+
+/* Keep long code blocks readable: preserve Rouge whitespace and scroll horizontally. */
+body .markdown-body .highlight,
+body .markdown-body .highlighter-rouge,
+body .markdown-body pre {
+  position: relative !important;
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+body .markdown-body .highlight pre,
+body .markdown-body pre {
+  display: block !important;
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+  margin: 1em 0 !important;
+  padding: 16px 72px 16px 16px !important;
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  white-space: pre !important;
+  word-break: normal !important;
+  overflow-wrap: normal !important;
+  line-height: 1.55 !important;
+  tab-size: 2 !important;
+  -webkit-overflow-scrolling: touch !important;
+}
+
+body .markdown-body .highlight pre code,
+body .markdown-body pre code {
+  display: inline-block !important;
+  min-width: max-content !important;
+  max-width: none !important;
+  white-space: pre !important;
+  word-break: normal !important;
+  overflow-wrap: normal !important;
+  line-height: inherit !important;
+}
+
+body .markdown-body .highlight code span,
+body .markdown-body pre code span,
+body .markdown-body .highlight .w,
+body .markdown-body pre .w {
+  display: inline !important;
+  white-space: pre !important;
+  word-break: normal !important;
+  overflow-wrap: normal !important;
+}
+
+body .markdown-body .highlight > .copy-button {
+  position: absolute !important;
+  top: 10px !important;
+  right: 10px !important;
+  z-index: 3 !important;
+}

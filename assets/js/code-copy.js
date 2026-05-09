@@ -5,7 +5,9 @@
     // 等待DOM加载完成
     document.addEventListener('DOMContentLoaded', function() {
         // 为所有代码块添加复制功能
-        const codeBlocks = document.querySelectorAll('.markdown-body .highlight');
+        const codeBlocks = document.querySelectorAll(
+            '.markdown-body div.highlight, .markdown-body figure.highlight'
+        );
         
         codeBlocks.forEach(function(block, index) {
             // 确保容器有相对定位
@@ -91,47 +93,7 @@
     }
     
     function extractCodeWithProperLineBreaks(codeElement) {
-        // 获取HTML内容
-        const html = codeElement.innerHTML;
-        
-        // 重建文本格式，与显示保持一致
-        let text = rebuildTextFromHTML(html);
-        
-        // 清理格式
-        text = text.replace(/\s+/g, ' ');  // 多个空格变为一个
-        text = text.replace(/\n\s*\n/g, '\n');  // 多个换行变为一个
-        text = text.replace(/^\s+|\s+$/g, '');  // 去除首尾空格
-        
-        return text;
-    }
-    
-    function rebuildTextFromHTML(html) {
-        // 1. 移除所有.w span标签，替换为适当的空格
-        let text = html.replace(/<span class="w">[^<]*?<\/span>/g, ' ');
-        
-        // 2. 处理注释行，确保它们独占一行
-        text = text.replace(/<span class="c">([^<]*?)<\/span>/g, function(match, content) {
-            // 如果是PowerShell注释（以#开头），确保换行
-            if (content.trim().startsWith('#')) {
-                return '\n' + content + '\n';
-            }
-            return content;
-        });
-        
-        // 3. 移除所有其他HTML标签
-        text = text.replace(/<[^>]*>/g, '');
-        
-        // 4. 处理HTML实体
-        text = text.replace(/&nbsp;/g, ' ');
-        text = text.replace(/&lt;/g, '<');
-        text = text.replace(/&gt;/g, '>');
-        text = text.replace(/&amp;/g, '&');
-        
-        // 5. 清理多余的空格和换行
-        text = text.replace(/\n\s*\n\s*\n/g, '\n\n');  // 最多两个连续换行
-        text = text.replace(/^\s+|\s+$/g, '');  // 去除首尾空格
-        
-        return text;
+        return codeElement.textContent.replace(/\n+$/g, '');
     }
     
     function fallbackCopyToClipboard(text, copyButton) {
