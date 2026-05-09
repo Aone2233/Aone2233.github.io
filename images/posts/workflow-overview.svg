@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1120" height="390" viewBox="0 0 1120 390" role="img" aria-labelledby="title desc">
+  <title id="title">LaTeX + AI 工作流总览</title>
+  <desc id="desc">从安装环境、获取模板、VS Code 编译到 OpenCode AI 辅助写作的流程图</desc>
+  <defs>
+    <linearGradient id="g1" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f7fbff"/>
+      <stop offset="1" stop-color="#edf7f2"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="8" stdDeviation="10" flood-color="#0f172a" flood-opacity="0.14"/>
+    </filter>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 Z" fill="#315b76"/>
+    </marker>
+    <style>
+      text { font-family: "Microsoft YaHei", "Noto Sans CJK SC", Arial, sans-serif; fill: #16202a; }
+      .small { font-size: 18px; fill: #43515f; }
+      .title { font-size: 28px; font-weight: 700; }
+      .step-title { font-size: 22px; font-weight: 700; }
+      .card { fill: #ffffff; stroke: #c9d8e6; stroke-width: 2; filter: url(#shadow); }
+      .badge { fill: #eaf4ff; stroke: #8ab6dd; stroke-width: 1.5; }
+      .line { stroke: #315b76; stroke-width: 3; fill: none; marker-end: url(#arrow); }
+    </style>
+  </defs>
+  <rect width="1120" height="390" rx="24" fill="url(#g1)"/>
+  <text class="title" x="48" y="58">清华毕设 LaTeX + AI 辅助写作工作流</text>
+  <text class="small" x="48" y="88">先跑通本地编译，再让 AI 在可验证的范围内读、改、编译、修错。</text>
+
+  <g transform="translate(48 128)">
+    <rect class="card" width="188" height="150" rx="16"/>
+    <rect class="badge" x="22" y="20" width="48" height="34" rx="17"/>
+    <text x="38" y="45" font-size="20" font-weight="700">1</text>
+    <text class="step-title" x="22" y="84">基础环境</text>
+    <text class="small" x="22" y="116">Git</text>
+    <text class="small" x="22" y="142">TeX Live</text>
+  </g>
+
+  <path class="line" d="M250 203 H318"/>
+
+  <g transform="translate(330 128)">
+    <rect class="card" width="188" height="150" rx="16"/>
+    <rect class="badge" x="22" y="20" width="48" height="34" rx="17"/>
+    <text x="38" y="45" font-size="20" font-weight="700">2</text>
+    <text class="step-title" x="22" y="84">ThuThesis</text>
+    <text class="small" x="22" y="116">发布版模板</text>
+    <text class="small" x="22" y="142">主文件 + 章节</text>
+  </g>
+
+  <path class="line" d="M532 203 H600"/>
+
+  <g transform="translate(612 128)">
+    <rect class="card" width="188" height="150" rx="16"/>
+    <rect class="badge" x="22" y="20" width="48" height="34" rx="17"/>
+    <text x="38" y="45" font-size="20" font-weight="700">3</text>
+    <text class="step-title" x="22" y="84">VS Code</text>
+    <text class="small" x="22" y="116">LaTeX Workshop</text>
+    <text class="small" x="22" y="142">latexmk/xelatex</text>
+  </g>
+
+  <path class="line" d="M814 203 H882"/>
+
+  <g transform="translate(894 128)">
+    <rect class="card" width="188" height="150" rx="16"/>
+    <rect class="badge" x="22" y="20" width="48" height="34" rx="17"/>
+    <text x="38" y="45" font-size="20" font-weight="700">4</text>
+    <text class="step-title" x="22" y="84">OpenCode</text>
+    <text class="small" x="22" y="116">DeepSeek / Go</text>
+    <text class="small" x="22" y="142">读日志后修错</text>
+  </g>
+
+  <rect x="166" y="318" width="788" height="42" rx="21" fill="#fff8e6" stroke="#e1bd62" stroke-width="1.5"/>
+  <text class="small" x="196" y="345">验收标准：每次改稿后都能用 latexmk -xelatex 编译，并用 Git 保存可回退版本。</text>
+</svg>

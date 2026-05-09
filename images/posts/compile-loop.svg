@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1020" height="460" viewBox="0 0 1020 460" role="img" aria-labelledby="title desc">
+  <title id="title">ThuThesis 编译流程</title>
+  <desc id="desc">展示 latexmk 自动编译和手动 xelatex-bibtex-xelatex-xelatex 编译流程</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 Z" fill="#3c5f74"/>
+    </marker>
+    <style>
+      text { font-family: "Microsoft YaHei", "Noto Sans CJK SC", Arial, sans-serif; fill: #17212b; }
+      .title { font-size: 30px; font-weight: 700; }
+      .sub { font-size: 18px; fill: #51616f; }
+      .label { font-size: 21px; font-weight: 700; }
+      .small { font-size: 17px; fill: #53616e; }
+      .card { fill: #ffffff; stroke: #cfdae5; stroke-width: 2; }
+      .auto { fill: #edf8f3; stroke: #80b69b; stroke-width: 2; }
+      .manual { fill: #fff8e9; stroke: #d6b466; stroke-width: 2; }
+      .out { fill: #eff5ff; stroke: #82a8d2; stroke-width: 2; }
+      .line { stroke: #3c5f74; stroke-width: 3; fill: none; marker-end: url(#arrow); }
+      .thin { stroke: #b5c1cc; stroke-width: 2; fill: none; marker-end: url(#arrow); }
+      .code { font-family: Consolas, monospace; font-size: 18px; fill: #253242; }
+    </style>
+  </defs>
+  <rect width="1020" height="460" rx="26" fill="#f7f9fc"/>
+  <text class="title" x="48" y="58">ThuThesis 编译流程</text>
+  <text class="sub" x="48" y="90">日常优先使用 latexmk；出错时再拆成四步手动定位。</text>
+
+  <g transform="translate(58 134)">
+    <rect class="auto" width="260" height="110" rx="16"/>
+    <text class="label" x="24" y="38">推荐：自动编译</text>
+    <text class="code" x="24" y="72">latexmk -xelatex main.tex</text>
+    <text class="small" x="24" y="98">自动处理多轮引用和 BibTeX</text>
+  </g>
+  <path class="line" d="M332 189 H430"/>
+  <g transform="translate(444 134)">
+    <rect class="out" width="200" height="110" rx="16"/>
+    <text class="label" x="24" y="45">输出 PDF</text>
+    <text class="small" x="24" y="78">main.pdf</text>
+  </g>
+  <path class="line" d="M658 189 H756"/>
+  <g transform="translate(770 134)">
+    <rect class="card" width="190" height="110" rx="16"/>
+    <text class="label" x="24" y="45">检查结果</text>
+    <text class="small" x="24" y="78">PDF + log + Git diff</text>
+  </g>
+
+  <g transform="translate(58 300)">
+    <rect class="manual" width="176" height="82" rx="16"/>
+    <text class="label" x="24" y="36">手动 1</text>
+    <text class="code" x="24" y="62">xelatex</text>
+  </g>
+  <path class="thin" d="M244 341 H292"/>
+  <g transform="translate(306 300)">
+    <rect class="manual" width="176" height="82" rx="16"/>
+    <text class="label" x="24" y="36">手动 2</text>
+    <text class="code" x="24" y="62">bibtex</text>
+  </g>
+  <path class="thin" d="M492 341 H540"/>
+  <g transform="translate(554 300)">
+    <rect class="manual" width="176" height="82" rx="16"/>
+    <text class="label" x="24" y="36">手动 3</text>
+    <text class="code" x="24" y="62">xelatex</text>
+  </g>
+  <path class="thin" d="M740 341 H788"/>
+  <g transform="translate(802 300)">
+    <rect class="manual" width="176" height="82" rx="16"/>
+    <text class="label" x="24" y="36">手动 4</text>
+    <text class="code" x="24" y="62">xelatex</text>
+  </g>
+
+  <text class="small" x="58" y="420">排错原则：先找第一处真正错误，再修改对应文件，不要根据最后一屏日志猜原因。</text>
+</svg>

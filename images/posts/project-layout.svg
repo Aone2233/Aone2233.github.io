@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="980" height="560" viewBox="0 0 980 560" role="img" aria-labelledby="title desc">
+  <title id="title">ThuThesis 推荐目录结构</title>
+  <desc id="desc">展示主文件、模板文件、章节目录、图片目录、参考文献目录和 VS Code 配置的关系</desc>
+  <defs>
+    <style>
+      text { font-family: "Microsoft YaHei", "Noto Sans CJK SC", Consolas, Arial, sans-serif; fill: #18212b; }
+      .heading { font-size: 30px; font-weight: 700; }
+      .note { font-size: 18px; fill: #52616f; }
+      .mono { font-size: 20px; font-family: Consolas, "Microsoft YaHei", monospace; }
+      .panel { fill: #ffffff; stroke: #d2dbe6; stroke-width: 2; }
+      .folder { fill: #f3f8ff; stroke: #9dbbd8; stroke-width: 2; }
+      .file { fill: #f6fff8; stroke: #9bc9a4; stroke-width: 2; }
+      .config { fill: #fff9eb; stroke: #d6b767; stroke-width: 2; }
+      .line { stroke: #9aa8b6; stroke-width: 2; }
+    </style>
+  </defs>
+  <rect width="980" height="560" rx="26" fill="#f6f8fb"/>
+  <text class="heading" x="48" y="60">ThuThesis 推荐目录结构</text>
+  <text class="note" x="48" y="92">主文件负责组织论文；章节、图片、参考文献分目录管理。</text>
+
+  <rect class="panel" x="48" y="128" width="884" height="382" rx="18"/>
+
+  <g transform="translate(92 170)">
+    <rect class="folder" x="0" y="0" width="220" height="54" rx="12"/>
+    <text class="mono" x="22" y="35">my-thesis/</text>
+
+    <line class="line" x1="36" y1="54" x2="36" y2="326"/>
+    <line class="line" x1="36" y1="94" x2="92" y2="94"/>
+    <line class="line" x1="36" y1="148" x2="92" y2="148"/>
+    <line class="line" x1="36" y1="202" x2="92" y2="202"/>
+    <line class="line" x1="36" y1="256" x2="92" y2="256"/>
+    <line class="line" x1="36" y1="310" x2="92" y2="310"/>
+
+    <rect class="file" x="92" y="68" width="250" height="52" rx="12"/>
+    <text class="mono" x="114" y="101">main.tex</text>
+    <text class="note" x="372" y="101">论文入口，调用章节</text>
+
+    <rect class="file" x="92" y="122" width="250" height="52" rx="12"/>
+    <text class="mono" x="114" y="155">thuthesis.cls</text>
+    <text class="note" x="372" y="155">模板类文件</text>
+
+    <rect class="folder" x="92" y="176" width="250" height="52" rx="12"/>
+    <text class="mono" x="114" y="209">data/</text>
+    <text class="note" x="372" y="209">摘要、正文、附录、致谢</text>
+
+    <rect class="folder" x="92" y="230" width="250" height="52" rx="12"/>
+    <text class="mono" x="114" y="263">figures/</text>
+    <text class="note" x="372" y="263">实验图、流程图、结果图</text>
+
+    <rect class="folder" x="92" y="284" width="250" height="52" rx="12"/>
+    <text class="mono" x="114" y="317">ref/refs.bib</text>
+    <text class="note" x="372" y="317">BibTeX 参考文献库</text>
+
+    <rect class="config" x="566" y="68" width="230" height="52" rx="12"/>
+    <text class="mono" x="588" y="101">.vscode/</text>
+    <text class="note" x="588" y="136">settings.json</text>
+
+    <rect class="config" x="566" y="176" width="230" height="52" rx="12"/>
+    <text class="mono" x="588" y="209">latexmkrc</text>
+    <text class="note" x="588" y="244">xelatex 编译规则</text>
+
+    <rect class="config" x="566" y="284" width="230" height="52" rx="12"/>
+    <text class="mono" x="588" y="317">.gitignore</text>
+    <text class="note" x="588" y="352">忽略中间文件</text>
+  </g>
+</svg>
