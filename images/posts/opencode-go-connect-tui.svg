@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1365" height="900" viewBox="0 0 1365 900" role="img" aria-labelledby="title desc">
+  <title id="title">OpenCode Go connect flow</title>
+  <desc id="desc">A terminal user interface reference showing OpenCode Go connect, browser subscription, and model selection steps.</desc>
+  <rect width="1365" height="900" fill="#f6f6f4"/>
+  <text x="110" y="86" fill="#111827" font-family="Consolas, Menlo, monospace" font-size="42" font-weight="700">OpenCode Go 连接流程参考</text>
+
+  <rect x="110" y="126" width="530" height="652" rx="12" fill="#101010"/>
+  <rect x="110" y="126" width="530" height="42" rx="12" fill="#262626"/>
+  <circle cx="140" cy="147" r="7" fill="#ef4444"/>
+  <circle cx="164" cy="147" r="7" fill="#f59e0b"/>
+  <circle cx="188" cy="147" r="7" fill="#22c55e"/>
+  <text x="213" y="154" fill="#e5e7eb" font-family="Consolas, Menlo, monospace" font-size="16">opencode - my-thesis</text>
+
+  <text x="146" y="220" fill="#a7f3d0" font-family="Consolas, Menlo, monospace" font-size="22">&gt; /connect</text>
+  <text x="146" y="276" fill="#e5e7eb" font-family="Consolas, Menlo, monospace" font-size="20">Choose provider</text>
+  <rect x="142" y="302" width="440" height="45" rx="6" fill="#1f2937" stroke="#60a5fa"/>
+  <text x="166" y="331" fill="#bfdbfe" font-family="Consolas, Menlo, monospace" font-size="20">OpenCode Go</text>
+  <text x="166" y="382" fill="#9ca3af" font-family="Consolas, Menlo, monospace" font-size="20">DeepSeek API</text>
+  <text x="166" y="432" fill="#9ca3af" font-family="Consolas, Menlo, monospace" font-size="20">OpenAI compatible</text>
+
+  <line x1="146" y1="480" x2="584" y2="480" stroke="#374151"/>
+  <text x="146" y="528" fill="#a7f3d0" font-family="Consolas, Menlo, monospace" font-size="22">&gt; /models</text>
+  <text x="146" y="580" fill="#e5e7eb" font-family="Consolas, Menlo, monospace" font-size="20">Select model for coding</text>
+  <rect x="142" y="606" width="440" height="45" rx="6" fill="#1f2937" stroke="#60a5fa"/>
+  <text x="166" y="635" fill="#bfdbfe" font-family="Consolas, Menlo, monospace" font-size="20">Go recommended coding model</text>
+  <text x="166" y="686" fill="#9ca3af" font-family="Consolas, Menlo, monospace" font-size="20">Other available models...</text>
+  <text x="146" y="742" fill="#fbbf24" font-family="Consolas, Menlo, monospace" font-size="18">不在图里填写 API key 或账号信息。</text>
+
+  <rect x="715" y="126" width="540" height="286" rx="12" fill="#ffffff" stroke="#d1d5db"/>
+  <rect x="715" y="126" width="540" height="46" rx="12" fill="#f3f4f6"/>
+  <circle cx="742" cy="149" r="6" fill="#ef4444"/>
+  <circle cx="764" cy="149" r="6" fill="#f59e0b"/>
+  <circle cx="786" cy="149" r="6" fill="#22c55e"/>
+  <text x="812" y="155" fill="#374151" font-family="Arial, sans-serif" font-size="15">https://opencode.ai/go</text>
+  <text x="754" y="225" fill="#111827" font-family="Consolas, Menlo, monospace" font-size="30" font-weight="700">GO</text>
+  <text x="754" y="270" fill="#111827" font-family="Consolas, Menlo, monospace" font-size="24" font-weight="700">Low cost coding models for everyone</text>
+  <rect x="754" y="314" width="354" height="46" rx="7" fill="#111827"/>
+  <text x="781" y="344" fill="#ffffff" font-family="Consolas, Menlo, monospace" font-size="18">Subscribe to Go  -></text>
+  <text x="754" y="385" fill="#6b7280" font-family="Consolas, Menlo, monospace" font-size="17">订阅完成后回到终端继续选择模型。</text>
+
+  <rect x="715" y="469" width="540" height="309" rx="12" fill="#eff6ff" stroke="#93c5fd"/>
+  <text x="755" y="529" fill="#1e3a8a" font-family="Arial, sans-serif" font-size="24" font-weight="700">建议给同学强调的三点</text>
+  <text x="755" y="585" fill="#1f2937" font-family="Arial, sans-serif" font-size="21">1. 先跑通本地 LaTeX 编译，再接入 AI。</text>
+  <text x="755" y="635" fill="#1f2937" font-family="Arial, sans-serif" font-size="21">2. Go 订阅走 /connect，不要手写密钥。</text>
+  <text x="755" y="685" fill="#1f2937" font-family="Arial, sans-serif" font-size="21">3. 选模型后让 AI 先读日志再改 tex。</text>
+  <text x="755" y="735" fill="#1f2937" font-family="Arial, sans-serif" font-size="21">4. 每次大改前先 git commit。</text>
+</svg>

@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1365" height="900" viewBox="0 0 1365 900" role="img" aria-labelledby="title desc">
+  <title id="title">Windows terminal environment check</title>
+  <desc id="desc">A PowerShell style terminal showing version checks for Git, XeLaTeX, latexmk, VS Code, and OpenCode.</desc>
+  <rect width="1365" height="900" fill="#f5f7fb"/>
+  <rect x="122" y="76" width="1121" height="748" rx="10" fill="#111827"/>
+  <rect x="122" y="76" width="1121" height="46" rx="10" fill="#1f2937"/>
+  <circle cx="151" cy="99" r="7" fill="#ef4444"/>
+  <circle cx="175" cy="99" r="7" fill="#f59e0b"/>
+  <circle cx="199" cy="99" r="7" fill="#10b981"/>
+  <text x="228" y="105" fill="#d1d5db" font-family="Consolas, Menlo, monospace" font-size="17">PowerShell 7 - my-thesis</text>
+  <text x="170" y="172" fill="#93c5fd" font-family="Consolas, Menlo, monospace" font-size="23">PS C:\code\my-thesis&gt;</text>
+  <text x="590" y="172" fill="#f9fafb" font-family="Consolas, Menlo, monospace" font-size="23">git --version</text>
+  <text x="170" y="215" fill="#bbf7d0" font-family="Consolas, Menlo, monospace" font-size="22">git version 2.x.x.windows.1</text>
+
+  <text x="170" y="282" fill="#93c5fd" font-family="Consolas, Menlo, monospace" font-size="23">PS C:\code\my-thesis&gt;</text>
+  <text x="590" y="282" fill="#f9fafb" font-family="Consolas, Menlo, monospace" font-size="23">xelatex --version</text>
+  <text x="170" y="325" fill="#bbf7d0" font-family="Consolas, Menlo, monospace" font-size="22">XeTeX 3.141592653-2.6 ... (TeX Live 2026)</text>
+
+  <text x="170" y="392" fill="#93c5fd" font-family="Consolas, Menlo, monospace" font-size="23">PS C:\code\my-thesis&gt;</text>
+  <text x="590" y="392" fill="#f9fafb" font-family="Consolas, Menlo, monospace" font-size="23">latexmk -version</text>
+  <text x="170" y="435" fill="#bbf7d0" font-family="Consolas, Menlo, monospace" font-size="22">Latexmk, John Collins, version 4.xx</text>
+
+  <text x="170" y="502" fill="#93c5fd" font-family="Consolas, Menlo, monospace" font-size="23">PS C:\code\my-thesis&gt;</text>
+  <text x="590" y="502" fill="#f9fafb" font-family="Consolas, Menlo, monospace" font-size="23">code --version</text>
+  <text x="170" y="545" fill="#bbf7d0" font-family="Consolas, Menlo, monospace" font-size="22">1.xx.x</text>
+  <text x="170" y="581" fill="#bbf7d0" font-family="Consolas, Menlo, monospace" font-size="22">commit-hash</text>
+  <text x="170" y="617" fill="#bbf7d0" font-family="Consolas, Menlo, monospace" font-size="22">x64</text>
+
+  <text x="170" y="684" fill="#93c5fd" font-family="Consolas, Menlo, monospace" font-size="23">PS C:\code\my-thesis&gt;</text>
+  <text x="590" y="684" fill="#f9fafb" font-family="Consolas, Menlo, monospace" font-size="23">opencode --version</text>
+  <text x="170" y="727" fill="#bbf7d0" font-family="Consolas, Menlo, monospace" font-size="22">opencode 0.xx.x</text>
+
+  <rect x="820" y="690" width="358" height="73" rx="8" fill="#172554" stroke="#60a5fa"/>
+  <text x="844" y="722" fill="#dbeafe" font-family="Arial, sans-serif" font-size="18">看到版本号就说明 PATH 已生效。</text>
+  <text x="844" y="750" fill="#dbeafe" font-family="Arial, sans-serif" font-size="18">版本数字以同学电脑实际输出为准。</text>
+</svg>
