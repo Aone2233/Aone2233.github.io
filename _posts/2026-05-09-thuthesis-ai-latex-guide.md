@@ -15,7 +15,8 @@ comment: true
 
 > 目标读者：第一次用 LaTeX 写清华本科综合论文训练、硕士论文或博士论文的同学。  
 > 推荐路线：本地 TeX Live + VS Code + LaTeX Workshop + ThuThesis 发布版模板，再用 OpenCode 配合 OpenCode Go 或 DeepSeek API 辅助写作、排错和改稿。  
-> 本文核查时间：2026-05-09。
+> 本文核查时间：2026-05-26。<br>
+> 2026 年度补充：GitHub 模板中的公式编号可能仍显示为“章号.序号”，本年度综合论文训练要求改为“章号-序号”；表格内容也需要居中排版。
 
 ## 先看一个标准项目结构
 
@@ -306,6 +307,91 @@ my-thesis/
 - Windows 本地 TeX Live 通常用 `system=windows`、`fontset=windows`。
 - 如果在 WSL/Linux 里编译，要根据实际字体改成对应配置，不要盲目照抄 Windows 字体设置。
 - 图片文件名尽量用英文和短横线，例如 `particle-collision.pdf`，避免中文路径导致工具链兼容问题。
+
+### 2026 年度格式补充：公式编号与表格居中
+
+如果直接从 GitHub 下载 ThuThesis 模板，公式编号默认效果可能是 `（2.1）`、`（3.2）` 这种“章号.序号”。但本年度综合论文训练模板要求使用 `（2-1）`、`（3-2）` 这种“章号-序号”。这个修改不要手动改 PDF，也不要在每个公式后面硬写编号，而是统一写进 `thusetup-bachelor.tex` 的 `\thusetup{...}` 配置里。
+
+可以参考下面这种写法：
+
+```tex
+% !TEX root = ./main.tex
+
+% 论文基本信息配置
+
+\thusetup{
+  %******************************
+  % 注意：
+  %   1. 配置里面不要出现空行
+  %   2. 不需要的配置信息可以删除
+  %   3. 本科论文不需要 degree-category
+  %******************************
+  %
+  % 输出格式
+  %   选择打印版（print）或用于提交的电子版（electronic）
+  %
+  output = electronic,
+  % 公式编号连接符：2026 年度模板要求使用（章号-序号）
+  equation-numbering = chapter,
+  equation-number-separator = {-},
+  %
+  % 标题
+  title  = {这里填写中文题目},
+  title* = {Here Goes the English Title},
+  %
+  % 培养单位、专业、作者、导师、日期
+  department = {这里填写院系},
+  discipline  = {这里填写专业},
+  discipline* = {Here Goes the Discipline},
+  author  = {姓名},
+  author* = {Name in Pinyin},
+  supervisor  = {导师姓名\ 职称},
+  supervisor* = {Supervisor Name, Title},
+  date = {2026-06-01},
+}
+```
+
+注意两点：
+
+- `equation-number-separator = {-}` 要放在 `\thusetup{...}` 里面，不建议写到 `\documentclass[...]` 选项里；否则可能出现选项未生效或日志提示 unused option。
+- 修改后重新编译，正文公式应显示为 `（2-1）`，而不是 `（2.1）`。
+
+表格内容也需要按本年度模板要求居中。最省事的做法是在 `thusetup-bachelor.tex` 的宏包区增加一个居中的定宽列类型：
+
+```tex
+\usepackage{array}
+
+% 表格内容居中；C{宽度} 适合替代原来的 p{宽度}
+\newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
+```
+
+然后把原来左对齐的表格列：
+
+```tex
+\begin{tabular}{>{\raggedright\arraybackslash}p{3.0cm} >{\raggedright\arraybackslash}p{8.0cm}}
+  \toprule
+  项目 & 内容 \\
+  \midrule
+  数据来源 & Fluent transcript 与后处理统计表 \\
+  判定方法 & 按 tracked、escaped、aborted 统一统计 \\
+  \bottomrule
+\end{tabular}
+```
+
+改成：
+
+```tex
+\begin{tabular}{C{3.0cm} C{8.0cm}}
+  \toprule
+  项目 & 内容 \\
+  \midrule
+  数据来源 & Fluent transcript 与后处理统计表 \\
+  判定方法 & 按 tracked、escaped、aborted 统一统计 \\
+  \bottomrule
+\end{tabular}
+```
+
+如果某张表是纯数字列，也可以继续用 `c`；如果某一列文字较长、需要自动换行，就优先用 `C{...}`，这样既能保留固定宽度，也能让单元格内容居中。
 
 ## 五、推荐编译方法
 
