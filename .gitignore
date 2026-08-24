@@ -1,4 +1,6 @@
 _site/
+# Playwright CLI test artifacts
+.playwright-cli/
 *.sw[po]
 *.~vsd
 \#*\#

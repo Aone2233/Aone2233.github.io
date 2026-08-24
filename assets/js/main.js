@@ -32,10 +32,10 @@ function toggleMenu() {
       giscusScript.setAttribute("data-theme", giscusTheme);
     }
 
-    var giscusFrame = document.querySelector("iframe.giscus-frame");
-    if (giscusFrame && giscusFrame.contentWindow) {
-      var postTheme = function () {
-        giscusFrame.contentWindow.postMessage(
+    var postGiscusTheme = function (frame) {
+      if (!frame || !frame.contentWindow) return;
+      try {
+        frame.contentWindow.postMessage(
           {
             giscus: {
               setConfig: {
@@ -45,21 +45,31 @@ function toggleMenu() {
           },
           "https://giscus.app"
         );
-      };
-      postTheme();
-      setTimeout(postTheme, 120);
-      setTimeout(postTheme, 600);
+      } catch (e) {
+        /* 忽略 iframe 尚不可达或跨域不可投递的场景 */
+      }
+    };
+
+    var giscusFrame = document.querySelector("iframe.giscus-frame");
+    if (giscusFrame && giscusFrame.contentWindow) {
+      postGiscusTheme(giscusFrame);
+      setTimeout(function () { postGiscusTheme(giscusFrame); }, 120);
+      setTimeout(function () { postGiscusTheme(giscusFrame); }, 600);
     }
 
     var utterancesFrame = document.querySelector("iframe.utterances-frame");
     if (utterancesFrame && utterancesFrame.contentWindow) {
-      utterancesFrame.contentWindow.postMessage(
-        {
-          type: "set-theme",
-          theme: target === "dark" ? "github-dark" : "github-light"
-        },
-        "https://utteranc.es"
-      );
+      try {
+        utterancesFrame.contentWindow.postMessage(
+          {
+            type: "set-theme",
+            theme: target === "dark" ? "github-dark" : "github-light"
+          },
+          "https://utteranc.es"
+        );
+      } catch (e) {
+        /* 忽略 iframe 尚不可达或跨域不可投递的场景 */
+      }
     }
   }
 
