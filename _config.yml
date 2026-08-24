@@ -81,25 +81,10 @@ navs:
   -
     href: /archives/
     label: 归档
-    mobile-hidden: true
 
   -
     href: /open-source/
     label: 开源
-    mobile-hidden: true
-
-  -
-    href: /fragments/
-    label: 片段
-
-  -
-    href: /wiki/
-    label: Wiki
-
-  -
-    href: /links/
-    label: 链接
-    mobile-hidden: true
 
   -
     href: /about/

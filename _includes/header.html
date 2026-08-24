@@ -117,33 +117,32 @@
 <body class="{{ page.class }}" data-mz="{{ page.class }}" data-menu="{{ page.menu }}" data-layout="{{ page.layout }}">
     <div id="reading-progress-bar" class="reading-progress-bar" aria-hidden="true"></div>
     <header class="site-header">
-        <div class="container">
-            <h1>
-              <a href="{{ site.url }}/" title="{{ site.title }}" class="site-brand">
-                <span class="brand-dot-wrapper">
-                  <span class="brand-dot-pulse"></span>
-                  <span class="brand-dot"></span>
-                </span>
-                {{ site.title }}
-              </a>
-            </h1>
+        <div class="container header-inner">
+            <a href="{{ site.url }}/" title="{{ site.title }}" class="brand">
+              <span class="brand-dot-wrapper">
+                <span class="brand-dot-pulse"></span>
+                <span class="brand-dot"></span>
+              </span>
+              {{ site.title }}
+            </a>
             <button id="mobile-menu-btn" class="collapsed mobile-visible" type="button" onclick="toggleMenu();" aria-label="展开导航菜单" aria-expanded="false">
               <span class="icon-bar"></span>
               <span class="icon-bar"></span>
               <span class="icon-bar"></span>
             </button>
-            <nav class="site-header-nav" role="navigation">
+            <nav class="nav-links site-header-nav" role="navigation">
                 {% for nav in site.navs %}
-                <a href="{{ site.url }}{{ nav.href }}" class="{% if nav.mobile-hidden %}mobile-hidden {% endif %}{% if page.menu == nav.label %}selected {% endif %}site-header-nav-item" target="{{ nav.target | default: _self }}" title="{{ nav.label }}">{{ nav.label }}</a>
+                <a href="{{ site.url }}{{ nav.href }}" class="{% if nav.mobile-hidden %}mobile-hidden {% endif %}{% if page.menu == nav.label or (page.url == '/' and nav.label == '首页') or (page.url == '/index.html' and nav.label == '首页') %}active selected {% endif %}" target="{{ nav.target | default: _self }}" title="{{ nav.label }}">{{ nav.label }}</a>
                 {% endfor %}
-                <button class="btn-search-trigger site-header-nav-item" type="button" onclick="toggleSpotlight(true)" title="按 Ctrl+K 快速搜索" aria-label="全站搜索">
-                  <span class="octicon octicon-search"></span>
-                  <span class="search-text mobile-hidden">搜索</span>
-                  <span class="kbd-shortcut mobile-hidden">⌘K</span>
-                </button>
-                <a class="mobile-hidden" href="{{ site.url }}{{ site.subscribe_rss }}" title="RSS 订阅"><span class="octicon octicon-rss" style="color:orange;"></span></a>
-                <button id="theme-toggle" class="theme-toggle" type="button" title="切换深浅主题" aria-label="切换深浅主题"></button>
             </nav>
+            <div class="header-actions">
+              <button class="btn-search-trigger" type="button" onclick="toggleSpotlight(true)" title="按 Ctrl+K 快速搜索" aria-label="全站搜索">
+                <span class="octicon octicon-search"></span>
+                <span class="search-text mobile-hidden">搜索</span>
+                <span class="kbd-shortcut mobile-hidden">⌘K</span>
+              </button>
+              <button id="theme-toggle" class="theme-toggle" type="button" title="切换深浅主题" aria-label="切换深浅主题"></button>
+            </div>
         </div>
     </header>
     {% include spotlight.html %}
