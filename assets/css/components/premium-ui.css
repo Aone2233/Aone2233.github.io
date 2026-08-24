@@ -186,7 +186,12 @@ nav.nav-links {
   float: none !important;
 }
 
-nav.nav-links a {
+header.site-header a,
+header.site-header a:link,
+header.site-header a:visited,
+.site-header .nav-links a,
+.site-header .nav-links a:link,
+.site-header .nav-links a:visited {
   color: var(--text-secondary) !important;
   text-decoration: none !important;
   font-size: 0.92rem !important;
@@ -200,14 +205,22 @@ nav.nav-links a {
   transition: color 0.15s ease !important;
 }
 
-nav.nav-links a:hover,
-nav.nav-links a.active,
-nav.nav-links a.selected {
+header.site-header .brand,
+header.site-header .brand:link,
+header.site-header .brand:visited {
   color: var(--text) !important;
 }
 
-nav.nav-links a.active::after,
-nav.nav-links a.selected::after {
+header.site-header .nav-links a:hover,
+header.site-header .nav-links a:active,
+header.site-header .nav-links a:focus,
+header.site-header .nav-links a.active,
+header.site-header .nav-links a.selected {
+  color: var(--text) !important;
+}
+
+header.site-header .nav-links a.active::after,
+header.site-header .nav-links a.selected::after {
   content: '' !important;
   position: absolute !important;
   bottom: -2px !important;
