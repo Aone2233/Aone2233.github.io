@@ -724,12 +724,31 @@ html[data-theme="dark"] .theme-toggle::after {
 .toc-sticky-widget {
   position: sticky !important;
   top: 80px !important;
+  overflow: hidden !important;
 }
 
 .toc-wrapper {
   position: relative;
   padding-left: 12px;
   border-left: 1px solid var(--border);
+  max-width: 100%;
+}
+
+.post-directory {
+  width: 100% !important;
+  background: transparent !important;
+  border: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  box-shadow: none !important;
+}
+
+.post-directory dl,
+.post-directory ul,
+.post-directory ol {
+  list-style: none !important;
+  padding-left: 0 !important;
+  margin: 0 !important;
 }
 
 .toc-pill-indicator {
@@ -748,18 +767,23 @@ html[data-theme="dark"] .theme-toggle::after {
   margin: 8px 0;
   font-size: 0.88rem;
   line-height: 1.4;
+  word-break: break-word;
 }
 
 .post-directory dd {
   margin: 6px 0 6px 14px;
   font-size: 0.82rem;
   line-height: 1.4;
+  word-break: break-word;
 }
 
 .post-directory a {
   color: var(--text-secondary) !important;
   text-decoration: none !important;
   transition: color 0.15s ease;
+  display: inline-block;
+  max-width: 100%;
+  word-break: break-word;
 }
 
 .post-directory a:hover,

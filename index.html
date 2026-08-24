@@ -10,8 +10,8 @@ class: home
 
 <!-- Minimalist Apple Hero -->
 <section class="container home-hero">
-  <h1 class="hero-title animate-stagger-1">{{ site.subtitle | default: "保持好奇，记录思考与技术实践。" }}</h1>
-  <p class="hero-subtitle animate-stagger-2">{{ site.description | default: "这里是 LLY 的个人博客与数字花园。专注于系统工程、AI 辅助开发、科研工具链与技术札记。" }}</p>
+  <h1 class="hero-title animate-stagger-1">保持好奇，记录思考与技术实践。</h1>
+  <p class="hero-subtitle animate-stagger-2">这里是 {{ site.author | default: "LLY" }} 的个人博客与数字花园。专注于系统工程、AI 辅助开发、科研工具链与技术札记。</p>
   <div class="hero-meta animate-stagger-3">
     {% if site.location %}
     <span class="meta-item"><span class="octicon octicon-location"></span> {{ site.location }}</span>
@@ -165,11 +165,9 @@ class: home
     </div>
 
     <div class="column one-third sidebar-column">
-      {% include sidebar-qrcode.html %}
       {% include sidebar-search.html %}
       {% include sidebar-categories-cloud.html %}
-      {% include sidebar-ad.html %}
-      {% include sidebar-popular-repo.html %}
+      {% include sidebar-qrcode.html %}
     </div>
   </div>
 </section>

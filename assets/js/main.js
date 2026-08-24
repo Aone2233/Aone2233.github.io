@@ -19,12 +19,16 @@ function toggleMenu() {
     dark: "dark_dimmed"
   };
 
+  function getSystemTheme() {
+    return (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) ? "dark" : "light";
+  }
+
   function resolvePreferredTheme() {
     try {
       var saved = localStorage.getItem(THEME_KEY);
       if (saved === "light" || saved === "dark") return saved;
     } catch (e) {}
-    return (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) ? "dark" : "light";
+    return getSystemTheme();
   }
 
   function syncThirdPartyTheme(theme) {
@@ -104,6 +108,24 @@ function toggleMenu() {
         localStorage.setItem(THEME_KEY, nextTheme);
       } catch (e) {}
     });
+  }
+
+  // 监听浏览器/系统白天夜间模式自动切换
+  if (window.matchMedia) {
+    var mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+    var onSystemThemeChange = function (e) {
+      var newTheme = e.matches ? "dark" : "light";
+      applyTheme(newTheme);
+      try {
+        localStorage.setItem(THEME_KEY, newTheme);
+      } catch (err) {}
+    };
+
+    if (mediaQuery.addEventListener) {
+      mediaQuery.addEventListener("change", onSystemThemeChange);
+    } else if (mediaQuery.addListener) {
+      mediaQuery.addListener(onSystemThemeChange);
+    }
   }
 
   applyTheme(resolvePreferredTheme());

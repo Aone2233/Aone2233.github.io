@@ -1,3 +1,13 @@
 {% if site.components.qrcode.enabled %}
-<img style="height:72px;width:72px" src="{{ site.url }}/assets/images/qrcode.jpg" alt="{{ site.components.qrcode.image_alt }}" />
+<section class="widget-card widget-qrcode text-center">
+  <div class="widget-title" style="justify-content: center;">
+    <span>微信交流</span>
+  </div>
+  <div class="qrcode-wrapper" style="text-align: center;">
+    <p class="qrcode-desc" style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 12px;">扫码添加微信：REALone2233</p>
+    <div class="qrcode-box" style="width: 140px; height: 140px; margin: 0 auto; background: var(--bg-subtle); border: 1px solid var(--border); border-radius: 10px; display: flex; align-items: center; justify-content: center; overflow: hidden; padding: 6px;">
+      <img style="width: 100%; height: 100%; object-fit: contain; border-radius: 6px;" src="{{ site.url }}/assets/images/qrcode.jpg" alt="{{ site.components.qrcode.image_alt | default: '微信二维码' }}" />
+    </div>
+  </div>
+</section>
 {% endif %}
