@@ -1,9 +1,10 @@
 function toggleMenu() {
-  var nav = document.getElementsByClassName("site-header-nav")[0];
-  if (nav.style.display == "inline-flex") {
-    nav.style.display = "none";
-  } else {
-    nav.style.display = "inline-flex";
+  var nav = document.querySelector(".site-header-nav");
+  var btn = document.getElementById("mobile-menu-btn");
+  if (!nav) return;
+  var isOpen = nav.classList.toggle("is-open");
+  if (btn) {
+    btn.setAttribute("aria-expanded", isOpen ? "true" : "false");
   }
 }
 
@@ -177,57 +178,67 @@ function toggleMenu() {
   });
 })();
 
-jQuery(function() {
+document.addEventListener("DOMContentLoaded", function () {
   // 回到顶部
-  function toTop () {
-    var $toTop = $(".gotop");
+  function toTop() {
+    var toTopBtn = document.querySelector(".gotop");
+    if (!toTopBtn) return;
 
-    $(window).on("scroll", function () {
-      if ($(window).scrollTop() >= $(window).height()) {
-        $toTop.css("display", "block").fadeIn();
+    window.addEventListener("scroll", function () {
+      if (window.scrollY >= window.innerHeight * 0.75) {
+        toTopBtn.style.display = "block";
       } else {
-        $toTop.fadeOut();
+        toTopBtn.style.display = "none";
       }
-    });
+    }, { passive: true });
 
-    $toTop.on("click", function (evt) {
-      var $obj = $("body,html");
-      $obj.animate({
-        scrollTop: 0
-      }, 240);
-
+    toTopBtn.addEventListener("click", function (evt) {
       evt.preventDefault();
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+      });
     });
   }
 
-  function headerScrollEffect () {
-    var $header = $(".site-header");
-    if ($header.length === 0) return;
+  // 导航栏滚动毛玻璃增强效果
+  function headerScrollEffect() {
+    var header = document.querySelector(".site-header");
+    if (!header) return;
 
-    $(window).on("scroll", function () {
-      if ($(window).scrollTop() > 8) {
-        $header.addClass("is-scrolled");
+    var checkScroll = function () {
+      if (window.scrollY > 8) {
+        header.classList.add("is-scrolled");
       } else {
-        $header.removeClass("is-scrolled");
+        header.classList.remove("is-scrolled");
       }
-    }).trigger("scroll");
+    };
+
+    window.addEventListener("scroll", checkScroll, { passive: true });
+    checkScroll();
   }
 
-  function optimizeImages () {
-    $(".markdown-body img, .gallery img, .repo-list-item img").each(function () {
-      if (!this.getAttribute("loading")) this.setAttribute("loading", "lazy");
-      if (!this.getAttribute("decoding")) this.setAttribute("decoding", "async");
+  // 图片懒加载与异步解码属性注入
+  function optimizeImages() {
+    var images = document.querySelectorAll(".markdown-body img, .gallery img, .repo-list-item img");
+    images.forEach(function (img) {
+      if (!img.getAttribute("loading")) img.setAttribute("loading", "lazy");
+      if (!img.getAttribute("decoding")) img.setAttribute("decoding", "async");
     });
   }
 
-  function revealCards () {
+  // 卡片进入视口动效
+  function revealCards() {
     var cards = document.querySelectorAll(".repo-list-item");
     if (!cards.length) return;
 
-    if (!("IntersectionObserver" in window)) return;
+    if (!("IntersectionObserver" in window)) {
+      cards.forEach(function (card) { card.classList.add("in-view"); });
+      return;
+    }
 
     var io = new IntersectionObserver(function (entries, observer) {
-      entries.forEach(function(entry) {
+      entries.forEach(function (entry) {
         if (entry.isIntersecting) {
           entry.target.classList.add("in-view");
           observer.unobserve(entry.target);
@@ -235,14 +246,72 @@ jQuery(function() {
       });
     }, { threshold: 0.08 });
 
-    cards.forEach(function(card) {
+    cards.forEach(function (card) {
       card.classList.add("reveal-ready");
       io.observe(card);
     });
+  }
+
+  // 文章顶部阅读进度条
+  function initReadingProgressBar() {
+    var bar = document.getElementById("reading-progress-bar");
+    var article = document.querySelector(".article-content, .markdown-body");
+    if (!bar || !article) return;
+
+    var updateProgress = function () {
+      var rect = article.getBoundingClientRect();
+      var totalScroll = article.scrollHeight - window.innerHeight;
+      var currentOffset = -rect.top;
+      if (currentOffset <= 0) {
+        bar.style.width = "0%";
+      } else if (currentOffset >= totalScroll) {
+        bar.style.width = "100%";
+      } else {
+        var pct = Math.min(100, Math.max(0, (currentOffset / totalScroll) * 100));
+        bar.style.width = pct.toFixed(1) + "%";
+      }
+    };
+
+    window.addEventListener("scroll", updateProgress, { passive: true });
+    updateProgress();
+  }
+
+  // 目录导航滚动跟随高亮 (Scrollspy)
+  function initTocScrollspy() {
+    var tocLinks = document.querySelectorAll(".post-directory a");
+    var headings = document.querySelectorAll(".article-content h1, .article-content h2, .article-content h3, .article-content h4, .markdown-body h1, .markdown-body h2, .markdown-body h3, .markdown-body h4");
+    if (!tocLinks.length || !headings.length) return;
+
+    var onScroll = function () {
+      var scrollPos = window.scrollY + 130;
+      var activeId = "";
+
+      headings.forEach(function (h) {
+        if (h.id && h.offsetTop <= scrollPos) {
+          activeId = h.id;
+        }
+      });
+
+      if (!activeId) return;
+
+      tocLinks.forEach(function (link) {
+        var href = link.getAttribute("href");
+        if (href && (href === "#" + activeId || decodeURIComponent(href) === "#" + activeId)) {
+          link.classList.add("active");
+        } else {
+          link.classList.remove("active");
+        }
+      });
+    };
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
   }
 
   toTop();
   headerScrollEffect();
   optimizeImages();
   revealCards();
+  initReadingProgressBar();
+  initTocScrollspy();
 });

@@ -49,7 +49,7 @@ function renderMarkdownToMindMap(markdownText) {
 
 $(document).ready(function() {
   var markdownText = '';
-  if ($('.language-mindmap').size() == 1) {
+  if ($('.language-mindmap').length === 1) {
     var node = $('.language-mindmap')[0];
     var markdownText = node.textContent.trim();
   } else {

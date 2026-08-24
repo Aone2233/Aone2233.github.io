@@ -12,9 +12,9 @@ permalink: /donate/
 > 
 > Did some tiny things, consider buying me a cup of coffee if it helps you.
 
-## Paypal
+## GitHub Sponsor
 
-[Donate via Paypal](https://paypal.me/mzlogin)
+[Sponsor via GitHub](https://github.com/{{ site.github_username }})
 
 ## 微信 / Wechat
 

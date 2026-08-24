@@ -71,6 +71,11 @@
     display: none;
     margin-bottom: 0;
   }
+  .site-header .site-header-nav.is-open {
+    display: inline-flex;
+    flex-wrap: wrap;
+    align-items: center;
+  }
   .site-header .site-header-nav .site-header-nav-item {
     padding: 0 .5rem;
     margin-left: 0;

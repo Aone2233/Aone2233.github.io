@@ -38,13 +38,12 @@
     <script src="{{ assets_base_url }}/assets/vendor/share.js/dist/js/share.min.js"></script>
     {% endif %}
     <script src="{{ assets_base_url }}/assets/js/geopattern.js"></script>
-    <script src="{{ assets_base_url }}/assets/js/code-copy.js?v={{ site.time | date: '%s' }}"></script>
+    <script src="{{ assets_base_url }}/assets/js/code-copy.js?v={{ site.version | default: '1.2.0' }}"></script>
     <script>
       jQuery(document).ready(function($) {
         $('.geopattern').each(function(){
           $(this).geopattern($(this).data('pattern-id'));
         });
-       /* hljs.initHighlightingOnLoad(); */
       });
     </script>
 
@@ -67,16 +66,6 @@
       await mermaid.run({
         nodes: document.querySelectorAll('pre code.language-mermaid'),
       });
-    </script>
-    <script type="text/javascript">
-  (function(){
-    $("pre code.language-mermaid").each(function(index, element) {
-      var preBlock = element.parentNode;
-      element.style.backgroundColor = 'initial';
-      preBlock.style.border = 'none';
-      preBlock.style.backgroundColor = 'initial';
-    });
-  })()
     </script>
     {% endif %}
 
@@ -119,7 +108,6 @@ $(document).ready(function(){
       renderTo: nodeName
     });
     minder.importData('markdown', markdownText);
-    /* minder.disable(); */
     minder.execCommand('hand');
 
     var viewerTipNode = document.createElement("a");
@@ -141,6 +129,7 @@ $(document).ready(function(){
 });
     </script>
     {% endif %}
+
 {% if page.mindmap2 %}
     <script src="https://fastly.jsdelivr.net/npm/d3@6"></script>
     <script src="https://fastly.jsdelivr.net/npm/markmap-view"></script>
@@ -154,42 +143,14 @@ $(document).ready(function(){
     </style>
     <script>
         function fullScreen(nodeId) {
-            var element= document.getElementById(nodeId);  
-            if (window.ActiveXObject) {
-                var WsShell = new ActiveXObject('WScript.Shell');
-                WsShell.SendKeys('{F11}');
-            }
-            else if (element.requestFullScreen) {
-                element.requestFullScreen();
-            }
-            else if (element.msRequestFullscreen) {
+            var element = document.getElementById(nodeId);
+            if (!element) return;
+            if (element.requestFullscreen) {
+                element.requestFullscreen();
+            } else if (element.webkitRequestFullscreen) {
+                element.webkitRequestFullscreen();
+            } else if (element.msRequestFullscreen) {
                 element.msRequestFullscreen();
-            }
-            else if (element.webkitRequestFullScreen) {
-                element.webkitRequestFullScreen();
-            }
-            else if (element.mozRequestFullScreen) {
-                element.mozRequestFullScreen();
-            }
-        }
-
-        function fullExit() {
-            var element= document.getElementById("ddd");  
-            if (window.ActiveXObject) {
-                var WsShell = new ActiveXObject('WScript.Shell');
-                WsShell.SendKeys('{F11}');
-            }
-            else if (element.requestFullScreen) {
-                document.exitFullscreen();
-            }
-            else if (element.msRequestFullscreen) {
-                document.msExitFullscreen();
-            }
-            else if (element.webkitRequestFullScreen) {
-                document.webkitCancelFullScreen();
-            }
-            else if (element.mozRequestFullScreen) {
-                document.mozCancelFullScreen();
             }
         }
 
@@ -210,7 +171,7 @@ $(document).ready(function(){
                 var markdownText = element.textContent.trim();
                 var parentNode = element.parentNode.parentNode;
                 element.setAttribute('class', "markmap");
-                var nodeName = '.language-mindmap-' + index;
+                var nodeName = 'language-mindmap-' + index;
                 element.setAttribute("id", nodeName);
                 var viewerTipNode1 = document.createElement("a");
                 viewerTipNode1.appendChild(document.createTextNode("全屏"));

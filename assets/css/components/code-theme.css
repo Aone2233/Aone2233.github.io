@@ -1,0 +1,262 @@
+/**
+ * Unified Code Block Theme (Light / Dark Mode Adaptive)
+ * Supports GitHub Light & VS Code Dark+ styling with seamless theme switching
+ */
+
+:root {
+  --code-font-family: 'JetBrains Mono', 'Fira Code', 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+  --code-bg: #f6f8fa;
+  --code-text: #24292e;
+  --code-border: #e1e4e8;
+  --code-inline-bg: rgba(175, 184, 193, 0.2);
+  --code-inline-text: #b31d28;
+  --code-inline-border: rgba(175, 184, 193, 0.35);
+  --code-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  --code-scrollbar-track: #f1f1f1;
+  --code-scrollbar-thumb: #c1c1c1;
+
+  /* Syntax Highlighting - Light Mode (GitHub Style) */
+  --hl-comment: #6a737d;
+  --hl-keyword: #d73a49;
+  --hl-string: #032f62;
+  --hl-name: #005cc5;
+  --hl-func: #6f42c1;
+  --hl-num: #005cc5;
+  --hl-operator: #d73a49;
+  --hl-punctuation: #24292e;
+  --hl-prompt: #22863a;
+  --hl-error: #cb2431;
+}
+
+html[data-theme="dark"] {
+  --code-bg: #1e1e1e;
+  --code-text: #d4d4d4;
+  --code-border: #2d333b;
+  --code-inline-bg: rgba(110, 118, 129, 0.28);
+  --code-inline-text: #ff7b72;
+  --code-inline-border: rgba(110, 118, 129, 0.3);
+  --code-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+  --code-scrollbar-track: #1e1e1e;
+  --code-scrollbar-thumb: #424242;
+
+  /* Syntax Highlighting - Dark Mode (VS Code Dark+ Style) */
+  --hl-comment: #6A9955;
+  --hl-keyword: #569CD6;
+  --hl-string: #CE9178;
+  --hl-name: #9CDCFE;
+  --hl-func: #DCDCAA;
+  --hl-num: #B5CEA8;
+  --hl-operator: #d4d4d4;
+  --hl-punctuation: #d4d4d4;
+  --hl-prompt: #4EC9B0;
+  --hl-error: #f48771;
+}
+
+/* =========================================================
+   Inline Code Styling
+   ========================================================= */
+body .markdown-body code:not(pre code),
+body .markdown-body tt:not(pre tt) {
+  font-family: var(--code-font-family) !important;
+  font-size: 0.88em !important;
+  background-color: var(--code-inline-bg) !important;
+  color: var(--code-inline-text) !important;
+  border: 1px solid var(--code-inline-border) !important;
+  border-radius: 4px !important;
+  padding: 0.2em 0.42em !important;
+  margin: 0 0.15em !important;
+  word-break: break-word !important;
+  vertical-align: 0.05em !important;
+}
+
+/* =========================================================
+   Code Block Container & Pre
+   ========================================================= */
+body .markdown-body div.highlight,
+body .markdown-body figure.highlight,
+body .markdown-body pre {
+  position: relative !important;
+  background-color: var(--code-bg) !important;
+  border: 1px solid var(--code-border) !important;
+  border-radius: 8px !important;
+  box-shadow: var(--code-shadow) !important;
+  margin: 1.25em 0 !important;
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+  transition: background-color 0.25s ease, border-color 0.25s ease;
+}
+
+body .markdown-body div.highlight pre,
+body .markdown-body figure.highlight pre,
+body .markdown-body pre {
+  display: block !important;
+  background: transparent !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  margin: 0 !important;
+  padding: 16px 68px 16px 18px !important;
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  font-size: 13.5px !important;
+  line-height: 1.6 !important;
+  tab-size: 2 !important;
+  -moz-tab-size: 2 !important;
+  white-space: pre !important;
+  word-break: normal !important;
+  overflow-wrap: normal !important;
+  font-family: var(--code-font-family) !important;
+  color: var(--code-text) !important;
+}
+
+body .markdown-body pre code,
+body .markdown-body .highlight pre code,
+body .markdown-body pre tt {
+  display: block !important;
+  min-width: 100% !important;
+  background: transparent !important;
+  color: var(--code-text) !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  font-size: inherit !important;
+  line-height: inherit !important;
+  white-space: inherit !important;
+  word-break: normal !important;
+  overflow-wrap: normal !important;
+  font-family: var(--code-font-family) !important;
+}
+
+/* Custom Scrollbars for Code Blocks */
+body .markdown-body div.highlight pre::-webkit-scrollbar,
+body .markdown-body pre::-webkit-scrollbar {
+  height: 6px;
+  width: 6px;
+}
+
+body .markdown-body div.highlight pre::-webkit-scrollbar-track,
+body .markdown-body pre::-webkit-scrollbar-track {
+  background: var(--code-scrollbar-track);
+  border-radius: 4px;
+}
+
+body .markdown-body div.highlight pre::-webkit-scrollbar-thumb,
+body .markdown-body pre::-webkit-scrollbar-thumb {
+  background: var(--code-scrollbar-thumb);
+  border-radius: 4px;
+}
+
+/* =========================================================
+   Syntax Highlighting Tokens (Rouge & Pygments Classes)
+   ========================================================= */
+.markdown-body .highlight .c,
+.markdown-body .highlight .c1,
+.markdown-body .highlight .cm,
+.markdown-body .highlight .cp,
+.markdown-body .highlight .cs {
+  color: var(--hl-comment) !important;
+  font-style: italic !important;
+}
+
+.markdown-body .highlight .k,
+.markdown-body .highlight .kd,
+.markdown-body .highlight .kn,
+.markdown-body .highlight .kp,
+.markdown-body .highlight .kr,
+.markdown-body .highlight .kt {
+  color: var(--hl-keyword) !important;
+}
+
+.markdown-body .highlight .s,
+.markdown-body .highlight .s1,
+.markdown-body .highlight .s2,
+.markdown-body .highlight .sb,
+.markdown-body .highlight .sc,
+.markdown-body .highlight .sd,
+.markdown-body .highlight .se,
+.markdown-body .highlight .sh,
+.markdown-body .highlight .si,
+.markdown-body .highlight .sx,
+.markdown-body .highlight .sr,
+.markdown-body .highlight .ss,
+.markdown-body .highlight .dl {
+  color: var(--hl-string) !important;
+}
+
+.markdown-body .highlight .n,
+.markdown-body .highlight .na,
+.markdown-body .highlight .nb,
+.markdown-body .highlight .nc,
+.markdown-body .highlight .no,
+.markdown-body .highlight .nd,
+.markdown-body .highlight .ne,
+.markdown-body .highlight .ni,
+.markdown-body .highlight .nl,
+.markdown-body .highlight .nn,
+.markdown-body .highlight .nt,
+.markdown-body .highlight .nv,
+.markdown-body .highlight .vc,
+.markdown-body .highlight .vg,
+.markdown-body .highlight .vi,
+.markdown-body .highlight .nx {
+  color: var(--hl-name) !important;
+}
+
+.markdown-body .highlight .nf {
+  color: var(--hl-func) !important;
+}
+
+.markdown-body .highlight .m,
+.markdown-body .highlight .mb,
+.markdown-body .highlight .mf,
+.markdown-body .highlight .mh,
+.markdown-body .highlight .mi,
+.markdown-body .highlight .mo,
+.markdown-body .highlight .il {
+  color: var(--hl-num) !important;
+}
+
+.markdown-body .highlight .o,
+.markdown-body .highlight .ow {
+  color: var(--hl-operator) !important;
+}
+
+.markdown-body .highlight .p {
+  color: var(--hl-punctuation) !important;
+}
+
+.markdown-body .highlight .gp {
+  color: var(--hl-prompt) !important;
+  font-weight: bold !important;
+}
+
+.markdown-body .highlight .err {
+  color: var(--hl-error) !important;
+  background-color: transparent !important;
+}
+
+/* Span & Whitespace Handling */
+.markdown-body .highlight code span,
+.markdown-body pre code span {
+  display: inline !important;
+  white-space: inherit !important;
+  word-break: normal !important;
+  overflow-wrap: normal !important;
+}
+
+.markdown-body .highlight .w,
+.markdown-body pre .w {
+  display: inline !important;
+  white-space: inherit !important;
+  background: transparent !important;
+}
+
+/* Copy Button Styling */
+.markdown-body .highlight .copy-button,
+.markdown-body pre .copy-button {
+  position: absolute !important;
+  top: 8px !important;
+  right: 8px !important;
+  z-index: 10 !important;
+}
