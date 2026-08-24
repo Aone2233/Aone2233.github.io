@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>博客前端重构设计方案对比中心 (Design Gallery & Showroom)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: #090d16;
+      color: #f1f5f9;
+      min-height: 100vh;
+      line-height: 1.6;
+      padding-bottom: 60px;
+    }
+
+    .header-bar {
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(15, 23, 42, 0.8);
+      backdrop-filter: blur(20px);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      padding: 16px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .title-group h1 {
+      font-size: 1.25rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #a855f7, #6366f1, #38bdf8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .title-group p {
+      font-size: 0.85rem;
+      color: #94a3b8;
+    }
+
+    .container {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 36px 24px;
+    }
+
+    /* Cards Grid */
+    .proposals-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      margin-bottom: 40px;
+    }
+
+    .proposal-card {
+      background: rgba(30, 41, 59, 0.5);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 18px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: all 0.25s ease;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .proposal-card:hover,
+    .proposal-card.active {
+      border-color: #818cf8;
+      background: rgba(30, 41, 59, 0.85);
+      transform: translateY(-4px);
+      box-shadow: 0 16px 36px -12px rgba(99, 102, 241, 0.3);
+    }
+
+    .badge-tag {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+
+    .badge-1 { background: rgba(59, 130, 246, 0.2); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.4); }
+    .badge-2 { background: rgba(168, 85, 247, 0.2); color: #c084fc; border: 1px solid rgba(168, 85, 247, 0.4); }
+    .badge-3 { background: rgba(249, 115, 22, 0.2); color: #fb923c; border: 1px solid rgba(249, 115, 22, 0.4); }
+
+    .card-h {
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: #fff;
+    }
+
+    .card-desc {
+      font-size: 0.88rem;
+      color: #94a3b8;
+      margin-bottom: 18px;
+      line-height: 1.6;
+    }
+
+    .features-list {
+      list-style: none;
+      font-size: 0.82rem;
+      color: #cbd5e1;
+      margin-bottom: 20px;
+    }
+
+    .features-list li {
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .btn-action {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      width: 100%;
+      padding: 10px 0;
+      border-radius: 10px;
+      font-size: 0.9rem;
+      font-weight: 700;
+      text-decoration: none;
+      color: #fff;
+      background: linear-gradient(135deg, #6366f1, #4f46e5);
+      border: none;
+      cursor: pointer;
+      transition: opacity 0.2s ease;
+    }
+
+    .btn-action:hover {
+      opacity: 0.9;
+    }
+
+    /* Live Interactive Sandbox */
+    .sandbox-container {
+      background: rgba(15, 23, 42, 0.8);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      padding: 20px;
+      box-shadow: 0 20px 40px -20px rgba(0, 0, 0, 0.6);
+    }
+
+    .sandbox-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .sandbox-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .device-switch {
+      display: flex;
+      gap: 6px;
+      background: rgba(30, 41, 59, 0.8);
+      padding: 4px;
+      border-radius: 8px;
+    }
+
+    .device-btn {
+      background: transparent;
+      border: none;
+      color: #94a3b8;
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      cursor: pointer;
+    }
+
+    .device-btn.active {
+      background: #4f46e5;
+      color: #fff;
+    }
+
+    .preview-frame-wrapper {
+      width: 100%;
+      height: 780px;
+      background: #000;
+      border-radius: 12px;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      transition: width 0.3s ease;
+      margin: 0 auto;
+    }
+
+    .preview-frame {
+      width: 100%;
+      height: 100%;
+      border: none;
+      background: #fff;
+    }
+
+    @media (max-width: 1024px) {
+      .proposals-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="header-bar">
+    <div class="title-group">
+      <h1>池边残月 · 前端界面全新视觉方案选型中心</h1>
+      <p>无需修改当前线上项目，直接在本地实时预览、切换与对比 3 套全新现代化设计</p>
+    </div>
+  </div>
+
+  <div class="container">
+    <!-- Proposals Grid -->
+    <div class="proposals-grid">
+      <!-- Proposal 1 -->
+      <div class="proposal-card active" onclick="loadPreview('design1_apple_minimalist.html', this)">
+        <div>
+          <span class="badge-tag badge-1">方案一 · 极简苹果社论风</span>
+          <h2 class="card-h">Apple & Linear Minimalist</h2>
+          <p class="card-desc">极致克制的大留白与优雅衬线/无衬线排版，摒弃笨重色块，突出纯净的技术写作质感。</p>
+          <ul class="features-list">
+            <li>✨ 纯粹大标题与呼吸感 Hero，无多余大横幅</li>
+            <li>✨ 杂志社论式（Editorial）精巧文章流排版</li>
+            <li>✨ 黄金比例右侧轻量粘性挂件与分类芯片</li>
+            <li>✨ 极简黑白深浅模式切换 + 顶部平滑阅读条</li>
+          </ul>
+        </div>
+        <a href="design1_apple_minimalist.html" target="_blank" class="btn-action">新窗口独立全屏打开 ↗</a>
+      </div>
+
+      <!-- Proposal 2 -->
+      <div class="proposal-card" onclick="loadPreview('design2_aurora_glass.html', this)">
+        <div>
+          <span class="badge-tag badge-2">方案二 · 极光微光毛玻璃</span>
+          <h2 class="card-h">Aurora Glow & Glassmorphism</h2>
+          <p class="card-desc">灵感来自 Next.js / Raycast / Supabase，流动极光背景与多层通透毛玻璃卡片。</p>
+          <ul class="features-list">
+            <li>✨ 柔和流动极光光晕背景（Mesh Gradient）</li>
+            <li>✨ 悬浮毛玻璃胶囊导航与全透明卡片群</li>
+            <li>✨ 鼠标悬停光影跟随（Glow on Hover）</li>
+            <li>✨ 炫彩置顶推荐标签与立体微浮雕质感</li>
+          </ul>
+        </div>
+        <a href="design2_aurora_glass.html" target="_blank" class="btn-action" style="background: linear-gradient(135deg, #a855f7, #6366f1);">新窗口独立全屏打开 ↗</a>
+      </div>
+
+      <!-- Proposal 3 -->
+      <div class="proposal-card" onclick="loadPreview('design3_bento_notion.html', this)">
+        <div>
+          <span class="badge-tag badge-3">方案三 · 便当盒极客学术风</span>
+          <h2 class="card-h">Bento Grid & Notion Style</h2>
+          <p class="card-desc">当下顶流 Bento Grid 模块化仪表盘 + Notion 知识库架构，支持列表与栅格双视图自由切换。</p>
+          <ul class="features-list">
+            <li>✨ 首页 Bento Grid 便当盒模块化信息看板</li>
+            <li>✨ 支持「📰 列表」与「🧱 栅格」双视图一键切换</li>
+            <li>✨ 极客细点阵背景（Dot Grid）与等宽字体细节</li>
+            <li>✨ Notion 式清晰目录与沉浸式文档阅读流</li>
+          </ul>
+        </div>
+        <a href="design3_bento_notion.html" target="_blank" class="btn-action" style="background: linear-gradient(135deg, #ea580c, #f59e0b);">新窗口独立全屏打开 ↗</a>
+      </div>
+    </div>
+
+    <!-- Live Sandbox Preview -->
+    <div class="sandbox-container">
+      <div class="sandbox-header">
+        <div class="sandbox-title">
+          <span>🖥️ 实时交互体验沙盒 (支持视口缩放与交互)</span>
+        </div>
+        <div class="device-switch">
+          <button class="device-btn active" onclick="setDevice('100%', this)">🖥️ 桌面端 (100%)</button>
+          <button class="device-btn" onclick="setDevice('768px', this)">📱 平板端 (768px)</button>
+          <button class="device-btn" onclick="setDevice('390px', this)">📱 手机端 (390px)</button>
+        </div>
+      </div>
+      <div class="preview-frame-wrapper" id="frameWrapper">
+        <iframe src="design1_apple_minimalist.html" class="preview-frame" id="liveFrame"></iframe>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function loadPreview(file, card) {
+      document.querySelectorAll('.proposal-card').forEach(c => c.classList.remove('active'));
+      card.classList.add('active');
+      document.getElementById('liveFrame').src = file;
+    }
+
+    function setDevice(width, btn) {
+      document.querySelectorAll('.device-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById('frameWrapper').style.width = width;
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>方案二：极光微光 / 现代毛玻璃风 (Aurora Glow & Cyber Glassmorphism)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0b0f19;
+      --bg-gradient: radial-gradient(circle at 15% 20%, rgba(99, 102, 241, 0.15), transparent 45%),
+                         radial-gradient(circle at 85% 30%, rgba(236, 72, 153, 0.12), transparent 40%),
+                         radial-gradient(circle at 50% 80%, rgba(14, 165, 233, 0.15), transparent 50%);
+      --glass-bg: rgba(18, 24, 38, 0.65);
+      --glass-bg-hover: rgba(26, 34, 52, 0.85);
+      --glass-border: rgba(255, 255, 255, 0.08);
+      --glass-border-hover: rgba(129, 140, 248, 0.4);
+      --text: #f8fafc;
+      --text-secondary: #94a3b8;
+      --text-muted: #64748b;
+      --accent: #818cf8;
+      --accent-gradient: linear-gradient(135deg, #a855f7 0%, #6366f1 50%, #38bdf8 100%);
+      --badge-top-bg: linear-gradient(135deg, #ec4899 0%, #f43f5e 100%);
+      --card-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    html[data-theme="light"] {
+      --bg: #f8fafc;
+      --bg-gradient: radial-gradient(circle at 15% 20%, rgba(99, 102, 241, 0.08), transparent 45%),
+                         radial-gradient(circle at 85% 30%, rgba(236, 72, 153, 0.06), transparent 40%),
+                         radial-gradient(circle at 50% 80%, rgba(14, 165, 233, 0.08), transparent 50%);
+      --glass-bg: rgba(255, 255, 255, 0.75);
+      --glass-bg-hover: rgba(255, 255, 255, 0.95);
+      --glass-border: rgba(226, 232, 240, 0.8);
+      --glass-border-hover: rgba(99, 102, 241, 0.4);
+      --text: #0f172a;
+      --text-secondary: #475569;
+      --text-muted: #94a3b8;
+      --accent: #4f46e5;
+      --card-shadow: 0 10px 25px -5px rgba(99, 102, 241, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.8);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      transition: background-color 0.25s ease, border-color 0.25s ease, color 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    body {
+      background-color: var(--bg);
+      background-image: var(--bg-gradient);
+      background-attachment: fixed;
+      color: var(--text);
+      font-family: var(--font-sans);
+      min-height: 100vh;
+      line-height: 1.65;
+    }
+
+    .container {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* Reading Bar */
+    .reading-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 3px;
+      width: 0%;
+      background: var(--accent-gradient);
+      z-index: 1000;
+      box-shadow: 0 0 12px rgba(168, 85, 247, 0.6);
+    }
+
+    /* Floating Capsule Navbar */
+    header.site-header {
+      position: sticky;
+      top: 16px;
+      z-index: 900;
+      margin-bottom: 32px;
+    }
+
+    .navbar-capsule {
+      background: var(--glass-bg);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border: 1px solid var(--glass-border);
+      border-radius: 9999px;
+      padding: 8px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: var(--card-shadow);
+    }
+
+    .brand-title {
+      font-size: 1.15rem;
+      font-weight: 800;
+      text-decoration: none;
+      background: var(--accent-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: -0.5px;
+    }
+
+    .nav-items {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .nav-items a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 600;
+      padding: 6px 14px;
+      border-radius: 9999px;
+    }
+
+    .nav-items a:hover,
+    .nav-items a.active {
+      color: var(--text);
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .btn-toggle {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--glass-border);
+      border-radius: 50%;
+      width: 38px;
+      height: 38px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      color: var(--text);
+    }
+
+    /* Hero Glow Card */
+    .hero-glow-card {
+      background: var(--glass-bg);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border: 1px solid var(--glass-border);
+      border-radius: 20px;
+      padding: 40px 48px;
+      box-shadow: var(--card-shadow);
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 32px;
+    }
+
+    .hero-glow-card::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -20%;
+      width: 300px;
+      height: 300px;
+      background: radial-gradient(circle, rgba(168, 85, 247, 0.25), transparent 70%);
+      filter: blur(40px);
+      pointer-events: none;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 12px;
+      border-radius: 9999px;
+      background: rgba(129, 140, 248, 0.12);
+      border: 1px solid rgba(129, 140, 248, 0.3);
+      color: var(--accent);
+      font-size: 0.8rem;
+      font-weight: 700;
+      margin-bottom: 16px;
+    }
+
+    .hero-heading {
+      font-size: 2.5rem;
+      font-weight: 800;
+      line-height: 1.25;
+      letter-spacing: -0.8px;
+      margin-bottom: 12px;
+    }
+
+    .hero-heading span {
+      background: var(--accent-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero-desc {
+      color: var(--text-secondary);
+      font-size: 1.05rem;
+      max-width: 720px;
+      margin-bottom: 24px;
+    }
+
+    /* Metrics Grid */
+    .metrics-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+
+    .metric-card {
+      background: var(--glass-bg);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--glass-border);
+      border-radius: 16px;
+      padding: 18px 20px;
+      box-shadow: var(--card-shadow);
+      text-decoration: none;
+    }
+
+    .metric-card:hover {
+      border-color: var(--glass-border-hover);
+      transform: translateY(-3px);
+    }
+
+    .metric-val {
+      font-size: 1.65rem;
+      font-weight: 800;
+      color: var(--text);
+    }
+
+    .metric-title {
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    /* Layout Grid */
+    .layout-row {
+      display: grid;
+      grid-template-columns: 1fr 320px;
+      gap: 32px;
+      padding-bottom: 80px;
+    }
+
+    /* Post Card (Glassmorphism Glow) */
+    .post-card {
+      background: var(--glass-bg);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--glass-border);
+      border-radius: 16px;
+      padding: 24px 28px;
+      margin-bottom: 18px;
+      box-shadow: var(--card-shadow);
+      cursor: pointer;
+      position: relative;
+    }
+
+    .post-card:hover {
+      background: var(--glass-bg-hover);
+      border-color: var(--glass-border-hover);
+      transform: translateY(-2px);
+      box-shadow: 0 16px 36px -12px rgba(99, 102, 241, 0.25);
+    }
+
+    .card-top-meta {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      margin-bottom: 10px;
+    }
+
+    .badge-top-post {
+      background: var(--badge-top-bg);
+      color: #fff;
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 6px;
+      box-shadow: 0 2px 8px rgba(236, 72, 153, 0.4);
+    }
+
+    .tag-badge {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--glass-border);
+      color: var(--text-secondary);
+      padding: 2px 8px;
+      border-radius: 6px;
+      font-size: 0.76rem;
+      font-weight: 600;
+    }
+
+    .card-title {
+      font-size: 1.3rem;
+      font-weight: 700;
+      line-height: 1.38;
+      color: var(--text);
+      margin-bottom: 8px;
+    }
+
+    .card-desc {
+      color: var(--text-secondary);
+      font-size: 0.93rem;
+      line-height: 1.6;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2;
+      overflow: hidden;
+    }
+
+    /* Sidebar Glass Widgets */
+    .sidebar-col {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .glass-widget {
+      background: var(--glass-bg);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--glass-border);
+      border-radius: 16px;
+      padding: 22px;
+      box-shadow: var(--card-shadow);
+    }
+
+    .widget-h {
+      font-size: 0.95rem;
+      font-weight: 700;
+      margin-bottom: 14px;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .glass-search {
+      width: 100%;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--glass-border);
+      border-radius: 10px;
+      padding: 10px 14px;
+      color: var(--text);
+      font-size: 0.9rem;
+      outline: none;
+    }
+
+    .glass-search:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(129, 140, 248, 0.25);
+    }
+
+    .category-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .cat-pill {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--glass-border);
+      color: var(--text-secondary);
+      padding: 5px 12px;
+      border-radius: 8px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      text-decoration: none;
+    }
+
+    .cat-pill:hover {
+      background: var(--accent);
+      color: #ffffff;
+      border-color: var(--accent);
+    }
+
+    /* Article Reader Mode */
+    .article-box {
+      display: none;
+      background: var(--glass-bg);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border: 1px solid var(--glass-border);
+      border-radius: 20px;
+      padding: 40px;
+      box-shadow: var(--card-shadow);
+      margin-bottom: 60px;
+    }
+
+    .article-box.active {
+      display: block;
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--accent);
+      font-weight: 600;
+      font-size: 0.9rem;
+      cursor: pointer;
+      margin-bottom: 24px;
+    }
+
+    .code-glass {
+      background: rgba(0, 0, 0, 0.35);
+      border: 1px solid var(--glass-border);
+      border-radius: 10px;
+      padding: 16px 20px;
+      font-family: var(--font-mono);
+      font-size: 0.9rem;
+      margin: 20px 0;
+    }
+
+    @media (max-width: 768px) {
+      .layout-row {
+        grid-template-columns: 1fr;
+      }
+      .metrics-row {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .hero-heading {
+        font-size: 1.9rem;
+      }
+      .hero-glow-card {
+        padding: 28px 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="reading-bar" id="progressBar"></div>
+
+  <!-- Capsule Navbar -->
+  <div class="container">
+    <header class="site-header">
+      <div class="navbar-capsule">
+        <a href="#" class="brand-title" onclick="showFeed(event)">池边残月</a>
+        <nav class="nav-items">
+          <a href="#" class="active" onclick="showFeed(event)">首页</a>
+          <a href="#" onclick="showFeed(event)">分类</a>
+          <a href="#" onclick="showFeed(event)">归档</a>
+          <a href="#" onclick="showFeed(event)">开源</a>
+          <a href="#" onclick="showFeed(event)">关于</a>
+        </nav>
+        <button class="btn-toggle" id="themeToggle" title="切换深浅主题">☀️</button>
+      </div>
+    </header>
+  </div>
+
+  <div class="container" id="feedView">
+    <!-- Hero Glow Card -->
+    <section class="hero-glow-card">
+      <div class="hero-badge">⚡️ Next-Gen Engineering Garden</div>
+      <h1 class="hero-heading">探索 <span>深度技术</span> 与智能未来</h1>
+      <p class="hero-desc">专注系统工程、大语言模型本地工作流集成、科研自动化与数字资产整理。微信：REALone2233 · GitHub: @aone2233</p>
+      
+      <!-- Metrics -->
+      <div class="metrics-row" style="margin-bottom: 0;">
+        <div class="metric-card">
+          <div class="metric-val">11</div>
+          <div class="metric-title">精选文章</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-val">98</div>
+          <div class="metric-title">Wiki 知识条目</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-val">10</div>
+          <div class="metric-title">主题分类</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-val">05-09</div>
+          <div class="metric-title">最新更新</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Main Section -->
+    <div class="layout-row">
+      <main class="post-feed">
+        <div class="post-card" onclick="openArticle('工科系学习资料搜集方法')">
+          <div class="card-top-meta">
+            <span class="badge-top-post">📌 置顶推荐</span>
+            <span>2024/08/02</span>
+            <span class="tag-badge">资料整理</span>
+          </div>
+          <h2 class="card-title">工科系学习资料搜集方法</h2>
+          <p class="card-desc">全面梳理工科学习与学术研究全阶段资料检索路径，涵盖教材课件、经典论文、实验代码及专业工具库的高效获取手段...</p>
+        </div>
+
+        <div class="post-card" onclick="openArticle('如何连接CPA到Codex以及Cherry Studio')">
+          <div class="card-top-meta">
+            <span>2026/03/20</span>
+            <span class="tag-badge">技术教学</span>
+            <span class="tag-badge">AI 工具</span>
+          </div>
+          <h2 class="card-title">如何连接CPA到Codex以及Cherry Studio</h2>
+          <p class="card-desc">很多人第一次拿到 API 信息时都会一脸茫然。本文手把手带你理清 Base URL、API Key 与客户端对接，快速在本地跑通 ChatGPT 与 Codex...</p>
+        </div>
+
+        <div class="post-card" onclick="openArticle('清华毕设 LaTeX 模板与 AI 辅助写作入门')">
+          <div class="card-top-meta">
+            <span>2026/05/09</span>
+            <span class="tag-badge">LaTeX</span>
+            <span class="tag-badge">论文排版</span>
+          </div>
+          <h2 class="card-title">清华毕设 LaTeX 模板与 AI 辅助写作入门</h2>
+          <p class="card-desc">针对毕业设计排版痛点，结合 ThuThesis 模板与 VS Code + TeX Live，配合现代大语言模型进行学术规范校验与高效润色...</p>
+        </div>
+
+        <div class="post-card" onclick="openArticle('如何使用 Codex')">
+          <div class="card-top-meta">
+            <span>2025/06/04</span>
+            <span class="tag-badge">AI</span>
+            <span class="tag-badge">效率</span>
+          </div>
+          <h2 class="card-title">如何使用 Codex</h2>
+          <p class="card-desc">介绍如何在自己的项目中配置并使用 Codex，帮助开发者更高效地完成编码学习与工程重构任务...</p>
+        </div>
+      </main>
+
+      <aside class="sidebar-col">
+        <div class="glass-widget">
+          <div class="widget-h">🔍 全文搜索</div>
+          <input type="text" class="glass-search" placeholder="输入搜索文章...">
+        </div>
+
+        <div class="glass-widget">
+          <div class="widget-h">🏷️ 分类标签</div>
+          <div class="category-pills">
+            <a href="#" class="cat-pill">技术教学 (4)</a>
+            <a href="#" class="cat-pill">AI 与大模型 (6)</a>
+            <a href="#" class="cat-pill">工具资源 (5)</a>
+            <a href="#" class="cat-pill">科研写作 (3)</a>
+          </div>
+        </div>
+
+        <div class="glass-widget" style="text-align: center;">
+          <div class="widget-h" style="justify-content: center;">💬 微信联系</div>
+          <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 12px;">微信：REALone2233</p>
+          <div style="width: 130px; height: 130px; background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border); border-radius: 12px; margin: 0 auto; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; color: var(--text-muted);">
+            [微信二维码]
+          </div>
+        </div>
+      </aside>
+    </div>
+  </div>
+
+  <!-- Article View -->
+  <div class="container">
+    <div id="articleView" class="article-box">
+      <div class="back-link" onclick="showFeed(event)">← 返回文章列表</div>
+      <h1 style="font-size: 2.2rem; font-weight: 800; margin-bottom: 16px;" id="articleHeadline">如何连接CPA到Codex以及Cherry Studio</h1>
+      <div style="font-size: 0.88rem; color: var(--text-muted); margin-bottom: 32px;">📅 2026/03/20 · 📁 技术教学 · ⏱️ 4,864 字 (约 14 分钟)</div>
+
+      <div style="font-size: 1.05rem; line-height: 1.8; color: var(--text);">
+        <p>很多人第一次拿到 API 信息时，都会有点不知所道从哪下手：</p>
+        <div style="border-left: 4px solid var(--accent); padding-left: 18px; margin: 24px 0; color: var(--text-secondary); font-style: italic;">
+          “理解 Base URL 与 API Key 是构建现代 AI 应用的第一步。”
+        </div>
+        <p>这篇文章用最简单明了的方式，带你一步一步搞懂 Base URL 和 API Key 的配置与调用逻辑。</p>
+
+        <div class="code-glass">
+Base URL: https://api.example.com/v1
+API Key:  sk-xxxxxxxxxxxxxxxxxxxxxxxx
+Model:    gpt-4o / claude-3-5-sonnet
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const themeToggle = document.getElementById('themeToggle');
+    themeToggle.addEventListener('click', () => {
+      const html = document.documentElement;
+      const current = html.getAttribute('data-theme');
+      const next = current === 'dark' ? 'light' : 'dark';
+      html.setAttribute('data-theme', next);
+      themeToggle.textContent = next === 'dark' ? '☀️' : '🌙';
+    });
+
+    window.addEventListener('scroll', () => {
+      const total = document.documentElement.scrollHeight - window.innerHeight;
+      const progress = (window.scrollY / total) * 100;
+      document.getElementById('progressBar').style.width = Math.min(100, Math.max(0, progress)) + '%';
+    });
+
+    function openArticle(title) {
+      document.getElementById('feedView').style.display = 'none';
+      document.getElementById('articleView').classList.add('active');
+      document.getElementById('articleHeadline').textContent = title;
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function showFeed(e) {
+      if (e) e.preventDefault();
+      document.getElementById('feedView').style.display = 'block';
+      document.getElementById('articleView').classList.remove('active');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  </script>
+</body>
+</html>

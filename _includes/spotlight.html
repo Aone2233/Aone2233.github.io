@@ -1,0 +1,18 @@
+<!-- Spotlight Global Search Modal (⌘K / Ctrl+K) -->
+<div class="spotlight-overlay" id="spotlightOverlay" onclick="handleSpotlightBgClick(event)" aria-hidden="true">
+  <div class="spotlight-modal" role="dialog" aria-modal="true" aria-label="全站搜索">
+    <div class="spotlight-input-wrapper">
+      <span class="spotlight-icon">🔍</span>
+      <input type="text" class="spotlight-input" id="spotlightInput" placeholder="输入搜索文章标题、关键词或分类..." autocomplete="off">
+      <span class="kbd-shortcut" onclick="toggleSpotlight(false)">ESC</span>
+    </div>
+    <div class="spotlight-results" id="spotlightResults">
+      <div class="spotlight-hint">输入关键词开始检索全站内容...</div>
+    </div>
+    <div class="spotlight-footer">
+      <span><kbd class="kbd-shortcut">↑</kbd> <kbd class="kbd-shortcut">↓</kbd> 导航</span>
+      <span><kbd class="kbd-shortcut">↵</kbd> 打开</span>
+      <span><kbd class="kbd-shortcut">ESC</kbd> 关闭</span>
+    </div>
+  </div>
+</div>

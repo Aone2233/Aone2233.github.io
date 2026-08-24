@@ -1,27 +1,10 @@
 <section class="widget-card widget-search">
-  <h3>站内搜索</h3>
-  <div id="site_search">
-      <label for="search_box" class="sr-only">站内搜索</label>
-      <input class="widget-search-input" type="text" id="search_box" placeholder="搜索文章 / 关键词">
+  <div class="widget-title">
+    <span>站内快速检索</span>
+    <span class="kbd-shortcut">⌘K</span>
   </div>
-  <ul id="search_results" class="search-results"></ul>
+  <div id="site_search" onclick="toggleSpotlight(true)" style="cursor: pointer;">
+      <label for="search_box_trigger" class="sr-only">全站检索</label>
+      <input class="widget-search-input" type="text" id="search_box_trigger" placeholder="按 ⌘K 或点击全站检索..." readonly style="cursor: pointer;">
+  </div>
 </section>
-
-<script src="{{ assets_base_url }}/assets/js/simple-jekyll-search.min.js"></script>
-
-<script type="text/javascript">
-SimpleJekyllSearch({
-    searchInput: document.getElementById('search_box'),
-    resultsContainer: document.getElementById('search_results'),
-  {% if site.cdn.jsdelivr.enabled and site.url contains 'mazhuang.org' %}
-    json: 'https://fastly.jsdelivr.net/gh/mzlogin/mzlogin.github.io@built/assets/search_data.json?v={{ "now" | date: "%s"}}',
-  {% else %}
-    json: '{{ site.url }}/assets/search_data.json?v={{ "now" | date: "%s"}}',
-  {% endif %}
-    searchResultTemplate: '<li><a href="{url}" title="{title}">{title}</a></li>',
-    noResultsText: '未找到相关内容',
-    limit: {{ site.simple_jekyll_search.limit }},
-    fuzzy: false,
-    exclude: ['Welcome']
-})
-</script>

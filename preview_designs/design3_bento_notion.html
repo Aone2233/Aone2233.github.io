@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>方案三：便当盒栅格 / Notion 现代极客风 (Bento Grid & Notion Style)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #fbfbfa;
+      --bg-dots: radial-gradient(#e5e7eb 1px, transparent 1px);
+      --surface: #ffffff;
+      --surface-subtle: #f7f7f5;
+      --text: #191919;
+      --text-secondary: #5a5a5a;
+      --text-muted: #8c8c8c;
+      --border: #e8e8e6;
+      --border-strong: #d3d3d1;
+      --accent: #2e78d6;
+      --accent-soft: rgba(46, 120, 214, 0.08);
+      --bento-shadow: 0 1px 3px rgba(0, 0, 0, 0.03), 0 4px 12px rgba(0, 0, 0, 0.03);
+      --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    html[data-theme="dark"] {
+      --bg: #121212;
+      --bg-dots: radial-gradient(#262626 1px, transparent 1px);
+      --surface: #1e1e1e;
+      --surface-subtle: #282828;
+      --text: #f0f0f0;
+      --text-secondary: #a0a0a0;
+      --text-muted: #666666;
+      --border: #2c2c2c;
+      --border-strong: #3d3d3d;
+      --accent: #58a6ff;
+      --accent-soft: rgba(88, 166, 255, 0.12);
+      --bento-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      transition: background-color 0.22s ease, border-color 0.22s ease, color 0.22s ease;
+    }
+
+    body {
+      background-color: var(--bg);
+      background-image: var(--bg-dots);
+      background-size: 20px 20px;
+      color: var(--text);
+      font-family: var(--font-sans);
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* Top Progress Bar */
+    .reading-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 3px;
+      width: 0%;
+      background: var(--accent);
+      z-index: 1000;
+    }
+
+    /* Header */
+    header.notion-header {
+      position: sticky;
+      top: 0;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      z-index: 900;
+    }
+
+    .header-content {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 58px;
+    }
+
+    .brand-group {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: var(--text);
+      font-weight: 700;
+      font-size: 1.1rem;
+    }
+
+    .brand-icon {
+      background: var(--surface-subtle);
+      border: 1px solid var(--border);
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+    }
+
+    nav.nav-tabs {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    nav.nav-tabs a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 0.88rem;
+      font-weight: 600;
+      padding: 6px 12px;
+      border-radius: 6px;
+    }
+
+    nav.nav-tabs a:hover,
+    nav.nav-tabs a.active {
+      color: var(--text);
+      background: var(--surface-subtle);
+    }
+
+    .btn-notion {
+      background: var(--surface-subtle);
+      border: 1px solid var(--border);
+      padding: 6px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      color: var(--text);
+      font-size: 0.88rem;
+      font-weight: 600;
+    }
+
+    .btn-notion:hover {
+      background: var(--border);
+    }
+
+    /* Bento Grid Section */
+    .bento-section {
+      margin: 36px 0 40px;
+    }
+
+    .bento-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-gap: 18px;
+    }
+
+    .bento-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 24px;
+      box-shadow: var(--bento-shadow);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .bento-card.col-2 {
+      grid-column: span 2;
+    }
+
+    .bento-card.col-3 {
+      grid-column: span 3;
+    }
+
+    .bento-avatar {
+      font-size: 2.2rem;
+      margin-bottom: 12px;
+    }
+
+    .bento-title {
+      font-size: 1.5rem;
+      font-weight: 800;
+      margin-bottom: 8px;
+      letter-spacing: -0.4px;
+    }
+
+    .bento-sub {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+
+    .bento-metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin-top: 10px;
+    }
+
+    .bento-metric-box {
+      background: var(--surface-subtle);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px;
+      text-align: center;
+    }
+
+    .bento-num {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--text);
+      font-family: var(--font-mono);
+    }
+
+    .bento-label {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+      font-weight: 600;
+    }
+
+    /* Post Feed Controls */
+    .feed-controls {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .feed-heading {
+      font-size: 1.15rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .view-toggle {
+      display: flex;
+      background: var(--surface-subtle);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 2px;
+      gap: 2px;
+    }
+
+    .view-btn {
+      border: none;
+      background: transparent;
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      cursor: pointer;
+    }
+
+    .view-btn.active {
+      background: var(--surface);
+      color: var(--text);
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    }
+
+    /* Post List View */
+    .posts-container.list-mode .bento-post-item {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 18px 22px;
+      margin-bottom: 12px;
+      box-shadow: var(--bento-shadow);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .posts-container.list-mode .bento-post-item:hover {
+      border-color: var(--accent);
+      transform: translateX(4px);
+    }
+
+    /* Post Grid Mode */
+    .posts-container.grid-mode {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+
+    .posts-container.grid-mode .bento-post-item {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 22px;
+      box-shadow: var(--bento-shadow);
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .posts-container.grid-mode .bento-post-item:hover {
+      border-color: var(--accent);
+      transform: translateY(-3px);
+    }
+
+    .post-badge-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    .bento-tag {
+      background: var(--surface-subtle);
+      border: 1px solid var(--border);
+      padding: 2px 7px;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-family: var(--font-mono);
+      color: var(--text-secondary);
+    }
+
+    .bento-pin {
+      background: #ea580c;
+      color: #fff;
+      padding: 2px 7px;
+      border-radius: 4px;
+      font-size: 0.72rem;
+      font-weight: 700;
+    }
+
+    .p-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+
+    .p-desc {
+      color: var(--text-secondary);
+      font-size: 0.88rem;
+      line-height: 1.55;
+    }
+
+    .p-date {
+      color: var(--text-muted);
+      font-size: 0.8rem;
+      font-family: var(--font-mono);
+      white-space: nowrap;
+    }
+
+    /* Article Reader */
+    .article-container {
+      display: none;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 40px;
+      margin: 36px 0 60px;
+      box-shadow: var(--bento-shadow);
+    }
+
+    .article-container.active {
+      display: block;
+    }
+
+    .code-notion {
+      background: var(--surface-subtle);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px 18px;
+      font-family: var(--font-mono);
+      font-size: 0.88rem;
+      margin: 20px 0;
+    }
+
+    @media (max-width: 768px) {
+      .bento-grid {
+        grid-template-columns: 1fr;
+      }
+      .bento-card.col-2, .bento-card.col-3 {
+        grid-column: span 1;
+      }
+      .posts-container.grid-mode {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="reading-bar" id="progressBar"></div>
+
+  <!-- Header -->
+  <header class="notion-header">
+    <div class="container header-content">
+      <a href="#" class="brand-group" onclick="showFeed(event)">
+        <div class="brand-icon">🌙</div>
+        <span>池边残月 / Digital Garden</span>
+      </a>
+      <nav class="nav-tabs">
+        <a href="#" class="active" onclick="showFeed(event)">首页</a>
+        <a href="#" onclick="showFeed(event)">分类</a>
+        <a href="#" onclick="showFeed(event)">Wiki</a>
+        <a href="#" onclick="showFeed(event)">归档</a>
+      </nav>
+      <button class="btn-notion" id="themeToggle">🌓 切换外观</button>
+    </div>
+  </header>
+
+  <div class="container" id="feedView">
+    <!-- Bento Dashboard Grid -->
+    <section class="bento-section">
+      <div class="bento-grid">
+        <!-- Main Intro Card -->
+        <div class="bento-card col-2">
+          <div class="bento-avatar">👨‍💻</div>
+          <h1 class="bento-title">池边残月 · LLY</h1>
+          <p class="bento-sub">计算机与工科探索者。专注于 LLM 代理工程、系统优化、科研工具链与实用技术整理。记录真实的探索与代码实践。</p>
+          <div style="display: flex; gap: 12px; margin-top: 18px; font-size: 0.85rem; color: var(--text-muted);">
+            <span>📍 北京</span> · <span>💬 微信: REALone2233</span> · <span>⭐ GitHub: @aone2233</span>
+          </div>
+        </div>
+
+        <!-- Metrics Bento Card -->
+        <div class="bento-card">
+          <div style="font-weight: 700; font-size: 0.92rem; margin-bottom: 8px;">📊 博客指标概览</div>
+          <div class="bento-metrics-grid">
+            <div class="bento-metric-box">
+              <div class="bento-num">11</div>
+              <div class="bento-label">精选文章</div>
+            </div>
+            <div class="bento-metric-box">
+              <div class="bento-num">98</div>
+              <div class="bento-label">Wiki 条目</div>
+            </div>
+            <div class="bento-metric-box">
+              <div class="bento-num">10</div>
+              <div class="bento-label">主题分类</div>
+            </div>
+            <div class="bento-metric-box">
+              <div class="bento-num">05-09</div>
+              <div class="bento-label">最新更新</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Post Feed Section -->
+    <section style="margin-bottom: 60px;">
+      <div class="feed-controls">
+        <div class="feed-heading">
+          <span>📚 全部文章索引</span>
+        </div>
+        <div class="view-toggle">
+          <button class="view-btn active" id="btnList" onclick="setViewMode('list')">📰 列表模式</button>
+          <button class="view-btn" id="btnGrid" onclick="setViewMode('grid')">🧱 便当盒栅格</button>
+        </div>
+      </div>
+
+      <div class="posts-container list-mode" id="postsBox">
+        <div class="bento-post-item" onclick="openArticle('工科系学习资料搜集方法')">
+          <div>
+            <div class="post-badge-row">
+              <span class="bento-pin">📌 置顶</span>
+              <span class="bento-tag">资料整理</span>
+            </div>
+            <h3 class="p-title">工科系学习资料搜集方法</h3>
+            <p class="p-desc">全面梳理工科学习与学术研究全阶段资料检索路径，涵盖教材课件、经典论文及专业代码库...</p>
+          </div>
+          <div class="p-date">2024-08-02</div>
+        </div>
+
+        <div class="bento-post-item" onclick="openArticle('如何连接CPA到Codex以及Cherry Studio')">
+          <div>
+            <div class="post-badge-row">
+              <span class="bento-tag">技术教学</span>
+              <span class="bento-tag">AI 工具</span>
+            </div>
+            <h3 class="p-title">如何连接CPA到Codex以及Cherry Studio</h3>
+            <p class="p-desc">手把手带你理清 Base URL、API Key 与客户端对接，快速在本地跑通 ChatGPT 与 Codex...</p>
+          </div>
+          <div class="p-date">2026-03-20</div>
+        </div>
+
+        <div class="bento-post-item" onclick="openArticle('清华毕设 LaTeX 模板与 AI 辅助写作入门')">
+          <div>
+            <div class="post-badge-row">
+              <span class="bento-tag">ThuThesis</span>
+              <span class="bento-tag">LaTeX</span>
+            </div>
+            <h3 class="p-title">清华毕设 LaTeX 模板与 AI 辅助写作入门</h3>
+            <p class="p-desc">结合 ThuThesis 模板与 VS Code + TeX Live，配合现代大语言模型进行学术规范校验与高效润色...</p>
+          </div>
+          <div class="p-date">2026-05-09</div>
+        </div>
+
+        <div class="bento-post-item" onclick="openArticle('如何使用 Codex')">
+          <div>
+            <div class="post-badge-row">
+              <span class="bento-tag">Codex</span>
+              <span class="bento-tag">效率提升</span>
+            </div>
+            <h3 class="p-title">如何使用 Codex</h3>
+            <p class="p-desc">介绍如何在自己的项目中配置并使用 Codex，帮助开发者更高效地完成编码学习与工程重构任务...</p>
+          </div>
+          <div class="p-date">2025-06-04</div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- Article View -->
+  <div class="container">
+    <article class="article-container" id="articleView">
+      <div style="margin-bottom: 20px;">
+        <button class="btn-notion" onclick="showFeed(event)">← 返回文章便当盒</button>
+      </div>
+      <h1 style="font-size: 2.2rem; font-weight: 800; margin-bottom: 12px;" id="articleHeadline">如何连接CPA到Codex以及Cherry Studio</h1>
+      <div style="font-size: 0.85rem; color: var(--text-muted); font-family: var(--font-mono); margin-bottom: 28px; padding-bottom: 16px; border-bottom: 1px solid var(--border);">
+        PUBLISHED: 2026-03-20 · CATEGORY: 技术教学 · WORDS: 4864
+      </div>
+
+      <div style="font-size: 1.05rem; line-height: 1.8; color: var(--text);">
+        <p>很多人第一次拿到 API 信息时，都会有点不知所道从哪下手：</p>
+        <div class="code-notion">
+Base URL: https://api.example.com/v1
+API Key:  sk-xxxxxxxxxxxxxxxxxxxxxxxx
+Model:    gpt-4o / claude-3-5-sonnet
+        </div>
+        <p>理解 Base URL 与 API Key 是构建现代 AI 辅助工作流的第一步。</p>
+      </div>
+    </article>
+  </div>
+
+  <script>
+    const themeToggle = document.getElementById('themeToggle');
+    themeToggle.addEventListener('click', () => {
+      const html = document.documentElement;
+      const current = html.getAttribute('data-theme');
+      const next = current === 'dark' ? 'light' : 'dark';
+      html.setAttribute('data-theme', next);
+    });
+
+    window.addEventListener('scroll', () => {
+      const total = document.documentElement.scrollHeight - window.innerHeight;
+      const progress = (window.scrollY / total) * 100;
+      document.getElementById('progressBar').style.width = Math.min(100, Math.max(0, progress)) + '%';
+    });
+
+    function setViewMode(mode) {
+      const box = document.getElementById('postsBox');
+      const btnList = document.getElementById('btnList');
+      const btnGrid = document.getElementById('btnGrid');
+
+      if (mode === 'grid') {
+        box.className = 'posts-container grid-mode';
+        btnGrid.classList.add('active');
+        btnList.classList.remove('active');
+      } else {
+        box.className = 'posts-container list-mode';
+        btnList.classList.add('active');
+        btnGrid.classList.remove('active');
+      }
+    }
+
+    function openArticle(title) {
+      document.getElementById('feedView').style.display = 'none';
+      document.getElementById('articleView').classList.add('active');
+      document.getElementById('articleHeadline').textContent = title;
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function showFeed(e) {
+      if (e) e.preventDefault();
+      document.getElementById('feedView').style.display = 'block';
+      document.getElementById('articleView').classList.remove('active');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  </script>
+</body>
+</html>

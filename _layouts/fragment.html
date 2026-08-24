@@ -6,52 +6,41 @@ layout: default
 {% if site.cdn.jsdelivr.enabled %}
 {% assign assets_base_url = "https://fastly.jsdelivr.net/gh/" | append: site.repository | append: '@master' %}
 {% endif %}
-<section class="collection-head small geopattern" data-pattern-id="{{ page.title | truncate: 15, ''}}">
-<div class="container">
-  <div class="columns">
-    <div class="column three-fourths">
-      <div class="collection-title">
-        <h1 class="collection-header">{{ page.title }}</h1>
-        <div class="collection-info">
-          {% for tag in page.tags %}
-          <span class="meta-info">
-            <span class="octicon octicon-tag"></span>
-            <a href="{{ site.url }}/fragments/?tag={{ tag }}" title="{{ tag }}">{{ tag }}</a>
-          </span>
-          {% endfor %}
-        </div>
+
+<section class="container article-layout">
+  <div class="article-page-header">
+    <a href="{{ site.url }}/fragments/" class="back-link">← 返回片段列表</a>
+    <div class="article-meta-row">
+      {% for tag in page.tags %}
+      <span class="meta-item">
+        <span class="octicon octicon-tag"></span>
+        <a href="{{ site.url }}/fragments/?tag={{ tag }}" title="{{ tag }}">{{ tag }}</a>
+      </span>
+      {% endfor %}
+    </div>
+    <h1 class="article-headline">{{ page.title }}</h1>
+  </div>
+
+  <div class="columns article-columns">
+    <div class="column three-fourths article-main-column">
+      {% include content-header-ad.html %}
+      <article class="article-content markdown-body">
+        {{ content }}
+        {% include copyright.html %}
+      </article>
+      <div class="share">
+        {% include sns-share.html %}
+      </div>
+      {% include content-footer-ad.html %}
+      <div class="comment">
+        {% include comments.html %}
       </div>
     </div>
-    <div class="column one-fourth mobile-hidden">
-      <div class="collection-title">
-        {% include sidebar-qrcode.html %}
-      </div>
+    <div class="column one-fourth article-sidebar-column">
+      {% include sidebar-qrcode.html %}
+      {% include sidebar-search.html %}
+      {% include sidebar-post-nav.html %}
+      {% include sidebar-detail-ad.html %}
     </div>
   </div>
-</div>
 </section>
-<!-- / .banner -->
-<section class="container content">
-<div class="columns">
-  <div class="column three-fourths" >
-    {% include content-header-ad.html %}
-    <article class="article-content markdown-body">
-    {{ content }}
-    {% include copyright.html %}
-    </article>
-    <div class="share">
-      {% include sns-share.html %}
-    </div>
-    {% include content-footer-ad.html %}
-    <div class="comment">
-      {% include comments.html %}
-    </div>
-  </div>
-  <div class="column one-fourth">
-    {% include sidebar-search.html %}
-    {% include sidebar-post-nav.html %}
-    {% include sidebar-detail-ad.html %}
-  </div>
-</div>
-</section>
-<!-- /section.content -->

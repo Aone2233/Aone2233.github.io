@@ -8,6 +8,9 @@ function toggleMenu() {
   }
 }
 
+/* ==========================================================================
+   Theme Management (Light / Dark)
+   ========================================================================== */
 (function () {
   var THEME_KEY = "site-theme";
   var lastAppliedTheme = null;
@@ -46,9 +49,7 @@ function toggleMenu() {
           },
           "https://giscus.app"
         );
-      } catch (e) {
-        /* 忽略 iframe 尚不可达或跨域不可投递的场景 */
-      }
+      } catch (e) {}
     };
 
     var giscusFrame = document.querySelector("iframe.giscus-frame");
@@ -68,55 +69,8 @@ function toggleMenu() {
           },
           "https://utteranc.es"
         );
-      } catch (e) {
-        /* 忽略 iframe 尚不可达或跨域不可投递的场景 */
-      }
+      } catch (e) {}
     }
-  }
-
-  function forceRebuildGiscus(theme) {
-    var target = theme === "dark" ? "dark" : "light";
-    var giscusTheme = giscusThemeMap[target];
-    var giscusScript = document.querySelector('script[src*="giscus.app/client.js"]');
-    if (!giscusScript || !giscusScript.parentElement) return;
-
-    var parent = giscusScript.parentElement;
-    var hasLoadedFrame = parent.querySelector("iframe.giscus-frame");
-    if (!hasLoadedFrame) return;
-
-    var fresh = document.createElement("script");
-    fresh.src = "https://giscus.app/client.js";
-    fresh.async = true;
-    fresh.crossOrigin = "anonymous";
-
-    Array.prototype.forEach.call(giscusScript.attributes, function (attr) {
-      if (attr.name === "src" || attr.name === "async" || attr.name === "crossorigin") return;
-      fresh.setAttribute(attr.name, attr.value);
-    });
-    fresh.setAttribute("data-theme", giscusTheme);
-
-    parent.innerHTML = "";
-    parent.appendChild(fresh);
-  }
-
-  function forceRebuildGiscusWhenReady(theme, retries) {
-    if (document.querySelector("iframe.giscus-frame")) {
-      forceRebuildGiscus(theme);
-      return;
-    }
-    if (!retries || retries <= 0) return;
-    setTimeout(function () {
-      forceRebuildGiscusWhenReady(theme, retries - 1);
-    }, 600);
-  }
-
-  function observeCommentWidgets() {
-    if (!("MutationObserver" in window) || !document.body) return;
-    var observer = new MutationObserver(function () {
-      var current = document.documentElement.getAttribute("data-theme") === "dark" ? "dark" : "light";
-      syncThirdPartyTheme(current);
-    });
-    observer.observe(document.body, { childList: true, subtree: true });
   }
 
   function applyTheme(theme) {
@@ -126,33 +80,15 @@ function toggleMenu() {
       document.body.setAttribute("data-theme", target);
     }
 
-    var icon = document.querySelector(".theme-toggle-icon");
-    var text = document.querySelector(".theme-toggle-text");
     var toggleBtn = document.getElementById("theme-toggle");
-    if (icon) icon.textContent = target === "dark" ? "☀️" : "🌙";
-    if (text) text.textContent = target === "dark" ? "浅色" : "深色";
     if (toggleBtn) {
       var label = target === "dark" ? "切换到浅色" : "切换到深色";
       toggleBtn.setAttribute("title", label);
       toggleBtn.setAttribute("aria-label", label);
     }
 
-    setTimeout(function () {
-      syncThirdPartyTheme(target);
-    }, 60);
-    setTimeout(function () {
-      syncThirdPartyTheme(target);
-    }, 400);
-    setTimeout(function () {
-      syncThirdPartyTheme(target);
-    }, 900);
-
-    var shouldRebuildGiscus = target === "dark" || (lastAppliedTheme !== null && lastAppliedTheme !== target);
-    if (shouldRebuildGiscus) {
-      setTimeout(function () {
-        forceRebuildGiscusWhenReady(target, target === "dark" ? 4 : 2);
-      }, 900);
-    }
+    setTimeout(function () { syncThirdPartyTheme(target); }, 60);
+    setTimeout(function () { syncThirdPartyTheme(target); }, 400);
     lastAppliedTheme = target;
   }
 
@@ -173,145 +109,315 @@ function toggleMenu() {
   applyTheme(resolvePreferredTheme());
   document.addEventListener("DOMContentLoaded", function () {
     bindThemeToggle();
-    observeCommentWidgets();
     syncThirdPartyTheme(resolvePreferredTheme());
   });
 })();
 
-document.addEventListener("DOMContentLoaded", function () {
-  // 回到顶部
-  function toTop() {
-    var toTopBtn = document.querySelector(".gotop");
-    if (!toTopBtn) return;
+/* ==========================================================================
+   Spotlight Search Modal (⌘K / Ctrl+K)
+   ========================================================================== */
+var searchIndexData = null;
+var spotlightSelectedIndex = -1;
 
-    window.addEventListener("scroll", function () {
-      if (window.scrollY >= window.innerHeight * 0.75) {
-        toTopBtn.style.display = "block";
-      } else {
-        toTopBtn.style.display = "none";
-      }
-    }, { passive: true });
+function toggleSpotlight(show) {
+  var overlay = document.getElementById("spotlightOverlay");
+  var input = document.getElementById("spotlightInput");
+  if (!overlay) return;
 
-    toTopBtn.addEventListener("click", function (evt) {
-      evt.preventDefault();
-      window.scrollTo({
-        top: 0,
-        behavior: "smooth"
-      });
-    });
-  }
-
-  // 导航栏滚动毛玻璃增强效果
-  function headerScrollEffect() {
-    var header = document.querySelector(".site-header");
-    if (!header) return;
-
-    var checkScroll = function () {
-      if (window.scrollY > 8) {
-        header.classList.add("is-scrolled");
-      } else {
-        header.classList.remove("is-scrolled");
-      }
-    };
-
-    window.addEventListener("scroll", checkScroll, { passive: true });
-    checkScroll();
-  }
-
-  // 图片懒加载与异步解码属性注入
-  function optimizeImages() {
-    var images = document.querySelectorAll(".markdown-body img, .gallery img, .repo-list-item img");
-    images.forEach(function (img) {
-      if (!img.getAttribute("loading")) img.setAttribute("loading", "lazy");
-      if (!img.getAttribute("decoding")) img.setAttribute("decoding", "async");
-    });
-  }
-
-  // 卡片进入视口动效
-  function revealCards() {
-    var cards = document.querySelectorAll(".repo-list-item");
-    if (!cards.length) return;
-
-    if (!("IntersectionObserver" in window)) {
-      cards.forEach(function (card) { card.classList.add("in-view"); });
-      return;
+  if (show) {
+    overlay.classList.add("active");
+    overlay.setAttribute("aria-hidden", "false");
+    if (input) {
+      input.value = "";
+      input.focus();
     }
+    loadSearchData();
+    renderSpotlightResults("");
+  } else {
+    overlay.classList.remove("active");
+    overlay.setAttribute("aria-hidden", "true");
+  }
+}
 
-    var io = new IntersectionObserver(function (entries, observer) {
-      entries.forEach(function (entry) {
-        if (entry.isIntersecting) {
-          entry.target.classList.add("in-view");
-          observer.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.08 });
+function handleSpotlightBgClick(e) {
+  if (e.target.id === "spotlightOverlay") {
+    toggleSpotlight(false);
+  }
+}
 
-    cards.forEach(function (card) {
-      card.classList.add("reveal-ready");
-      io.observe(card);
+function loadSearchData() {
+  if (searchIndexData) return;
+  fetch("/assets/search_data.json")
+    .then(function (res) { return res.json(); })
+    .then(function (data) {
+      searchIndexData = data;
+    })
+    .catch(function (err) {
+      console.warn("Search index load error:", err);
     });
+}
+
+function renderSpotlightResults(query) {
+  var container = document.getElementById("spotlightResults");
+  if (!container) return;
+
+  if (!query || query.trim() === "") {
+    container.innerHTML = '<div class="spotlight-hint">输入关键词开始检索全站内容...</div>';
+    spotlightSelectedIndex = -1;
+    return;
   }
 
-  // 文章顶部阅读进度条
-  function initReadingProgressBar() {
-    var bar = document.getElementById("reading-progress-bar");
-    var article = document.querySelector(".article-content, .markdown-body");
-    if (!bar || !article) return;
-
-    var updateProgress = function () {
-      var rect = article.getBoundingClientRect();
-      var totalScroll = article.scrollHeight - window.innerHeight;
-      var currentOffset = -rect.top;
-      if (currentOffset <= 0) {
-        bar.style.width = "0%";
-      } else if (currentOffset >= totalScroll) {
-        bar.style.width = "100%";
-      } else {
-        var pct = Math.min(100, Math.max(0, (currentOffset / totalScroll) * 100));
-        bar.style.width = pct.toFixed(1) + "%";
-      }
-    };
-
-    window.addEventListener("scroll", updateProgress, { passive: true });
-    updateProgress();
+  if (!searchIndexData || !searchIndexData.length) {
+    container.innerHTML = '<div class="spotlight-hint">正在加载索引...</div>';
+    return;
   }
 
-  // 目录导航滚动跟随高亮 (Scrollspy)
-  function initTocScrollspy() {
+  var q = query.toLowerCase().trim();
+  var matches = searchIndexData.filter(function (item) {
+    var matchTitle = item.title && item.title.toLowerCase().indexOf(q) !== -1;
+    var matchCat = item.category && item.category.toLowerCase().indexOf(q) !== -1;
+    var matchKw = item.keywords && item.keywords.toLowerCase().indexOf(q) !== -1;
+    var matchContent = item.content && item.content.toLowerCase().indexOf(q) !== -1;
+    return matchTitle || matchCat || matchKw || matchContent;
+  }).slice(0, 10);
+
+  if (!matches.length) {
+    container.innerHTML = '<div class="spotlight-hint">未找到与 “' + query + '” 匹配的内容</div>';
+    spotlightSelectedIndex = -1;
+    return;
+  }
+
+  var html = "";
+  matches.forEach(function (item, idx) {
+    var cat = item.category ? '<span class="spotlight-item-cat">' + item.category + '</span>' : '';
+    html += '<a href="' + item.url + '" class="spotlight-item ' + (idx === 0 ? 'selected' : '') + '" data-idx="' + idx + '">';
+    html += '  <span>' + item.title + '</span>';
+    html += '  ' + cat;
+    html += '</a>';
+  });
+
+  container.innerHTML = html;
+  spotlightSelectedIndex = 0;
+}
+
+/* ==========================================================================
+   Interactive Clapping & Share Toast
+   ========================================================================== */
+var clapCountNum = 42;
+function handleClap(btn) {
+  clapCountNum++;
+  var countSpan = document.getElementById("clapCount");
+  if (countSpan) countSpan.textContent = clapCountNum;
+
+  btn.style.transform = "scale(1.2) rotate(-5deg)";
+  setTimeout(function () {
+    btn.style.transform = "";
+  }, 180);
+
+  showToast("👏 感谢你的点赞鼓励！");
+}
+
+function shareArticle() {
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(window.location.href).then(function () {
+      showToast("🔗 文章链接已复制到剪贴板");
+    });
+  } else {
+    showToast("🔗 文章链接已生成");
+  }
+}
+
+function showToast(text) {
+  var toast = document.getElementById("toastMsg");
+  if (!toast) return;
+  toast.textContent = text;
+  toast.classList.add("show");
+  setTimeout(function () {
+    toast.classList.remove("show");
+  }, 2000);
+}
+
+/* ==========================================================================
+   DOM Ready Handlers
+   ========================================================================== */
+document.addEventListener("DOMContentLoaded", function () {
+  // 1. Reading Progress Bar
+  var progressBar = document.getElementById("reading-progress-bar");
+  if (progressBar) {
+    window.addEventListener("scroll", function () {
+      var total = document.documentElement.scrollHeight - window.innerHeight;
+      var progress = (window.scrollY / total) * 100;
+      progressBar.style.width = Math.min(100, Math.max(0, progress)) + "%";
+    }, { passive: true });
+  }
+
+  // 2. Dynamic Sliding Pill TOC Indicator
+  function updateTocPill() {
+    var headings = document.querySelectorAll(".article-content h1, .article-content h2, .article-content h3, .markdown-body h1, .markdown-body h2, .markdown-body h3");
     var tocLinks = document.querySelectorAll(".post-directory a");
-    var headings = document.querySelectorAll(".article-content h1, .article-content h2, .article-content h3, .article-content h4, .markdown-body h1, .markdown-body h2, .markdown-body h3, .markdown-body h4");
-    if (!tocLinks.length || !headings.length) return;
+    var tocPill = document.getElementById("tocPill");
+    if (!headings.length || !tocLinks.length || !tocPill) return;
 
-    var onScroll = function () {
-      var scrollPos = window.scrollY + 130;
-      var activeId = "";
+    var scrollPos = window.scrollY + 120;
+    var activeHeading = null;
 
-      headings.forEach(function (h) {
-        if (h.id && h.offsetTop <= scrollPos) {
-          activeId = h.id;
-        }
-      });
+    headings.forEach(function (h) {
+      if (h.id && h.offsetTop <= scrollPos) {
+        activeHeading = h;
+      }
+    });
 
-      if (!activeId) return;
+    if (!activeHeading && headings.length) activeHeading = headings[0];
 
+    if (activeHeading) {
+      var activeId = activeHeading.id;
       tocLinks.forEach(function (link) {
         var href = link.getAttribute("href");
         if (href && (href === "#" + activeId || decodeURIComponent(href) === "#" + activeId)) {
-          link.classList.add("active");
+          link.classList.add("current");
+          var itemEle = link.parentElement;
+          if (itemEle) {
+            tocPill.style.transform = "translateY(" + itemEle.offsetTop + "px)";
+            tocPill.style.height = itemEle.offsetHeight + "px";
+          }
         } else {
-          link.classList.remove("active");
+          link.classList.remove("current");
         }
       });
-    };
-
-    window.addEventListener("scroll", onScroll, { passive: true });
-    onScroll();
+    }
   }
 
-  toTop();
-  headerScrollEffect();
-  optimizeImages();
-  revealCards();
-  initReadingProgressBar();
-  initTocScrollspy();
+  window.addEventListener("scroll", updateTocPill, { passive: true });
+  setTimeout(updateTocPill, 300);
+
+  // 3. Inject Heading Anchor Links
+  var articleHeadings = document.querySelectorAll(".article-content h1, .article-content h2, .article-content h3, .markdown-body h1, .markdown-body h2, .markdown-body h3");
+  articleHeadings.forEach(function (h) {
+    if (h.id) {
+      var a = document.createElement("a");
+      a.className = "heading-anchor";
+      a.href = "#" + h.id;
+      a.textContent = "#";
+      a.setAttribute("aria-hidden", "true");
+      h.prepend(a);
+    }
+  });
+
+  // 4. Spotlight Input Typing Listener
+  var spotlightInput = document.getElementById("spotlightInput");
+  if (spotlightInput) {
+    spotlightInput.addEventListener("input", function (e) {
+      renderSpotlightResults(e.target.value);
+    });
+  }
+
+  // 5. Global Keyboard Shortcuts (Cmd+K, J/K navigation, ESC, Enter)
+  var selectedPostIdx = -1;
+  window.addEventListener("keydown", function (e) {
+    var overlay = document.getElementById("spotlightOverlay");
+    var isSpotlightOpen = overlay && overlay.classList.contains("active");
+
+    // Cmd+K / Ctrl+K
+    if ((e.metaKey || e.ctrlKey) && (e.key === "k" || e.key === "K")) {
+      e.preventDefault();
+      toggleSpotlight(!isSpotlightOpen);
+      return;
+    }
+
+    // ESC
+    if (e.key === "Escape") {
+      if (isSpotlightOpen) {
+        toggleSpotlight(false);
+      }
+      return;
+    }
+
+    // Inside Spotlight Modal navigation
+    if (isSpotlightOpen) {
+      var items = document.querySelectorAll(".spotlight-item");
+      if (!items.length) return;
+
+      if (e.key === "ArrowDown") {
+        e.preventDefault();
+        spotlightSelectedIndex = (spotlightSelectedIndex + 1) % items.length;
+        updateSpotlightSelection(items);
+      } else if (e.key === "ArrowUp") {
+        e.preventDefault();
+        spotlightSelectedIndex = (spotlightSelectedIndex - 1 + items.length) % items.length;
+        updateSpotlightSelection(items);
+      } else if (e.key === "Enter") {
+        if (spotlightSelectedIndex >= 0 && items[spotlightSelectedIndex]) {
+          e.preventDefault();
+          items[spotlightSelectedIndex].click();
+        }
+      }
+      return;
+    }
+
+    // Home Feed J / K Navigation
+    var postItems = document.querySelectorAll(".post-feed .post-item");
+    if (postItems.length && !isSpotlightOpen) {
+      if (e.key === "j" || e.key === "J") {
+        selectedPostIdx = Math.min(postItems.length - 1, selectedPostIdx + 1);
+        highlightFeedItem(postItems);
+      } else if (e.key === "k" || e.key === "K") {
+        selectedPostIdx = Math.max(0, selectedPostIdx - 1);
+        highlightFeedItem(postItems);
+      } else if (e.key === "Enter" && selectedPostIdx >= 0) {
+        var link = postItems[selectedPostIdx].querySelector(".post-title a");
+        if (link) link.click();
+      }
+    }
+  });
+
+  function updateSpotlightSelection(items) {
+    items.forEach(function (it, idx) {
+      if (idx === spotlightSelectedIndex) {
+        it.classList.add("selected");
+        it.scrollIntoView({ block: "nearest" });
+      } else {
+        it.classList.remove("selected");
+      }
+    });
+  }
+
+  function highlightFeedItem(posts) {
+    posts.forEach(function (p, idx) {
+      if (idx === selectedPostIdx) {
+        p.classList.add("keyboard-selected");
+        p.scrollIntoView({ behavior: "smooth", block: "nearest" });
+      } else {
+        p.classList.remove("keyboard-selected");
+      }
+    });
+  }
+
+  // 6. Code Block Copy Enhancement
+  var codeBlocks = document.querySelectorAll(".markdown-body pre, .article-content pre");
+  codeBlocks.forEach(function (pre) {
+    var btn = document.createElement("button");
+    btn.className = "btn-copy-code";
+    btn.textContent = "复制";
+    btn.type = "button";
+    btn.title = "复制代码";
+
+    btn.addEventListener("click", function () {
+      var code = pre.querySelector("code") ? pre.querySelector("code").innerText : pre.innerText;
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(code).then(function () {
+          btn.textContent = "✓ 已复制";
+          btn.style.color = "#10b981";
+          btn.style.borderColor = "#10b981";
+          setTimeout(function () {
+            btn.textContent = "复制";
+            btn.style.color = "";
+            btn.style.borderColor = "";
+          }, 1800);
+        });
+      }
+    });
+
+    pre.style.position = "relative";
+    pre.appendChild(btn);
+  });
 });
