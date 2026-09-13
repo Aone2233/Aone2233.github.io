@@ -1,4 +1,8 @@
-{% if page.comments != false %}
+{% comment %}
+  评论开关：同时接受 `comments`（页面用）与 `comment`（历史文章用）两种拼写。
+  未设置时默认显示（nil != false）。任一显式设为 false 即关闭。
+{% endcomment %}
+{% if page.comments != false and page.comment != false %}
 
   {% if site.comments_provider != 'disqus' and site.lazy_load_disqus and site.disqus and site.disqus.username %}
     <a href="#" class="show_disqus_comment" onclick="return false;">Show Disqus Comments</a>
