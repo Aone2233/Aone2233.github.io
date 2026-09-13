@@ -779,6 +779,68 @@ html[data-theme="dark"] .theme-toggle::after {
   margin: 0 !important;
 }
 
+/* 生成器（jquery.toc.js）实际输出的结构是：
+     <p><strong class="toc-title">目录</strong></p>
+     <ul class="toc">
+       <li class="toc-item toc-level-2"><a>…
+         <ul class="toc-child"><li class="toc-item toc-level-3">…
+   此处按真实结构标注层级。缩进只加在 li 的 padding 上（li 保持 static，
+   以免改变 offsetParent 而影响 .toc-pill-indicator 的 offsetTop 定位）。*/
+
+/* 生成器自带的「目录」标题与外层 widget 标题「目录导航」重复，隐藏 */
+.post-directory > p:first-child,
+.post-directory .toc-title {
+  display: none !important;
+}
+
+.post-directory li.toc-item {
+  margin: 0 !important;
+  padding: 0 !important;
+  line-height: 1.4;
+  word-break: break-word;
+}
+
+/* 二级标题（章）：主层级 */
+.post-directory li.toc-level-2 {
+  margin-top: 10px !important;
+}
+
+.post-directory li.toc-level-2 > a {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--text) !important;
+}
+
+/* 三级标题（节）：次层级，缩进 */
+.post-directory li.toc-level-3 {
+  padding-left: 12px !important;
+}
+
+.post-directory li.toc-level-3 > a {
+  font-size: 0.8rem;
+  color: var(--text-secondary) !important;
+}
+
+/* 四级及更深：更弱，再缩进 */
+.post-directory li.toc-level-4,
+.post-directory li.toc-level-5,
+.post-directory li.toc-level-6 {
+  padding-left: 24px !important;
+}
+
+.post-directory li.toc-level-4 > a,
+.post-directory li.toc-level-5 > a,
+.post-directory li.toc-level-6 > a {
+  font-size: 0.76rem;
+  color: var(--text-muted) !important;
+}
+
+/* 悬停/当前项：需高于上面各层级的 color 优先级 */
+.post-directory li.toc-item > a:hover,
+.post-directory li.toc-item > a.current {
+  color: var(--accent) !important;
+}
+
 .toc-pill-indicator {
   position: absolute;
   left: -1.5px;
@@ -791,19 +853,9 @@ html[data-theme="dark"] .theme-toggle::after {
   box-shadow: 0 0 8px rgba(37, 99, 235, 0.4);
 }
 
-.post-directory dt {
-  margin: 8px 0;
-  font-size: 0.88rem;
-  line-height: 1.4;
-  word-break: break-word;
-}
-
-.post-directory dd {
-  margin: 6px 0 6px 14px;
-  font-size: 0.82rem;
-  line-height: 1.4;
-  word-break: break-word;
-}
+/* 注意：不要为 .post-directory 的 dt/dd 写样式——生成器输出的是 ul/li 结构，
+   页面里不存在 dl/dt/dd（最初这里误按占位标记 <dl></dl> 写了选择器，
+   导致目录层级样式整段落空）。层级样式见上方 .toc-level-* 规则。*/
 
 .post-directory a {
   color: var(--text-secondary) !important;
