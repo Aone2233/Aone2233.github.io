@@ -1,6 +1,7 @@
 ---
 layout: wiki
 title: Wiki Template
+published: false
 cate1:
 cate2:
 description: some word here

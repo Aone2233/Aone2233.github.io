@@ -1,6 +1,6 @@
 {
   "name": "aone2233-blog",
-  "version": "2.0.4",
+  "version": "2.0.5",
   "private": true,
   "description": "池边残月 —— LLY 的个人技术博客（Jekyll / GitHub Pages）。本文件只用于开发期工具（markdown 校验），不参与站点构建。",
   "scripts": {

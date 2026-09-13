@@ -4,11 +4,11 @@ title: "如何连接CPA到Codex以及Cherry Studio"
 categories: 技术教学
 description: 介绍一下获取到CPA的链接和密钥之后如何使用的问题
 keywords: GitHub Pages, Blog, Aone2233
-sequence: true
-flow: true
-mathjax: true
-mindmap: true
-mindmap2: true
+sequence: false
+flow: false
+mathjax: false
+mindmap: false
+mindmap2: false
 comment: true
 ---
 

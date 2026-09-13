@@ -38,7 +38,9 @@
     <script src="{{ assets_base_url }}/assets/vendor/share.js/dist/js/share.min.js"></script>
     {% endif %}
     <script src="{{ assets_base_url }}/assets/js/geopattern.js"></script>
-    <script src="{{ assets_base_url }}/assets/js/code-copy.js?v={{ site.version | default: '1.2.0' }}"></script>
+    <!-- 代码块复制按钮由 assets/js/main.js 统一注入（.btn-copy-code），
+         原先此处额外加载的 code-copy.js 会再插一套 .copy-button，
+         导致每个代码块挂两个重叠按钮，已移除。 -->
     <script>
       jQuery(document).ready(function($) {
         $('.geopattern').each(function(){

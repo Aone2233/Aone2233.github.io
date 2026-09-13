@@ -5,11 +5,11 @@ date: 2026-05-09 00:00:00 +0800
 categories: [工具, AI, LaTeX]
 description: "从 ThuThesis 模板、TeX Live、VS Code 编译到 OpenCode 与 DeepSeek 辅助写作的完整入门流程"
 keywords: ThuThesis, LaTeX, VS Code, OpenCode, DeepSeek, GitHub Pages
-sequence: true
-flow: true
-mathjax: true
-mindmap: true
-mindmap2: true
+sequence: false
+flow: false
+mathjax: false
+mindmap: false
+mindmap2: false
 comment: true
 ---
 

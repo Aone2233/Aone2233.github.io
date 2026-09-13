@@ -4,11 +4,11 @@ title: "Claude Code 跨平台使用指南"
 categories: [工具, AI]
 description: "详细介绍如何在 Linux、Windows 和 macOS 上安装和使用 Claude Code"
 keywords: Claude Code, AI助手, 跨平台, 开发工具
-sequence: true
-flow: true
-mathjax: true
-mindmap: true
-mindmap2: true
+sequence: false
+flow: false
+mathjax: false
+mindmap: false
+mindmap2: false
 comment: true
 ---
 

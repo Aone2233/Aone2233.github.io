@@ -4,11 +4,11 @@ title: "如何使用 Codex"
 categories: [工具, AI]
 description: "介绍如何在 GitHub 仓库中使用 Codex AI 助手"
 keywords: Codex, GitHub, Blog
-sequence: true
-flow: true
-mathjax: true
-mindmap: true
-mindmap2: true
+sequence: false
+flow: false
+mathjax: false
+mindmap: false
+mindmap2: false
 comment: true
 ---
 

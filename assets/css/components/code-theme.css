@@ -252,11 +252,6 @@ body .markdown-body pre::-webkit-scrollbar-thumb {
   background: transparent !important;
 }
 
-/* Copy Button Styling */
-.markdown-body .highlight .copy-button,
-.markdown-body pre .copy-button {
-  position: absolute !important;
-  top: 8px !important;
-  right: 8px !important;
-  z-index: 10 !important;
-}
+/* 复制按钮样式位于 premium-ui.css 的 .btn-copy-code
+   （唯一的复制实现，由 main.js 注入）。
+   此处原先还有一套 .copy-button 规则，随 code-copy.js 一并移除。 */

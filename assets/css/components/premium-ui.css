@@ -1109,6 +1109,23 @@ pre:hover .btn-copy-code {
   transform: translateY(0);
 }
 
+/* 触屏设备没有 hover，按住 `pre:hover` 显示会让按钮永远不可见
+   （实测移动端 opacity 恒为 0）。此处改为常驻显示。 */
+@media (hover: none) {
+  .btn-copy-code {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* 键盘可达性：Tab 聚焦时同样显示 */
+.btn-copy-code:focus-visible {
+  opacity: 1;
+  transform: translateY(0);
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+
 .btn-copy-code:hover {
   color: var(--text);
   border-color: var(--text-muted);
