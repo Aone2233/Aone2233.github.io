@@ -265,7 +265,7 @@ $env:OPENAI_BASE_URL="https://api.example.com/v1"
 
 比如[CC Switch](https://github.com/farion1231/cc-switch)
 
-如果采用的客户端没有屏幕，可以采用cli版本：[CC-Switch CLI](https://github.com/SaladDay/cc-switch-cli) 
+如果采用的客户端没有屏幕，可以采用cli版本：[CC-Switch CLI](https://github.com/SaladDay/cc-switch-cli)
 
 这里以具备图像版本的CC Switch为例：
 

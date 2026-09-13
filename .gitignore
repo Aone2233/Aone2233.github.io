@@ -12,6 +12,10 @@ Gemfile.lock
 .\$*.png.bkp
 .\$*.png.dtmp
 
+# Node 开发工具依赖（markdown 校验等，不参与站点构建）
+node_modules/
+package-lock.json
+
 # Claude Code configuration
 .claude/
 

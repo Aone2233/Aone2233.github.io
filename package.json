@@ -1,0 +1,19 @@
+{
+  "name": "aone2233-blog",
+  "version": "2.0.4",
+  "private": true,
+  "description": "池边残月 —— LLY 的个人技术博客（Jekyll / GitHub Pages）。本文件只用于开发期工具（markdown 校验），不参与站点构建。",
+  "scripts": {
+    "lint:md": "markdownlint-cli2 \"_posts/**/*.md\" \"pages/**/*.md\" \"_drafts/**/*.md\" \"docs/**/*.md\" \"*.md\" \"#node_modules\" \"#_site\"",
+    "lint:md:all": "markdownlint-cli2 \"**/*.md\" \"#node_modules\" \"#_site\" \"#.git\"",
+    "lint:md:fix": "npm run lint:md -- --fix",
+    "lint:md:changed": "git diff --name-only --diff-filter=ACMR HEAD -- '*.md' | xargs -r markdownlint-cli2",
+    "lint:md:post": "markdownlint-cli2 \"_posts/**/*.md\""
+  },
+  "devDependencies": {
+    "markdownlint-cli2": "0.23.2"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

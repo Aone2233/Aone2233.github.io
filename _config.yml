@@ -130,6 +130,21 @@ lsi: false
 quiet: false
 excerpt_separator: "\n\n"
 permalink: /:year/:month/:day/:title/
+# 注意：Jekyll 的 exclude 会覆盖其默认值，故需显式保留默认项
+# （Gemfile / node_modules 等），再追加仅开发期使用的文件。
+# 这些文件不应出现在构建产物与线上站点中。
+exclude:
+    - Gemfile
+    - Gemfile.lock
+    - node_modules/
+    - vendor/bundle/
+    - vendor/cache/
+    - vendor/gems/
+    - vendor/ruby/
+    # markdown 校验工具（开发期）
+    - package.json
+    - package-lock.json
+    - .markdownlint.jsonc
 plugins:
     - jekyll-github-metadata
     - rouge

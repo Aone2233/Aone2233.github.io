@@ -226,15 +226,15 @@ claude doctor
 
 Claude Code 提供三种认证方式：
 
-**方式一：Anthropic Console (默认)**
+#### 方式一：Anthropic Console（默认）
 - 需要在 console.anthropic.com 有活跃的付费账户
 - 会自动创建 "Claude Code" 工作区用于使用跟踪
 
-**方式二：Claude App (Pro/Max 订阅)**
+#### 方式二：Claude App（Pro/Max 订阅）
 - 统一订阅包括 Claude Code 和网页界面
 - 提供更高的性价比
 
-**方式三：企业平台**
+#### 方式三：企业平台
 - Amazon Bedrock
 - Google Vertex AI
 
@@ -299,7 +299,7 @@ export DISABLE_AUTOUPDATER=1    # 禁用自动更新
 - `/terminal-setup` - 配置终端功能（如 Shift+Enter 换行）
 
 **对话示例：**
-```
+```text
 You: 帮我创建一个 React 登录组件
 Claude: 我来帮您创建一个 React 登录组件...
 

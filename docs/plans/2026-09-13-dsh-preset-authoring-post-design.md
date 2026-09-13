@@ -30,7 +30,7 @@ Owner: aone2233
 
 全篇是一条"从项目到产品"的路径，而不是 dsh 功能罗列：
 
-```
+```text
 真实项目（Gra_thesis）
    ↓ 抽取约定（四类素材 → 四个落点）
 预设设计（agent.cordis.yml 的行怎么分）
