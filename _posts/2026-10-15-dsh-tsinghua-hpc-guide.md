@@ -11,13 +11,13 @@ mathjax: false
 mindmap: false
 mindmap2: false
 comment: true
-published: false
+published: true
 ---
 
 > 目标读者：已具备清华大学相关平台使用资格，希望把大模型 API 接入 DSH 的同学。<br>
 > 推荐路线：获取平台 API 地址和密钥，在 DSH 中添加自定义供应商与模型，先完成普通对话测试，再按需设置推理等级、权限和插件。<br>
 > 适用环境：本文主要演示 Windows 上的 DeepSeek Harness 桌面端，下文简称 DSH。<br>
-> 整理时间：2026-10-15。配图来自实际操作，界面可能因客户端版本不同而略有差异；模型能力、使用资格和额度规则以平台当前说明为准。
+> 整理时间：2026-10-15。本文按 DSH **v0.2.1-alpha.4** 官方文档核对配置说明，配图来自实际操作，不保证全部截图属于该版本。模型能力与推理参数依据官方文档整理，平台实际开放范围、使用资格和额度规则以当前平台说明为准。
 
 先说明本文的范围：**用清华大学高性能计算平台相关入口提供的大模型 API，在本机 DSH 中调用模型。不是在超算节点上部署 DSH，也不涉及申请 GPU 节点、SSH 登录或提交计算作业。**
 
@@ -76,7 +76,9 @@ published: false
 
 ![DeepSeek Harness 官方页面中的“下载 Windows 版”按钮和客户端界面预览](/images/posts/dsh-tsinghua-hpc/12-dsh-download.png)
 
-*图 2：DSH 官方下载页面。下半部分是官网的产品演示，不是接入清华平台后的实际会话，也不代表默认已有平台额度。本文截图未显示客户端版本号，后文按按钮用途说明，具体名称以自己的界面为准。*
+*图 2：DSH 官方下载页面。下半部分是官网的产品演示，不是接入清华平台后的实际会话，也不代表默认已有平台额度。*
+
+截至整理时，官方最新发布为 [v0.2.1-alpha.4](https://github.com/deepseek-ai/deepseek-harness/releases/tag/dsh-v0.2.1-alpha.4)，发布于 2026-10-15，标记为预发布版。本文以该版本的 [官方模型配置文档](https://github.com/deepseek-ai/deepseek-harness/blob/dsh-v0.2.1-alpha.4/docs/user/guide/providers.zh.md) 为核对基准；截图未显示版本号，不能反推截图时安装的具体版本。下载和后续升级仍以官网提供的版本为准。
 
 ### 3. 先分清四个容易混淆的名称
 
@@ -210,19 +212,22 @@ DeepSeek-V4.1-Flash
 
 *图 9：模型参数示例。图中的“图片”位于“输入类型”下，表示图片输入，不是生成图片。*
 
-| 项目 | 原截图中的填写值 | 使用时如何处理 |
-|---|---|---|
-| 模型 ID | `DeepSeek-V4.1-Flash` | 以平台实际提供的模型 ID 为准 |
-| 显示名称 | `DeepSeek-V4.1-Flash` | 可以保持与模型 ID 一致 |
-| 上下文窗口 | `1M` | 原截图值，不代表所有模型或账号都支持；应核对平台说明 |
-| 最大输出 token 数 | `32K` | 原截图值，不是每次请求都必然能输出这么多 |
-| 输入类型 | 文本、图片均勾选 | 只有模型和平台接口确实支持图片输入时才勾选“图片” |
+根据 DeepSeek 的 [模型与价格说明](https://api-docs.deepseek.com/quick_start/pricing/) 及 [模型元数据接口文档](https://api-docs.deepseek.com/api/list-models/)，DeepSeek-V4.1-Flash 的原厂能力如下：
 
-**不要为了让配置看起来更强，就直接照抄更大的上下文或输出上限。**这些值是在客户端声明模型能力，不会改变平台实际提供的能力。
+| 项目 | 官方说明与本文的配置方法 |
+|---|---|
+| 模型版本 | `DeepSeek-V4.1-Flash` |
+| 模型 ID | DeepSeek 官方接口使用 `deepseek-flash`；本文经并行智算云接入，仍填写平台返回的 `DeepSeek-V4.1-Flash`，不要擅自替换为原厂 ID |
+| 显示名称 | 可填 `DeepSeek-V4.1-Flash`，仅用于界面识别 |
+| 上下文窗口 | 官方为 `1M`，即 `1,048,576` token，包含输入与输出的总容量 |
+| 最大输出 token 数 | 官方最高为 `384K`，即 `393,216` token；原截图中的 `32K` 是客户端配置的较低上限，不是原厂能力上限 |
+| 输入类型 | 官方支持文本和图片；平台提供同等视觉能力时，在 DSH 勾选“文本”“图片” |
+| 输出类型 | 文本；图片输入能力不等于图片生成能力 |
+| 其他能力 | 官方支持工具调用、JSON 输出，以及思考和非思考模式；本文使用 OpenAI Chat Completions 协议 |
 
-如果客户端没有自动识别参数，平台说明中也查不到，就先暂停这条模型的手动配置，向平台确认；不要把输入框中的示例值或默认值当成已经核实的能力。也可以先改用客户端能正确识别、自己账号有权使用的其他模型完成接入。
+第一次接入可以保留截图中的 **1M 上下文、32K 输出上限**：较低的单次输出上限便于控制长回复与用量，不需要为接通模型就设到 384K。若要按原厂最大能力填写，可参考上表，但**并行智算云的网关限制可能低于原厂上限**，遇到超限应按平台模型详情调低。客户端声明不会增加实际服务能力。
 
-如果暂时只需要文字对话，可以先完成文字测试。之后再核对图片支持情况，用一张无敏感信息的图片单独测试。
+图片能力同理：原厂 V4.1-Flash 支持图片，不代表每个同名中转入口都完整开放。先完成文字测试，再上传一张无敏感信息的图片测试；其他模型需分别查看其官方说明，不能把本表套用到所有模型上。
 
 ### 5. 保存供应商
 
@@ -300,48 +305,50 @@ DeepSeek-V4.1-Flash
 
 *图 13：当前截图勾选的是 High，鼠标高亮的是 Max，并不表示已经切换到 Max。我通常使用 High，但这是个人使用习惯，不是“所有任务必须选 High”或“Max 一定最好”的结论。*
 
-较早的截图中第一项为 `Default`，新增截图中则为 `Off`。**不要直接把两者当成同义词，也不能只凭菜单断言平台已经关闭或改变了推理。**`Default` 通常表示不主动指定等级、沿用当前配置或服务默认值；`Off` 的具体请求含义，以及 Low、High、Max 对应的参数，都需结合当前 DSH 版本、供应商配置和平台接口说明核对。
+根据 DeepSeek 官方 [思考模式说明](https://api-docs.deepseek.com/guides/thinking_mode/)，本文所用的 **OpenAI Chat Completions 协议**对应关系如下：
+
+| DSH 菜单 | 官方请求参数 | 含义 |
+|---|---|---|
+| `Off` | `thinking: {type: disabled}` | 关闭思考模式，不是一个推理强度 |
+| `Low` | `thinking: {type: enabled}`，`reasoning_effort: low` | 开启思考，使用 low 档 |
+| `High` | `thinking: {type: enabled}`，`reasoning_effort: high` | 开启思考，使用 high 档 |
+| `Max` | `thinking: {type: enabled}`，`reasoning_effort: max` | 开启思考，使用 max 档 |
+
+原厂默认开启思考，默认等级为 `high`。较早截图中的 `Default` 表示沿用默认值，**不等于 Off**。官方还兼容部分其他等级名，例如 `medium` 和 `xhigh` 映射到 `high`；本教程直接采用 `low / high / max`，不必额外添加这些别名。
+
+以上是原厂参数定义，经并行智算云调用时仍以平台支持的接口为准。DSH 的菜单必须正确映射到这些参数，下一小节说明配置方法。
 
 ### 3. 如果没有“推理等级”
 
 **先不要认为接入失败。**自定义模型可以已经正常对话，但客户端没有声明该模型可选的推理等级，因此没有显示菜单。
 
-这时可以：
+按 v0.2.1-alpha.4 的 [官方配置说明](https://github.com/deepseek-ai/deepseek-harness/blob/dsh-v0.2.1-alpha.4/docs/user/guide/providers.zh.md#推理等级)，自定义供应商可以直接在界面配置：
 
-1. 先完成第五节的普通对话测试。
-2. 确认平台是否支持这个模型的推理参数和可选值。
-3. 再核对当前 DSH 版本的自定义模型配置说明。
+1. 打开 **“设置 → 模型”**，编辑自己的 `paratera` 供应商。
+2. 打开 **“自定义设置”**，展开目标模型的 **“模型选项”**。
+3. 打开 **“推理等级”**。初始行可能是 off、low、medium、high；按 DeepSeek 原厂说明调整为 **off、low、high、max**。
+4. API 参数值分别设为：off 留空，low 为 `low`，high 为 `high`，max 为 `max`，然后保存。
 
-DSH 的配置中涉及 `reasoningEfforts` 一类能力声明；菜单显示的等级与真正发给网关的参数还可能存在映射。不同平台不能直接照搬同一份配置。
+**还需要注意 Off 的行为。**官方文档说明，空的 off 默认只是不发送 `reasoning_effort`；DeepSeek 是默认开启思考的模型，仅省略该字段不能关闭思考。对于这种 OpenAI 兼容网关，应在目标模型上设置 **`compat.thinkingFormat: deepseek`**，让 DSH 在 Off 时显式发送 `thinking: {type: disabled}`，其他等级发送 `thinking: {type: enabled}` 并附带相应 effort。
 
-如果希望让 AI 协助检查配置，建议先发出**只读检查**请求，而不是直接让它改：
+从设置页顶部点击 **“打开配置文件”**，先备份当前生效的 `cordis.patch.yml`。以下只是 `llm-pi-ai → config → providers → paratera → models` 中**目标模型条目的字段片段**，不是一份可覆盖整个配置文件的完整配置：
 
-```text
-请先只读检查当前 DeepSeek Harness 桌面端的模型配置，不要修改文件。
-
-目标供应商的 Provider ID 是 paratera。
-请确认它是否声明了模型的推理等级，并核对当前 DSH 版本和该平台的接口说明。
-
-不要输出 API 密钥。请先告诉我：
-1. 当前生效的是哪个配置文件；
-2. 目标模型支持哪些推理参数和可选值；
-3. 如需修改，准备改哪些字段，以及如何备份和恢复。
-
-如果还不能确认平台支持情况，请明确说明，不要猜测参数。
+```yaml
+- id: DeepSeek-V4.1-Flash
+  compat:
+    thinkingFormat: deepseek
+  reasoningEfforts:
+    off:
+    low: low
+    high: high
+    max: max
 ```
 
-**发送前把 `paratera` 换成自己的 Provider ID。**不是换成 API 密钥，也不是换成平台上的密钥名称。
+把这些字段合并到现有目标模型条目，保留原有容量、输入类型、凭据引用和其他提供商配置。`paratera` 和模型 ID 都应换成自己的实际值；不要把 API 密钥写入教程或发到会话中。官方说明配置会在下一次请求时重新读取，不需要重启服务器；以设置页打开的生效配置为准，不要误改 Web 或其他 profile 的文件。
 
-确认方案后，再单独授权最小修改：只调整目标供应商、目标模型相关字段，保留备份，不改其他供应商或插件。
+如果启用推理后出现 `developer` 角色或 `max_completion_tokens` 不被支持的错误，官方还提供了 `compat.supportsDeveloperRole: false` 和 `compat.maxTokensField: max_tokens` 兼容项；仅在平台实际需要时使用，不必为正常工作的配置强行添加。
 
-修改后的验收至少分两步：
-
-1. 界面中确实出现可选的推理等级。
-2. 用所选等级发出一次真实请求，确认平台接受该参数并正常返回。
-
-只看到菜单，或者 AI 回复“已经修改完成”，都不能单独证明请求参数已经按预期生效。需要确认精确参数时，再查看不含密钥的请求记录或平台说明。
-
-本文配图展示了等级菜单，不包含按各个等级逐一发起请求的验证记录。因此不能仅凭图 13 断言平台已支持所有选项。选择后仍应发送一次最小测试，检查是否正常返回；如需核对实际参数，请使用脱敏请求记录，避免展示认证请求头和密钥。
+保存后确认菜单出现，再选一个等级发送第五节的最小测试。图 13 展示菜单位置，不代表已经逐档实测平台。若需要确认发送的精确参数，请查看脱敏请求记录，避免展示认证请求头和密钥。
 
 ## 七、可选：选择合适的操作权限
 
@@ -476,19 +483,20 @@ DSH 会话里也可能显示 token 用量等统计，可作为本次会话的参
 3. [DeepSeek Harness 官方页面](https://www.deepseek.com/harness/)：下载桌面端。
 4. [并行智算云模型广场](https://ai.paratera.com/#/lms/model)：查看当前模型和详情。
 5. [并行智算云大模型文档入口](https://ai.paratera.com/document/llm/quickStart)、[API 使用快速入门](https://ai.paratera.com/document/llm/quickStart/useApi) 及 [API 密钥管理](https://ai.paratera.com/document/llm/quickStart/apiKeys)：核对接入和密钥管理流程。
-6. DeepSeek Harness 官方模型配置说明：用于交叉核对自定义供应商、协议、模型和推理等级的概念。<br>
-   https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/user/guide/providers.md
+6. [DSH v0.2.1-alpha.4 发布记录](https://github.com/deepseek-ai/deepseek-harness/releases/tag/dsh-v0.2.1-alpha.4) 与 [同版本官方模型配置说明](https://github.com/deepseek-ai/deepseek-harness/blob/dsh-v0.2.1-alpha.4/docs/user/guide/providers.zh.md)：核对自定义供应商、模型能力声明与推理参数映射。
 7. DeepSeek Harness 官方权限预设说明：用于区分操作权限与模型能力。<br>
    https://github.com/deepseek-ai/deepseek-harness/blob/master/packages/interaction/permission-presets/README.md
 8. DeepSeek Harness 官方自动审查说明：用于了解实验性自动审查。<br>
    https://github.com/deepseek-ai/deepseek-harness/blob/master/packages/experimental/auto-review/README.md
 
-整理时已检查上述四个主要入口可访问，并核对平台公开文档中的密钥创建、API 接入和消费记录入口。页面可访问不代表已经完成登录或 API 实测。模型名称和参数示例来自截图，不代表已经用作者账号重新验证上下文、图片输入或每个推理等级；使用资格、额度政策和模型能力仍以当前平台说明及实际请求为准。
+9. [DeepSeek 模型与价格](https://api-docs.deepseek.com/quick_start/pricing/)、[模型元数据接口](https://api-docs.deepseek.com/api/list-models/) 及 [思考模式](https://api-docs.deepseek.com/guides/thinking_mode/)：核对 V4.1-Flash 的容量、图片能力、推理档位和默认行为。
+
+本文已按上述官方资料核对配置，模型能力和请求参数为文档说明，不冒充作者账号的逐项压测或抓包结果。原厂能力不等于第三方网关无条件开放全部能力；使用资格、额度政策、模型 ID 和实际服务限制仍以平台当前页面为准。
 
 {% comment %}
 编辑备注：本段不进入博客正文。
 
-当前 published: false，保持待审状态，未经确认不直接发布。
+当前文章已由作者确认发布。文档核对版本为 v0.2.1-alpha.4，不把搜索到的最新版本冒充截图时的已安装版本。
 原始初稿、17 张历史原图及 7 张新增截图均保留，不覆盖。
 博客配图位于 /images/posts/dsh-tsinghua-hpc/，正文共使用 16 张图片。
 已在博客副本中遮盖学号、院系、平台账号和会话中的本地路径，裁去无关工作区、会话、客服二维码及私人联系方式。
@@ -497,11 +505,12 @@ DSH 会话里也可能显示 token 用量等统计，可作为本次会话的参
 补图 07 为概览与账单入口，未进入账单详情页；统计负值的异常已在正文说明。
 旧图 07 及 09 为 9 月 26 日历史界面局部，不与新增截图混作同一次验证。
 
-仍需作者核对的事项（不是构建阻塞项）：
-1. 账号适用范围、校内网或 VPN 要求，以及额度激活、有效期和扣费规则。
-2. 截图使用的 DSH 版本号。
-3. 目标模型实际上下文、输出上限和图片输入能力。
-4. 平台支持的推理参数及 DSH 实际映射；选定等级后的真实请求结果。
+发布核对：
+1. 账号适用范围、校内网或 VPN 要求，以及额度规则保留为平台动态说明，不猜测统一政策。
+2. 版本与配置依据固定到官方 dsh-v0.2.1-alpha.4 发布及对应文档。
+3. DeepSeek 官方能力：上下文 1M，最大输出 384K，文本与图片输入；截图 32K 是较低客户端输出上限。
+4. OpenAI Chat Completions 推理参数：thinking enabled/disabled，effort low/high/max；DSH 自定义网关使用 thinkingFormat deepseek。
+5. 不声称已对第三方网关逐档实测，不需要为公开教程调用作者密钥。
 
 图片对应关系（博客文件名 ← 原始文件名；均为裁剪或脱敏副本，04、05 除外）：
 01-platform-api-key-entry.png ← 614a5f00659dbfb264c960a95c20750a.png
